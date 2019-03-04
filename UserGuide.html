@@ -60,11 +60,45 @@ Please refer to the <a href="DeveloperGuide.html#setting-up">Setting up</a> sect
 </div>
 </div>
 <div class="sect1">
+<h2 id="login-to-the-system-code-login-code"><a class="link" href="#login-to-the-system-code-login-code">Login to the system : <code>login</code></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Allow the user to login to the system<br>
+Format: <code>login username password</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Login is required in order to use the address book</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>login guanlong 12345</code><br>
+Logged in as guanlong if the account and password are correct.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="adding-a-person-code-add-code"><a class="link" href="#adding-a-person-code-add-code">Adding a person: <code>add</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Adds a person to the address book.<br>
-Format: <code>add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS [t/TAG]&#8230;&#8203;</code></p>
+Format: <code>add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENTDATE [t/TAG]&#8230;&#8203;</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -87,10 +121,10 @@ be seen using the <code>viewall</code> command.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01</code></p>
+<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/30November</code></p>
 </li>
 <li>
-<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison t/criminal t/friend</code></p>
+<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/1 January 2009 t/criminal t/friend</code></p>
 </li>
 </ul>
 </div>
@@ -102,6 +136,15 @@ be seen using the <code>viewall</code> command.</p>
 <div class="paragraph">
 <p>Shows a list of all persons in the address book.<br>
 Format: <code>list</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="listing-all-persons-in-sorted-order-code-sort-code"><a class="link" href="#listing-all-persons-in-sorted-order-code-sort-code">Listing all persons in sorted order : <code>sort</code></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Shows a list of all persons sorted in alphabetical order in the address book.<br>
+Format: <code>sort</code></p>
 </div>
 </div>
 </div>
@@ -274,4 +317,4 @@ Format: <code>exit</code></p>
 <p>There is no need to save manually. Address book data are saved in a file called <code>addressbook.txt</code> in the project root folder.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-04 11:55:37 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-04 11:57:23 UTC</div></div></div></body></html>
