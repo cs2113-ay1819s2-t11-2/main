@@ -12,6 +12,7 @@
 <li><a href="#user-stories">Appendix A: User Stories</a></li>
 <li><a href="#use-cases">Appendix B: Use Cases</a>
 <ul class="sectlevel2">
+<li><a href="#use-case-add-person">Use case: Add person</a></li>
 <li><a href="#use-case-delete-person">Use case: Delete person</a></li>
 <li><a href="#use-case-login">Use case: Login</a></li>
 <li><a href="#use-case-referring-a-patient">Use case: Referring a patient</a></li>
@@ -189,6 +190,37 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>(For all use cases below, the <strong>System</strong> is the <code>AddressBook</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
+</div>
+<div class="sect2">
+<h3 id="use-case-add-person"><a class="link" href="#use-case-add-person">Use case: Add person</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User adds a person in the address book.</p>
+</li>
+<li>
+<p>AddressBook adds person to address book and prints the newly added person&#8217;s details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong>
+* 1a. The format entered by the user is incorrect.
+<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+</strong> 1a2. User re-enters new person&#8217;s particulars.
+*     Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
+*     Use case resumes at Step 2.</p>
+</div>
+<div class="paragraph">
+<p>+
+Use case ends.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="use-case-delete-person"><a class="link" href="#use-case-delete-person">Use case: Delete person</a></h3>
@@ -400,4 +432,4 @@
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-16 07:22:51 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-16 07:57:35 UTC</div></div></div></body></html>
