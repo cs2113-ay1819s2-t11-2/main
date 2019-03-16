@@ -12,11 +12,19 @@
 <li><a href="#user-stories">Appendix A: User Stories</a></li>
 <li><a href="#use-cases">Appendix B: Use Cases</a>
 <ul class="sectlevel2">
-<li><a href="#use-case-add-person">Use case: Add person</a></li>
-<li><a href="#use-case-delete-person">Use case: Delete person</a></li>
-<li><a href="#use-case-login">Use case: Login</a></li>
-<li><a href="#use-case-referring-a-patient">Use case: Referring a patient</a></li>
-<li><a href="#use-case-managing-appointments">Use case: Managing appointments</a></li>
+<li><a href="#use-case-uc01-login">Use case: UC01 - Login</a></li>
+<li><a href="#use-case-uc02-sort-entries">Use case: UC02 - Sort entries</a></li>
+<li><a href="#use-case-uc03-refer-patient">Use case: UC03 - Refer patient</a></li>
+<li><a href="#use-case-uc04-managing-appointments">Use case: UC04 - Managing appointments</a></li>
+<li><a href="#use-case-uc05-add-patient">Use case: UC05 - Add patient</a></li>
+<li><a href="#use-case-uc06-length-of-address-book">Use case: UC06 - Length of address book</a></li>
+<li><a href="#use-case-uc07-list-all-entries">Use case: UC07 - List all entries</a></li>
+<li><a href="#use-case-uc08-find-patients">Use case: UC08 - Find patients</a></li>
+<li><a href="#use-case-uc09-delete-patient">Use case: UC09 - Delete patient</a></li>
+<li><a href="#use-case-uc10-view-patient-by-index">Use case: UC10 - View patient by index</a></li>
+<li><a href="#use-case-uc11-view-all-particulars-of-a-patient-by-index">Use case: UC11 - View all particulars of a patient by index</a></li>
+<li><a href="#use-case-uc12-clear-all-entries">Use case: UC12 - Clear all entries</a></li>
+<li><a href="#use-case-uc13-exit">Use case: UC13 - Exit</a></li>
 </ul>
 </li>
 <li><a href="#implementation">Implementation</a>
@@ -192,17 +200,42 @@
 <p>(For all use cases below, the <strong>System</strong> is the <code>AddressBook</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
 </div>
 <div class="sect2">
-<h3 id="use-case-add-person"><a class="link" href="#use-case-add-person">Use case: Add person</a></h3>
+<h3 id="use-case-uc01-login"><a class="link" href="#use-case-uc01-login">Use case: UC01 - Login</a></h3>
 <div class="paragraph">
 <p><strong>Main success scenario:</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User adds a person in the address book.</p>
+<p>The user opens the addressbook</p>
 </li>
 <li>
-<p>AddressBook adds person to address book and prints the newly added person&#8217;s details.</p>
+<p>Addressbook prompts’ user for username and password</p>
+</li>
+<li>
+<p>The user inputs the username/password and hits enter</p>
+</li>
+<li>
+<p>Addresbook authenticates the user and displays welcome address</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc02-sort-entries"><a class="link" href="#use-case-uc02-sort-entries">Use case: UC02 - Sort entries</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to sort the list in address book based on specified attribute.</p>
+</li>
+<li>
+<p>AddressBook sorts and prints out all entries sorted by attribute specified by user.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -222,7 +255,7 @@
 <p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
 </li>
 <li>
-<p>1a2. User re-enters new person&#8217;s particulars.</p>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
 </li>
 </ul>
 </div>
@@ -237,23 +270,240 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-delete-person"><a class="link" href="#use-case-delete-person">Use case: Delete person</a></h3>
+<h3 id="use-case-uc03-refer-patient"><a class="link" href="#use-case-uc03-refer-patient">Use case: UC03 - Refer patient</a></h3>
 <div class="paragraph">
 <p><strong>Main success scenario:</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to list persons</p>
+<p>The user requests to refer patient to another doctor.</p>
 </li>
 <li>
-<p>AddressBook shows a list of persons</p>
+<p>AddressBook finds patient in the list and copies patient together with particulats to a separate list archive with an addition tag specifying which doctor he/ she is being referred to.</p>
 </li>
 <li>
-<p>User requests to delete a specific person in the list</p>
+<p>AddressBook deletes patient entry from the main list.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1a. The format entered by the user is incorrect.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
 </li>
 <li>
-<p>AddressBook deletes the person.</p>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+<li>
+<p>1b. Patient name has duplicates.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook prints out patients' indexes and prompts users to select the correct index.</p>
+</li>
+<li>
+<p>1a2. User enters correct patient&#8217;s index.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc04-managing-appointments"><a class="link" href="#use-case-uc04-managing-appointments">Use case: UC04 - Managing appointments</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The user types a command appointments in the command line</p>
+</li>
+<li>
+<p>The system finds all scheduled appointments and prints them to the screen in chronological order</p>
+</li>
+<li>
+<p>If possible, can print a literal timetable on the screen</p>
+</li>
+<li>
+<p>The expired appointments should be excluded from the timetable if possible</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc05-add-patient"><a class="link" href="#use-case-uc05-add-patient">Use case: UC05 - Add patient</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User adds a patient in the address book.</p>
+</li>
+<li>
+<p>AddressBook adds patient to address book and prints the newly added patient&#8217;s details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1a. The format entered by the user is incorrect.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
+</li>
+<li>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc06-length-of-address-book"><a class="link" href="#use-case-uc06-length-of-address-book">Use case: UC06 - Length of address book</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests for length of address book.</p>
+</li>
+<li>
+<p>AddressBook gets the current length and prints out the number of entries.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc07-list-all-entries"><a class="link" href="#use-case-uc07-list-all-entries">Use case: UC07 - List all entries</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests for list of address book.</p>
+</li>
+<li>
+<p>AddressBook prints out all entries in the address book with their respective particulars that are not private.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc08-find-patients"><a class="link" href="#use-case-uc08-find-patients">Use case: UC08 - Find patients</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to find all patients containing any keyword in their name from the list.</p>
+</li>
+<li>
+<p>AddressBook looks through the list and prints out all entries with the keyword specified by user.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1a. The format entered by the user is incorrect.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
+</li>
+<li>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc09-delete-patient"><a class="link" href="#use-case-uc09-delete-patient">Use case: UC09 - Delete patient</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to list patients</p>
+</li>
+<li>
+<p>AddressBook shows a list of patients</p>
+</li>
+<li>
+<p>User requests to delete a specific patient in the list</p>
+</li>
+<li>
+<p>AddressBook deletes the patient.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -288,75 +538,131 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-login"><a class="link" href="#use-case-login">Use case: Login</a></h3>
+<h3 id="use-case-uc10-view-patient-by-index"><a class="link" href="#use-case-uc10-view-patient-by-index">Use case: UC10 - View patient by index</a></h3>
 <div class="paragraph">
 <p><strong>Main success scenario:</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The user opens the addressbook</p>
+<p>User requests to view patient at a certain index in the list.</p>
 </li>
 <li>
-<p>Addressbook prompts’ user for username and password</p>
-</li>
-<li>
-<p>The user inputs the username/password and hits enter</p>
-</li>
-<li>
-<p>Addresbook authenticates the user and displays welcome address</p>
+<p>AddressBook prints out patient with his/ her respective particulars that are not private at the specified index.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Use case ends.</p>
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1a. The format entered by the user is incorrect.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
+</li>
+<li>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-referring-a-patient"><a class="link" href="#use-case-referring-a-patient">Use case: Referring a patient</a></h3>
+<h3 id="use-case-uc11-view-all-particulars-of-a-patient-by-index"><a class="link" href="#use-case-uc11-view-all-particulars-of-a-patient-by-index">Use case: UC11 - View all particulars of a patient by index</a></h3>
 <div class="paragraph">
 <p><strong>Main success scenario:</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The user types refer NAME1 to NAME2 in the command line</p>
+<p>User requests to view patient will all particulars at a certain index in the list.</p>
 </li>
 <li>
-<p>The information of the patient whose name is NAME1 is added to  the addressbook of the doctor whose name is NAME2</p>
-</li>
-<li>
-<p>The information of the patient whose name is NAME1 is removed from the user’s addressbook</p>
+<p>AddressBook prints out patient with his/ her respective particulars - including particulars that are private - at the specified index.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Use case ends.</p>
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1a. The format entered by the user is incorrect.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
+</li>
+<li>
+<p>1a2. User re-enters new patient&#8217;s particulars.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-managing-appointments"><a class="link" href="#use-case-managing-appointments">Use case: Managing appointments</a></h3>
+<h3 id="use-case-uc12-clear-all-entries"><a class="link" href="#use-case-uc12-clear-all-entries">Use case: UC12 - Clear all entries</a></h3>
 <div class="paragraph">
 <p><strong>Main success scenario:</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The user types a command appointments in the command line</p>
+<p>User requests for list of address book.</p>
 </li>
 <li>
-<p>The system finds all scheduled appointments and prints them to the screen in chronological order</p>
-</li>
-<li>
-<p>If possible, can print a literal timetable on the screen</p>
-</li>
-<li>
-<p>The expired appointments should be excluded from the timetable if possible</p>
+<p>AddressBook deletes all entries in the address book.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
 </li>
 </ol>
 </div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc13-exit"><a class="link" href="#use-case-uc13-exit">Use case: UC13 - Exit</a></h3>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to exit AddressBook.</p>
+</li>
+<li>
+<p>AddressBook cloese and quits the application.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -446,4 +752,4 @@
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-16 08:02:58 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-16 09:22:44 UTC</div></div></div></body></html>
