@@ -33,6 +33,7 @@
 <li><a href="#refer-feature">Refer feature</a></li>
 <li><a href="#login-register-logout-feature">Login/Register/Logout Feature</a></li>
 <li><a href="#add-appointment-feature">Add appointment feature</a></li>
+<li><a href="#doctorappointments-command">DoctorAppointments command</a></li>
 </ul>
 </li>
 <li><a href="#non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
@@ -929,13 +930,104 @@
 <p>Step 1. The user executes command <code>Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]&#8230;&#8203;\n\t"</code></p>
 </div>
 <div class="paragraph">
-<p>Step2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
+<p>Step 2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
 </div>
 <div class="paragraph">
-<p>Step3. The <code>Addressbook</code> trys to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
+<p>Step 3. The <code>Addressbook</code> trys to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
 </div>
 <div class="paragraph">
 <p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="doctorappointments-command"><a class="link" href="#doctorappointments-command">DoctorAppointments command</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-5"><a class="link" href="#current-implementation-5">Current Implementation</a></h4>
+<div class="paragraph">
+<p>This is a new command, that is executed as <code>DoctorAppointments DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
+</div>
+<div class="paragraph">
+<p>For the first part, finding and sorting the list of corresponding persons is facilitated by the <code>DoctorAppointmentsCommand</code> class and the <code>Person</code> class. The following operations are implemented in the <code>DoctorAppointmentsCommand</code> class.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>execute()</code>&#8201;&#8212;&#8201;Upon execution, a new <code>Indicator</code> class stores information indicating that <code>DoctorAppointmentsCommand</code> is the most recently invoked command. Then, the following method <code>getPersonsWithNameContainingAnyKeyword(keywords)</code> is called.</p>
+</li>
+<li>
+<p><code>getPersonsWithNameContainingAnyKeyword(keywords)</code>&#8201;&#8212;&#8201;This method is adapted from the <code>FindCommand</code> class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a <code>LocalDate</code> field in a <code>Person</code> object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare <code>LocalDate</code> dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor&#8217;s name corresponding to the user input&#8217;s doctor. The ArrayList is sorted based on their appointment dates.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We update the <code>Person</code> class to contain an additional field <code>LocalDate date</code> which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the <code>Person</code> class and their method signatures are updated in the <code>ReadOnlyPerson</code> interface.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>getLocalDate()</code></p>
+</li>
+<li>
+<p><code>setLocalDate()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the Persons corresponding to a certain doctor are sorted and listed in Chronological order.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command <code>DoctorAppointments DOCTORNAME"</code></p>
+</div>
+<div class="paragraph">
+<p>Step 2. The parser parses the command and prepares the keyword arguments for the <code>DoctorAppointmentsCommand</code> class.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. <code>DoctorAppointmentsCommand</code> is executed and the <code>Indicator</code> class records that this is the most recently invoked command. The execute command calls <code>getPersonsWithNameContainingAnyKeyword(keywords)</code>. For every Person in the existing addressbook, the Doctor&#8217;s name is checked against the keyword (containing DOCTORNAME). If the doctor&#8217;s name of the Person corresponds to DOCTORNAME, the <code>LocalDate</code> class parses the person&#8217;s appointment date, and the Person&#8217;s <code>LocalDate</code> date field is set to be the parsed appointment date.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The person is added into the matchedPersons list.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. The list of matchedPersons are sorted based on the <code>Localdate</code> date field in each person.</p>
+</div>
+<div class="paragraph">
+<p>Step 6. The sorted list of matchedPersons are returned and displayed in a table format (explained in second part)</p>
+</div>
+<div class="paragraph">
+<p>For the second part of the implementation, we discuss how the list of matchedPersons is formatted to print in a certain manner. To facilitate the printing, we mainly update the format() method of the UI <code>Formatter</code> class.</p>
+</div>
+<div class="paragraph">
+<p>To facilitate the update, a new <code>Indicator</code> class is created and a new method is implemented in the <code>ReadonlyPerson</code> interface.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Indicator.setLastCommand(String)</code> --when called, stores a String that records the last invoked user Command.</p>
+</li>
+<li>
+<p><code>Indicator.getLastCommand()</code> --when called, provides information on the last invoked user Command.</p>
+</li>
+<li>
+<p><code>getAsTextNameDateDoctor()</code> --This is a method of the <code>ReadOnlyPerson</code> interface. It is a new String builder that builds a String of information about the Person. The information contains only the name and appointment date of the person. The String is padded on the right with whitespace to ensure a tabular format.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The UI <code>Formatter</code> is updated in the following way.
+* <code>format(Persons)</code> --Checks if the last invoked user Command is the <code>DoctorAppointmentsCommand</code>. If it is, calls the new String builder method <code>getAsTextNameDateDoctor()</code> for each Person to be formatted.</p>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above.</p>
+</div>
+<div class="paragraph">
+<p>Step 7. When the dispay method is called in step 6, the format method in <code>Formatter</code> is called.</p>
+</div>
+<div class="paragraph">
+<p>Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace.</p>
+</div>
+<div class="paragraph">
+<p>Step 9. The <code>MainWindow</code> displays the newly formatted Persons in neat rows, displaying only the relevant information on Name and Appointment Date.</p>
 </div>
 </div>
 </div>
@@ -978,4 +1070,4 @@
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-18 15:15:14 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-18 16:28:38 UTC</div></div></div></body></html>
