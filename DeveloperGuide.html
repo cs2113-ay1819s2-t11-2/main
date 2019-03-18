@@ -31,10 +31,10 @@
 <ul class="sectlevel2">
 <li><a href="#sort-feature">Sort feature</a></li>
 <li><a href="#refer-feature">Refer feature</a></li>
+<li><a href="#login-register-logout-feature">Login/Register/Logout Feature</a></li>
 </ul>
 </li>
-<li><a href="#non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
-<li><a href="#glossary">Appendix D: Glossary</a></li>
+<li><a href="#glossary">Appendix C: Glossary</a></li>
 </ul></div></div><div id="content"><div class="sect1">
 <h2 id="setting-up"><a class="link" href="#setting-up">Setting up</a></h2>
 <div class="sectionbody">
@@ -723,11 +723,153 @@
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="login-register-logout-feature"><a class="link" href="#login-register-logout-feature">Login/Register/Logout Feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-3"><a class="link" href="#current-implementation-3">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The login / register mechanism is facilitated by <code>AccountManager</code>, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AccountManager()</code>&#8201;&#8212;&#8201;The constructor for the class <code>AccountManager</code>.</p>
+</li>
+<li>
+<p><code>loadAccounts</code>&#8201;&#8212;&#8201;Loads all the account information from local storage.</p>
+</li>
+<li>
+<p><code>storeAccounts</code>&#8201;&#8212;&#8201;Stores all the account information to local storage.</p>
+</li>
+<li>
+<p><code>getLoginStatus()</code>&#8201;&#8212;&#8201;Returns the login status to the caller.</p>
+</li>
+<li>
+<p><code>setLoginStatus(boolean)</code>&#8201;&#8212;&#8201;Sets the login status according to the parameter.</p>
+</li>
+<li>
+<p><code>accountCommandHandler(String)</code>&#8201;&#8212;&#8201;Handles the user input, checks if there is a match for username and password match if the user&#8217;s command is <code>login</code>, trys to regster a new account if the user&#8217;s command is <code>register</code>, returns a string to indicate the outcome.</p>
+</li>
+<li>
+<p><code>register(String, String)</code>&#8201;&#8212;&#8201;Creates a new account for user.</p>
+</li>
+<li>
+<p><code>logout</code>&#8201;&#8212;&#8201; Logs the user out of the system</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the login/register/logout mechanism behaves at each step.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application. The <code>AccountManager</code> will be initialized, <code>loadAccounts</code> will be called to load all the accounts to a <code>HashMap</code> from local storage, the <code>HashMap</code> is used to keep track of all the account information.</p>
+</div>
+<div class="paragraph">
+<p>Step2. The user executes <code>register Doe 123</code> command to register a new account with username Doe and password 123. The new username and the corresponding password will be temporarily put into the <code>HashMap</code>.</p>
+</div>
+<div class="paragraph">
+<p>Step3. The user executes <code>login Doe 123</code> command to login to the system, if the login is successful, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will then be able to start using the addressbook.</p>
+</div>
+<div class="paragraph">
+<p>Step4. The user executes some other commands.</p>
+</div>
+<div class="paragraph">
+<p>Step5. The user executes <code>logout</code> command, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will be directed back to the login page.</p>
+</div>
+<div class="paragraph">
+<p>Step6. The user terminates the program, <code>storeAccounts</code> will be called to store all the account information in the HashMap to the local storage.</p>
+</div>
+<div class="paragraph">
+<p>The following sequence diagram shows how the login/register/logout mechanism works:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/liguanlong/addressbook-level3/W7/docs/images/Login_Register_Logout_sequence.png" alt="Login Register Logout sequence" width="800" height=""></span></p>
+</div>
+<div class="paragraph">
+<p>The following activity diagram explains the behaviour of the system during the execution of login/register/logout command.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/liguanlong/addressbook-level3/W7/docs/images/Login_Register_Logout_activity.png" alt="Login Register Logout activity" width="800" height=""></span></p>
 </div>
 </div>
-<div class="sect1">
-<h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix C: Non Functional Requirements</a></h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-data-structure-to-keep-account-information-during-runtime"><a class="link" href="#aspect-data-structure-to-keep-account-information-during-runtime">Aspect: Data structure to keep account information during runtime</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use a HashMap to keep the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Higher performance, O(1) for most of the operations.</p>
+</li>
+<li>
+<p>Cons: Larger memory overhead.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 2:</strong> Use a TreeMap to keep the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Lower performance, O(log(n)) for most of the operations.</p>
+</li>
+<li>
+<p>Cons: Less memory overhead.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>HashMap is used because memory is not a serious issue for this program as the program is not memory consuming in nature.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-file-format-to-keep-account-information-in-local-storage"><a class="link" href="#aspect-file-format-to-keep-account-information-in-local-storage">Aspect: File format to keep account information in local storage</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1:</strong> Use a JSON file to store the username password pairs .</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: More compatible with HashMap and have a smaller size compared with XML.</p>
+</li>
+<li>
+<p>Cons: Larger file size compared with CSV.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 2:</strong> Use a CSV file to store the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Smallest in file size.</p>
+</li>
+<li>
+<p>Cons: complicated to convert to/from HashMap.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 2:</strong> Use a XML file to store the username password pairs</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: More compatible with HashMap.</p>
+</li>
+<li>
+<p>Cons: Largest in file size.
+== Non Functional Requirements</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -744,10 +886,19 @@
 </li>
 </ol>
 </div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="glossary"><a class="link" href="#glossary">Appendix D: Glossary</a></h2>
+<h2 id="glossary"><a class="link" href="#glossary">Appendix C: Glossary</a></h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
@@ -762,4 +913,4 @@
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-18 12:51:35 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-18 12:56:09 UTC</div></div></div></body></html>
