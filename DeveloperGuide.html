@@ -838,40 +838,53 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1:</strong> Use a JSON file to store the username password pairs .</p>
+<p><strong>Alternative 1 (current choice):</strong> Use a Java Properties file to store the username password pairs .</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: More compatible with HashMap and have a smaller size compared with XML.</p>
+<p>Pros: High readability, easy to implement as it only requires java.util package to work, small in file size.</p>
 </li>
 <li>
-<p>Cons: Larger file size compared with CSV.</p>
+<p>Cons: Does not support hierarchical data structure well.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong> Alternative 2:</strong> Use a CSV file to store the username password pairs.</p>
+<p><strong>Alternative 2:</strong> Use a JSON file to store the username password pairs .</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Smallest in file size.</p>
+<p>Pros: Key-vaule pair format, similar to HashMap.</p>
 </li>
 <li>
-<p>Cons: complicated to convert to/from HashMap.</p>
+<p>Cons: Large in file size.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong> Alternative 2:</strong> Use a XML file to store the username password pairs</p>
+<p><strong> Alternative 3:</strong> Use a CSV file to store the username password pairs.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: More compatible with HashMap.</p>
+<p>Pros: Small in file size.</p>
 </li>
 <li>
-<p>Cons: Largest in file size.</p>
+<p>Cons: Complicated to convert to/from HashMap.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 4:</strong> Use a XML file to store the username password pairs</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Compatible with HashMap.</p>
+</li>
+<li>
+<p>Cons: Large in file size.</p>
 </li>
 </ul>
 </div>
@@ -1070,4 +1083,4 @@
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-25 09:44:26 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-03-25 10:46:19 UTC</div></div></div></body></html>
