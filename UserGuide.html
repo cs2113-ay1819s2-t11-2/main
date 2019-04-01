@@ -141,7 +141,8 @@ Format: <code>add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENTDA
 items with <code>&#8230;&#8203;</code> after them can have multiple instances. Order of parameters are fixed.</p>
 </div>
 <div class="paragraph">
-<p>Note that the appointment date must be in the format of YYYY MM DD, in other for the DoctorAppointment Command to work.</p>
+<p>Note that the appointment date must be in the format of YYYY MM DD HH MM, in other for the DoctorAppointment Command to work.
+The hour and minute follows the 24hour clock format. Incorrect time formats will throw an error in parsing.</p>
 </div>
 <div class="paragraph">
 <p>The status must be any of following status: Critical / Waiting for Surgery / Life-support / Waiting for doctor appointment / Therapy / Observation.</p>
@@ -161,10 +162,10 @@ be seen using the <code>viewall</code> command.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2009 12 11 d/DoctorTan s/Observation</code></p>
+<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2009 12 11 14 30 d/DoctorTan s/Observation</code></p>
 </li>
 <li>
-<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2011 21 04 d/DoctorTan s/Observation t/criminal t/friend</code></p>
+<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2011 11 04 08 00 d/DoctorTan s/Observation t/criminal t/friend</code></p>
 </li>
 </ul>
 </div>
@@ -418,4 +419,4 @@ Format: <code>exit</code></p>
 <p>There is no need to save manually. Address book data are saved in a file called <code>addressbook.txt</code> in the project root folder.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-01 14:21:35 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-01 14:26:57 UTC</div></div></div></body></html>
