@@ -20,6 +20,7 @@ public class ReferCommand extends Command {
     public static final String MESSAGE_TEST = "%1$s%1$s%1$s\n%2$s%2$s%2$s\n";
 
     private final Set<String> keywords;
+    private String referraldoctor = "Dr. Sangit";
     String params[];
     Set<String> tags;
     private Person toRefer;
@@ -32,12 +33,24 @@ public class ReferCommand extends Command {
     public ReferCommand(Set<String> keywords) {
         this.keywords = keywords;
     }
+
+    public ReferCommand(String name, String referraldoctor) {
+        // keywords delimited by whitespace
+        final String[] names = name.split("\\s+");
+        final Set<String> keywords = new HashSet<>(Arrays.asList(names));
+        this.keywords = keywords;
+        this.referraldoctor = referraldoctor;
+    }
     /**
      * Returns copy of keywords in this command.
      */
 //    public Set<String> getKeywords() {
 //            return new HashSet<>(keywords);
 //            }
+
+    String getReferraldoctor () {
+        return this.referraldoctor;
+    }
     @Override
     public CommandResult execute() {
 
@@ -84,7 +97,7 @@ public class ReferCommand extends Command {
                                 person.getEmail(),
                                 person.getAddress(),
                                 person.getAppointment(),
-                                new Doctor("Dr Who"),
+                                new Doctor(getReferraldoctor()),
                                 new Status("Referred"),
                                 person.getTags()
                         );
