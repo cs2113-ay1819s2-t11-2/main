@@ -777,25 +777,34 @@ person.getTags()
 <p><code>AccountManager()</code>&#8201;&#8212;&#8201;The constructor for the class <code>AccountManager</code>.</p>
 </li>
 <li>
+<p><code>getLoginStatus()</code>&#8201;&#8212;&#8201;Returns the login status to the caller.</p>
+</li>
+<li>
+<p><code>getCurrentAccount()</code>&#8201;&#8212;&#8201;Returns the username of the account currently using the application.</p>
+</li>
+<li>
+<p><code>accountCommandHandler(String)</code>&#8201;&#8212;&#8201;Handles the user input, checks if there is a match for username and password match if the user&#8217;s command is <code>login</code>, trys to regster a new account if the user&#8217;s command is <code>register</code>, returns a string to indicate the outcome.</p>
+</li>
+<li>
 <p><code>loadAccounts()</code>&#8201;&#8212;&#8201;Loads all the account information from local storage.</p>
 </li>
 <li>
 <p><code>storeAccounts()</code>&#8201;&#8212;&#8201;Stores all the account information to local storage.</p>
 </li>
 <li>
-<p><code>getLoginStatus()</code>&#8201;&#8212;&#8201;Returns the login status to the caller.</p>
+<p><code>logout()</code>&#8201;&#8212;&#8201; Logs the user out of the system.</p>
 </li>
 <li>
-<p><code>setLoginStatus(boolean)</code>&#8201;&#8212;&#8201;Sets the login status according to the parameter.</p>
-</li>
-<li>
-<p><code>accountCommandHandler(String)</code>&#8201;&#8212;&#8201;Handles the user input, checks if there is a match for username and password match if the user&#8217;s command is <code>login</code>, trys to regster a new account if the user&#8217;s command is <code>register</code>, returns a string to indicate the outcome.</p>
+<p>`setLoginStatus(boolean) — Sets the login status according to the parameter.</p>
 </li>
 <li>
 <p><code>register(String, String)</code>&#8201;&#8212;&#8201;Creates a new account for user.</p>
 </li>
 <li>
-<p><code>logout()</code>&#8201;&#8212;&#8201; Logs the user out of the system</p>
+<p><code>weakPassword(String)</code>&#8201;&#8212;&#8201;Check if the password contains at least one lowercase letter, one uppercase letter and one digit.</p>
+</li>
+<li>
+<p><code>doesNotContainDigit(String)</code>&#8201;&#8212;&#8201;Check if the string contains digit, works as a utility function for weakPassword(String).</p>
 </li>
 </ul>
 </div>
@@ -1165,4 +1174,4 @@ person.getTags()
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-08 09:44:42 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-08 09:58:49 UTC</div></div></div></body></html>
