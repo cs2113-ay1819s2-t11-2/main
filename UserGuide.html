@@ -256,6 +256,9 @@ The list of persons are sorted by on chronological order of their appointment da
 For easy-readability, only the name and appointment date of each person is displayed.</p>
 </div>
 <div class="paragraph">
+<p>Format: <code>DoctorAppointments DOCTOR_NAME</code></p>
+</div>
+<div class="paragraph">
 <p>Examples:</p>
 </div>
 <div class="ulist">
@@ -275,20 +278,17 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 <p>Finds persons whose names contain any of the given keywords.<br>
 Format: <code>find KEYWORD [MORE_KEYWORDS]</code></p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The search is case sensitive, the order of the keywords does not matter, only the name is searched,
-and persons matching at least one keyword will be returned (i.e. <code>OR</code> search).</p>
 </div>
-</td>
-</tr>
-</table>
+</div>
+<div class="sect1">
+<h2 id="printing-out-the-timetable-day-of-a-doctor-code-apptdate-code"><a class="link" href="#printing-out-the-timetable-day-of-a-doctor-code-apptdate-code">Printing out the timetable (day) of a Doctor : <code>ApptDate</code></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Displays an appointment timetable of the doctor for a specified date.
+Each time slot is 15 minutes. The timetable shows all the slots in the day, and indicates which slots are available or occupied.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>ApptDate DOCTOR_NAME m/YYYY MM DD</code></p>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -296,12 +296,8 @@ and persons matching at least one keyword will be returned (i.e. <code>OR</code>
 <div class="ulist">
 <ul>
 <li>
-<p><code>find John</code><br>
-Returns <code>John Doe</code> but not <code>john</code>.</p>
-</li>
-<li>
-<p><code>find Betsy Tim John</code><br>
-Returns Any person having names <code>Betsy</code>, <code>Tim</code>, or <code>John</code>.</p>
+<p><code>ApptDate DoctorTan m/2011 11 04</code><br>
+Shows a list of all patients who have appointments with DoctorTan.</p>
 </li>
 </ul>
 </div>
@@ -437,4 +433,4 @@ Format: <code>exit</code></p>
 <p>There is no need to save manually. Address book data are saved in a file called <code>addressbook.txt</code> in the project root folder.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-08 10:35:44 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-08 15:44:41 UTC</div></div></div></body></html>
