@@ -17,21 +17,31 @@ public class ReferCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Patient %2$s has been successfully referred to %3$s!! :D\n\n********************************************************************************************************\n%1$s \n********************************************************************************************************";
     public static final String MESSAGE_NO_SUCH_PERSON = "%1$s\nThis patient does not exists in the address book records.";
-    public static final String MESSAGE_TEST = "%1$s%1$s%1$s\n%2$s%2$s%2$s\n";
 
     private final Set<String> keywords;
+    private String referraldoctor = "Dr Who";
     String params[];
     Set<String> tags;
     private Person toRefer;
     int count = 0;
 
     String string;
-    String str;
-    String strName;
 
     public ReferCommand(Set<String> keywords) {
         this.keywords = keywords;
     }
+
+//    public ReferCommand(Set<String> keywords, String referraldoctor) {
+//        this.keywords = keywords;
+//        this.referraldoctor = referraldoctor;
+//    }
+
+    public ReferCommand(Set<String> name, String doctor) {
+        this.keywords = name;
+        this.referraldoctor = doctor;
+
+    }
+
     /**
      * Returns copy of keywords in this command.
      */
@@ -42,14 +52,9 @@ public class ReferCommand extends Command {
     public CommandResult execute() {
 
         string = String.join(" ", keywords);
-//        str = string.replaceAll("\\s+", "");
         final List<ReadOnlyPerson> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
 
-//        // test
-//        return new CommandResult(String.format(MESSAGE_NO_SUCH_PERSON, toRefer.getName().toString()));
-
         if (count == 0) {
-//            String string = String.join(" ", keywords);
             return new CommandResult(String.format(MESSAGE_NO_SUCH_PERSON, string));
         }
         if (count == 1) {
@@ -84,7 +89,7 @@ public class ReferCommand extends Command {
                                 person.getEmail(),
                                 person.getAddress(),
                                 person.getAppointment(),
-                                new Doctor("Dr Who"),
+                                new Doctor(referraldoctor),
                                 new Status("Referred"),
                                 person.getTags()
                         );

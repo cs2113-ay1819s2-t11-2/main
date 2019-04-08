@@ -14,6 +14,8 @@ import static seedu.addressbook.common.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
  */
 public class Parser {
 
+    private String drName = "";
+
     public static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
     public static final Pattern KEYWORDS_ARGS_FORMAT =
@@ -28,6 +30,11 @@ public class Parser {
                     + "d/(?<doctor>[^/]+)"
                     + "s/(?<status>[^/]+)"
                     + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
+
+    public static final Pattern PERSON_REFER_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"
+                    + "d/(?<doctor>[^/]+)");
+
 
 
     /**
@@ -266,6 +273,54 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareRefer(String args) {
+//        PERSON_REFER_ARGS_FORMAT
+//        final Matcher matcher = PERSON_REFER_ARGS_FORMAT.matcher(args.trim());
+
+//        //from add command
+//        final Matcher matcher = PERSON_REFER_ARGS_FORMAT.matcher(args.trim());
+//        // Validate arg string format
+//        if (!matcher.matches()) {
+//            final Matcher matcher1 = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+//            if (!matcher1.matches()) {
+//                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+//                        ReferCommand.MESSAGE_USAGE));
+//            }
+//            // keywords delimited by whitespace
+//            final String[] keywords = matcher1.group("keywords").split("\\s+");
+//
+////        final String[] keywords = args.split("\\s+");
+//            final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+//            return new ReferCommand(keywordSet);
+//        }
+//
+//
+//        final String[] argsSeparator = matcher.group("argsSeparator").split("d/");
+//
+//        String[] firstString = argsSeparator[0].split("\\s+");
+//
+//
+//        final Set<String> S = new HashSet<>(Arrays.asList(firstString));
+//        return new ReferCommand(S, matcher.group("doctor"));
+//    }
+//}
+////
+////        //store doctor name here
+//////        drName = matcher.group("doctor");
+//////        matcher.remove( matcher. - 1 );
+////        final String[] strings = args.split("d/");
+////        drName = strings[0];
+////
+//////        // keywords delimited by whitespace
+//////        final String[] keywords = matcher.group("keywords").split("\\s+");
+////        final String[] keywords = strings[0].split("\\s+");
+////
+////        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+////        return new ReferCommand(keywordSet);
+////        // end of from add command
+
+
+
+        // original working code
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -274,6 +329,8 @@ public class Parser {
 
         // keywords delimited by whitespace
         final String[] keywords = matcher.group("keywords").split("\\s+");
+
+//        final String[] keywords = args.split("\\s+");
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
         return new ReferCommand(keywordSet);
     }
