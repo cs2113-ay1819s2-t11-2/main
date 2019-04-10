@@ -8,7 +8,24 @@
 </ul>
 </li>
 <li><a href="#design">Design</a></li>
-<li><a href="#testing">Testing</a></li>
+<li><a href="#testing">Testing</a>
+<ul class="sectlevel2">
+<li><a href="#running-tests">Running Tests</a></li>
+<li><a href="#types-of-tests">Types of tests</a></li>
+</ul>
+</li>
+<li><a href="#implementation">Implementation</a>
+<ul class="sectlevel2">
+<li><a href="#sort-feature">Sort feature</a></li>
+<li><a href="#add-status-feature">Add Status feature</a></li>
+<li><a href="#refer-feature">Refer feature</a></li>
+<li><a href="#login-register-logout-feature">Login/Register/Logout Feature</a></li>
+<li><a href="#add-doctor-feature">Add Doctor feature</a></li>
+<li><a href="#add-appointment-feature">Add appointment feature</a></li>
+<li><a href="#doctorappointments-command">DoctorAppointments command</a></li>
+<li><a href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></li>
+</ul>
+</li>
 <li><a href="#user-stories">Appendix A: User Stories</a></li>
 <li><a href="#use-cases">Appendix B: Use Cases</a>
 <ul class="sectlevel2">
@@ -25,17 +42,6 @@
 <li><a href="#use-case-uc11-view-all-particulars-of-a-patient-by-index">Use case: UC11 - View all particulars of a patient by index</a></li>
 <li><a href="#use-case-uc12-clear-all-entries">Use case: UC12 - Clear all entries</a></li>
 <li><a href="#use-case-uc13-exit">Use case: UC13 - Exit</a></li>
-</ul>
-</li>
-<li><a href="#implementation">Implementation</a>
-<ul class="sectlevel2">
-<li><a href="#sort-feature">Sort feature</a></li>
-<li><a href="#refer-feature">Refer feature</a></li>
-<li><a href="#login-register-logout-feature">Login/Register/Logout Feature</a></li>
-<li><a href="#add-doctor-feature">Add Doctor feature</a></li>
-<li><a href="#add-appointment-feature">Add appointment feature</a></li>
-<li><a href="#doctorappointments-command">DoctorAppointments command</a></li>
-<li><a href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></li>
 </ul>
 </li>
 <li><a href="#non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
@@ -128,12 +134,588 @@
 <div class="sect1">
 <h2 id="testing"><a class="link" href="#testing">Testing</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="running-tests"><a class="link" href="#running-tests">Running Tests</a></h3>
+<div class="paragraph">
+<p>There are two ways to run tests.</p>
+</div>
+<div class="paragraph">
+<p><strong>Method 1: Using IntelliJ JUnit test runner</strong></p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>In IntelliJ, right-click on the <code>test</code> folder and choose <code>Run 'All Tests'</code></p>
+<p>To run all tests, right-click on the <code>src/test/java</code> folder and choose <code>Run 'All Tests'</code></p>
+</li>
+<li>
+<p>To run a subset of tests, you can right-click on a test package, test class, or a test and choose <code>Run 'ABC'</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p><strong>Method 2: Using Gradle</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open a console and run the command <code>gradlew clean allTests</code> (Mac/Linux: <code>./gradlew clean allTests</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="types-of-tests"><a class="link" href="#types-of-tests">Types of tests</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Non-GUI Tests</strong> - These are tests not involving the GUI. They include,</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><em>Unit tests</em> targeting the lowest level methods/classes.<br>
+e.g. <code>seedu.addressbook.common.UtilsTest</code></p>
+</li>
+<li>
+<p><em>Integration tests</em> that are checking the integration of multiple code units (those code units are assumed to be working).<br>
+e.g. <code>seedu.addressbook.storage.StorageFileTest</code></p>
+</li>
+<li>
+<p>Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together.<br>
+e.g. <code>seedu.addressbook.logic.LogicTest</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementation"><a class="link" href="#implementation">Implementation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section describes some noteworthy details on how certain features are implemented.</p>
+</div>
+<div class="sect2">
+<h3 id="sort-feature"><a class="link" href="#sort-feature">Sort feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The sort mechanism is facilitated by <code>UniquePersonList</code> and <code>SortCommand</code>. <code>UniquePersonList</code> stores a list of all persons in the address book as an <code>internalList</code>. Additionally, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>UniquePersonList#SortByName()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by name column in alphabetical order</p>
+</li>
+<li>
+<p><code>SortCommand#getPersonsSortedByDate()</code>&#8201;&#8212;&#8201;Return a list sorted by appointment column in chronological order</p>
+</li>
+<li>
+<p><code>SortCommand#getPersonsSortedByStatus()</code>&#8201;&#8212;&#8201;Return a list sorted by status column according to the degree of urgency. The sequence of the status in this order is as follows: Critical, Waiting for Surgery, Life Support, Waiting for doctor appointment, Therapy and Observation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These operations are exposed in <code>AddressBook</code> as <code>AddressBook#sorted(String attribute)</code>. Corresponding operation will be called depending on attribute the user wants to sort the list by.</p>
+</div>
+<div class="paragraph">
+<p>Given below is two examples usage scenario and how the sort mechanism behaves at each step.</p>
+</div>
+<div class="paragraph">
+<p>Example 1:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The user decides to view the list sorted by their name by executing the <code>sort name</code> command. This command will call <code>AddressBook#sorted(String attribute)</code> and pass the string “name” to the method. Since the value of parameter is “name”, <code>SortByName()</code> will be called. <code>internalList</code> will then be sorted by name column in alphabetical order. At last, <code>internalList</code> will be returned and displayed to the user.</p>
+</div>
+<div class="paragraph">
+<p>Example 2:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The user decides to view the list sorted by their name by executing the <code>sort appointment</code> command. This command will call <code>SortCommand#execute()</code> and pass the string “appointment” to the method. Since the value of parameter is “appointment”, <code>SortCommand#getPersonsSortedByDate()</code> will be called. A list sorted by appointment column in chronological order will be returned and displayed to the user.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="add-status-feature"><a class="link" href="#add-status-feature">Add Status feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-2"><a class="link" href="#current-implementation-2">Current Implementation</a></h4>
+<div class="paragraph">
+<p>the add status feature facilitated by the <code>Status</code> class, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>status(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Status</code>.</p>
+</li>
+<li>
+<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the name of the patient&#8217;s status.</p>
+</li>
+<li>
+<p><code>isValidStatus()</code>&#8201;&#8212;&#8201;Checks if if a given string is a valid status.</p>
+</li>
+<li>
+<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two patients' status are equal.</p>
+</li>
+<li>
+<p><code>isCorrectStatus()</code>&#8201;&#8212;&#8201;Checks if if a given string is any of following status: Critical / Waiting for Surgery / Life Support / Waiting for doctor appointment / Therapy / Observation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Person(Status status)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires a Status object during its construction.</p>
+</li>
+<li>
+<p><code>getStatus()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Status object of a Person.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="refer-feature"><a class="link" href="#refer-feature">Refer feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-3"><a class="link" href="#current-implementation-3">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The refer feature is facilitated by the ReferCommand class and AddressBook class, and it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>toRefer = new Person(
+person.getName(),
+person.getPhone(),
+person.getEmail(),
+person.getAddress(),
+person.getAppointment(),
+new Doctor("Dr Seuss"),
+new Status("Referred"),
+person.getTags()
+);</code>&#8201;&#8212;&#8201;Copies and modifies taget person&#8217;s parameters</p>
+</li>
+<li>
+<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target person</p>
+</li>
+<li>
+<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the edited person back into the addressbook</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the refer feature is incorporated at each step.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command "refer john"</p>
+</div>
+<div class="paragraph">
+<p>Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"</p>
+</div>
+<div class="paragraph">
+<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and Status parameters, deletes the old and adds the newly modified patient into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+</div>
+<div class="paragraph">
+<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s particulars that are updated.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="login-register-logout-feature"><a class="link" href="#login-register-logout-feature">Login/Register/Logout Feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-4"><a class="link" href="#current-implementation-4">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The login / register mechanism is facilitated by <code>AccountManager</code>, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AccountManager()</code>&#8201;&#8212;&#8201;The constructor for the class <code>AccountManager</code>.</p>
+</li>
+<li>
+<p><code>getLoginStatus()</code>&#8201;&#8212;&#8201;Returns the login status to the caller.</p>
+</li>
+<li>
+<p><code>getCurrentAccount()</code>&#8201;&#8212;&#8201;Returns the username of the account currently using the application.</p>
+</li>
+<li>
+<p><code>accountCommandHandler(String)</code>&#8201;&#8212;&#8201;Handles the user input, checks if there is a match for username and password match if the user&#8217;s command is <code>login</code>, trys to regster a new account if the user&#8217;s command is <code>register</code>, returns a string to indicate the outcome.</p>
+</li>
+<li>
+<p><code>loadAccounts()</code>&#8201;&#8212;&#8201;Loads all the account information from local storage.</p>
+</li>
+<li>
+<p><code>storeAccounts()</code>&#8201;&#8212;&#8201;Stores all the account information to local storage.</p>
+</li>
+<li>
+<p><code>logout()</code>&#8201;&#8212;&#8201; Logs the user out of the system.</p>
+</li>
+<li>
+<p><code>setLoginStatus(boolean)</code> -- Sets the login status according to the parameter.</p>
+</li>
+<li>
+<p><code>register(String, String)</code>&#8201;&#8212;&#8201;Creates a new account for user.</p>
+</li>
+<li>
+<p><code>weakPassword(String)</code>&#8201;&#8212;&#8201;Check if the password contains at least one lowercase letter, one uppercase letter and one digit.</p>
+</li>
+<li>
+<p><code>doesNotContainDigit(String)</code>&#8201;&#8212;&#8201;Check if the string contains digit, works as a utility function for weakPassword(String).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the login/register/logout mechanism behaves at each step.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application. The <code>AccountManager</code> will be initialized, <code>loadAccounts</code> will be called to load all the accounts to a <code>HashMap</code> from local storage, the <code>HashMap</code> is used to keep track of all the account information.</p>
+</div>
+<div class="paragraph">
+<p>Step2. The user executes <code>register Doe 123</code> command to register a new account with username Doe and password 123. The new username and the corresponding password will be temporarily put into the <code>HashMap</code>.</p>
+</div>
+<div class="paragraph">
+<p>Step3. The user executes <code>login Doe 123</code> command to login to the system, if the login is successful, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will then be able to start using the addressbook.</p>
+</div>
+<div class="paragraph">
+<p>Step4. The user executes some other commands.</p>
+</div>
+<div class="paragraph">
+<p>Step5. The user executes <code>logout</code> command, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will be directed back to the login page.</p>
+</div>
+<div class="paragraph">
+<p>Step6. The user terminates the program, <code>storeAccounts</code> will be called to store all the account information in the HashMap to the local storage.</p>
+</div>
+<div class="paragraph">
+<p>The following sequence diagram shows how the login/register/logout mechanism works:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/Login_Register_Logout_Sequence_Diagram.png" alt="Login Register Logout Sequence Diagram" width="800" height=""></span></p>
+</div>
+<div class="paragraph">
+<p>The following activity diagram explains the behaviour of the system during the execution of login/register/logout command.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/Login_Register_Logout_dialog_map.png" alt="Login Register Logout dialog map" width="800" height=""></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-data-structure-to-keep-account-information-during-runtime"><a class="link" href="#aspect-data-structure-to-keep-account-information-during-runtime">Aspect: Data structure to keep account information during runtime</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use a HashMap to keep the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Higher performance, O(1) for most of the operations.</p>
+</li>
+<li>
+<p>Cons: Larger memory overhead.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 2:</strong> Use a TreeMap to keep the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Lower performance, O(log(n)) for most of the operations.</p>
+</li>
+<li>
+<p>Cons: Less memory overhead.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>HashMap is used because memory is not a serious issue for this program as the program is not memory consuming in nature.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-file-format-to-keep-account-information-in-local-storage"><a class="link" href="#aspect-file-format-to-keep-account-information-in-local-storage">Aspect: File format to keep account information in local storage</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use a Java Properties file to store the username password pairs .</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: High readability, easy to implement as it only requires java.util package to work, small in file size.</p>
+</li>
+<li>
+<p>Cons: Does not support hierarchical data structure well.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use a JSON file to store the username password pairs .</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Key-vaule pair format, similar to HashMap.</p>
+</li>
+<li>
+<p>Cons: Large in file size.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 3:</strong> Use a CSV file to store the username password pairs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Small in file size.</p>
+</li>
+<li>
+<p>Cons: Complicated to convert to/from HashMap.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong> Alternative 4:</strong> Use a XML file to store the username password pairs</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Compatible with HashMap.</p>
+</li>
+<li>
+<p>Cons: Large in file size.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="add-doctor-feature"><a class="link" href="#add-doctor-feature">Add Doctor feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-5"><a class="link" href="#current-implementation-5">Current Implementation</a></h4>
+<div class="paragraph">
+<p>the add doctor feature facilitated by the <code>Doctor</code> class, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Doctor(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Doctor</code>.</p>
+</li>
+<li>
+<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the name of the patient&#8217;s doctor.</p>
+</li>
+<li>
+<p><code>isValidName()</code>&#8201;&#8212;&#8201;Checks if the date is alphanumeric.</p>
+</li>
+<li>
+<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two patients' doctors are equal.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Person(Doctor doctor)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires a Doctor object during its construction.</p>
+</li>
+<li>
+<p><code>getDoctor()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Doctor object of a Person.</p>
+</li>
+<li>
+<p><code>getAsTextShowAll()</code>&#8201;&#8212;&#8201;This operation is updated to allow a person&#8217;s doctor to be printed when an addresbook&#8217;s lastShownList is printed onto the UI.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The example usage scenario is similar to the scenario of the Add appointment feature below.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="add-appointment-feature"><a class="link" href="#add-appointment-feature">Add appointment feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-6"><a class="link" href="#current-implementation-6">Current Implementation</a></h4>
+<div class="paragraph">
+<p>the add appointment feature is facilitated by the <code>Appointment</code> class, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Appointment(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Appointment</code>.</p>
+</li>
+<li>
+<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the date of the appointment.</p>
+</li>
+<li>
+<p><code>isValidDate()</code>&#8201;&#8212;&#8201;Checks if the date is alphanumeric.</p>
+</li>
+<li>
+<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two appointment dates are equal.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Person(Apppointment appointment)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires an Appointment object during its construction.</p>
+</li>
+<li>
+<p><code>getAppointment()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Appointment object of a Person.</p>
+</li>
+<li>
+<p><code>getAsTextShowAll()</code>&#8201;&#8212;&#8201;This operation is updated to allow a person&#8217;s appointment date to be printed when an addresbook&#8217;s lastShownList is printed onto the UI.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Next, the parser is updated to recognize user input corresponding to the Appointment object of a person. It works together with an updated <code>Add</code> Command. When adding a new person through the add command, the user has to write <code>m/APPOINTMENTDATE' to signify the `Appointment</code> portion of a <code>Person</code>.</p>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the <code>Appointment</code> feature is incorporated at each step.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command <code>Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]&#8230;&#8203;\n\t"</code></p>
+</div>
+<div class="paragraph">
+<p>Step 2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The <code>Addressbook</code> trys to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
+</div>
+<div class="paragraph">
+<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="doctorappointments-command"><a class="link" href="#doctorappointments-command">DoctorAppointments command</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-7"><a class="link" href="#current-implementation-7">Current Implementation</a></h4>
+<div class="paragraph">
+<p>This is a new command, that is executed as <code>DoctorAppointments DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
+</div>
+<div class="paragraph">
+<p>For the first part, finding and sorting the list of corresponding persons is facilitated by the <code>DoctorAppointmentsCommand</code> class and the <code>Person</code> class. The following operations are implemented in the <code>DoctorAppointmentsCommand</code> class.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>execute()</code>&#8201;&#8212;&#8201;Upon execution, a new <code>Indicator</code> class stores information indicating that <code>DoctorAppointmentsCommand</code> is the most recently invoked command. Then, the following method <code>getPersonsWithNameContainingAnyKeyword(keywords)</code> is called.</p>
+</li>
+<li>
+<p><code>getPersonsWithNameContainingAnyKeyword(keywords)</code>&#8201;&#8212;&#8201;This method is adapted from the <code>FindCommand</code> class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a <code>LocalDate</code> field in a <code>Person</code> object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare <code>LocalDate</code> dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor&#8217;s name corresponding to the user input&#8217;s doctor. The ArrayList is sorted based on their appointment dates.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We update the <code>Person</code> class to contain an additional field <code>LocalDate date</code> which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the <code>Person</code> class and their method signatures are updated in the <code>ReadOnlyPerson</code> interface.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>getLocalDate()</code></p>
+</li>
+<li>
+<p><code>setLocalDate()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the Persons corresponding to a certain doctor are sorted and listed in Chronological order.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command <code>DoctorAppointments DOCTORNAME"</code></p>
+</div>
+<div class="paragraph">
+<p>Step 2. The parser parses the command and prepares the keyword arguments for the <code>DoctorAppointmentsCommand</code> class.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. <code>DoctorAppointmentsCommand</code> is executed and the <code>Indicator</code> class records that this is the most recently invoked command. The execute command calls <code>getPersonsWithNameContainingAnyKeyword(keywords)</code>. For every Person in the existing addressbook, the Doctor&#8217;s name is checked against the keyword (containing DOCTORNAME). If the doctor&#8217;s name of the Person corresponds to DOCTORNAME, the <code>LocalDate</code> class parses the person&#8217;s appointment date, and the Person&#8217;s <code>LocalDate</code> date field is set to be the parsed appointment date.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The person is added into the matchedPersons list.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. The list of matchedPersons are sorted based on the <code>Localdate</code> date field in each person.</p>
+</div>
+<div class="paragraph">
+<p>Step 6. The sorted list of matchedPersons are returned and displayed in a table format (explained in second part)</p>
+</div>
+<div class="paragraph">
+<p>For the second part of the implementation, we discuss how the list of matchedPersons is formatted to print in a certain manner. To facilitate the printing, we mainly update the format() method of the UI <code>Formatter</code> class.</p>
+</div>
+<div class="paragraph">
+<p>To facilitate the update, a new <code>Indicator</code> class is created and a new method is implemented in the <code>ReadonlyPerson</code> interface.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Indicator.setLastCommand(String)</code> --when called, stores a String that records the last invoked user Command.</p>
+</li>
+<li>
+<p><code>Indicator.getLastCommand()</code> --when called, provides information on the last invoked user Command.</p>
+</li>
+<li>
+<p><code>getAsTextNameDateDoctor()</code> --This is a method of the <code>ReadOnlyPerson</code> interface. It is a new String builder that builds a String of information about the Person. The information contains only the name and appointment date of the person. The String is padded on the right with whitespace to ensure a tabular format.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The UI <code>Formatter</code> is updated in the following way.
+* <code>format(Persons)</code> --Checks if the last invoked user Command is the <code>DoctorAppointmentsCommand</code>. If it is, calls the new String builder method <code>getAsTextNameDateDoctor()</code> for each Person to be formatted.</p>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above.</p>
+</div>
+<div class="paragraph">
+<p>Step 7. When the dispay method is called in step 6, the format method in <code>Formatter</code> is called.</p>
+</div>
+<div class="paragraph">
+<p>Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace.</p>
+</div>
+<div class="paragraph">
+<p>Step 9. The <code>MainWindow</code> displays the newly formatted Persons in neat rows, displaying only the relevant information on Name and Appointment Date.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="apptdate-feature-coming-in-v1-4"><a class="link" href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></h3>
+
 </div>
 </div>
 </div>
@@ -674,475 +1256,6 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="implementation"><a class="link" href="#implementation">Implementation</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This section describes some noteworthy details on how certain features are implemented.</p>
-</div>
-<div class="sect2">
-<h3 id="sort-feature"><a class="link" href="#sort-feature">Sort feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
-<div class="paragraph">
-<p>The sort mechanism is facilitated by <code>UniquePersonList</code>. It stores a list of all persons in the address book as an <code>internalList</code>. Additionally, it implements the following operations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>UniquePersonList#SortByName()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by name column in alphabetical order</p>
-</li>
-<li>
-<p><code>UniquePersonList#SortByAppointment()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by appointment column in chronological order</p>
-</li>
-<li>
-<p><code>UniquePersonList#SortByStatus()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by status column according to the degree of urgency. The sequence of the status in this order is as follows: Critical, Waiting for Surgery, Life-support, Waiting for doctor appointment, Therapy and Observation.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>These operations are exposed in <code>AddressBook</code> as <code>AddressBook#sorted(String attribute)</code>. Corresponding operation will be called depending on attribute the user wants to sort the list by.</p>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the sort mechanism behaves at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
-</div>
-<div class="paragraph">
-<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
-</div>
-<div class="paragraph">
-<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
-</div>
-<div class="paragraph">
-<p>Step 4. The user decides to view the list sorted by their name by executing the <code>sort name</code> command. This command will call <code>AddressBook#sorted(String attribute)</code> and pass the string “name” to the method. Since the value of parameter is “name”, <code>SortByName()</code> will be called. <code>internalList</code> will then be sorted by name column in alphabetical order. At last, <code>internalList</code> will be returned and displayed to the user.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="refer-feature"><a class="link" href="#refer-feature">Refer feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation-2"><a class="link" href="#current-implementation-2">Current Implementation</a></h4>
-<div class="paragraph">
-<p>The refer feature is facilitated by the ReferCommand class and AddressBook class, and it implements the following operations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>toRefer = new Person(
-person.getName(),
-person.getPhone(),
-person.getEmail(),
-person.getAddress(),
-person.getAppointment(),
-new Doctor("Dr Seuss"),
-new Status("Referred"),
-person.getTags()
-);</code>&#8201;&#8212;&#8201;Copies and modifies taget person&#8217;s parameters</p>
-</li>
-<li>
-<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target person</p>
-</li>
-<li>
-<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the edited person back into the addressbook</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the refer feature is incorporated at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user executes command "refer john"</p>
-</div>
-<div class="paragraph">
-<p>Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"</p>
-</div>
-<div class="paragraph">
-<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and Status parameters, deletes the old and adds the newly modified patient into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
-</div>
-<div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s particulars that are updated.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="login-register-logout-feature"><a class="link" href="#login-register-logout-feature">Login/Register/Logout Feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation-3"><a class="link" href="#current-implementation-3">Current Implementation</a></h4>
-<div class="paragraph">
-<p>The login / register mechanism is facilitated by <code>AccountManager</code>, it implements the following operations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>AccountManager()</code>&#8201;&#8212;&#8201;The constructor for the class <code>AccountManager</code>.</p>
-</li>
-<li>
-<p><code>getLoginStatus()</code>&#8201;&#8212;&#8201;Returns the login status to the caller.</p>
-</li>
-<li>
-<p><code>getCurrentAccount()</code>&#8201;&#8212;&#8201;Returns the username of the account currently using the application.</p>
-</li>
-<li>
-<p><code>accountCommandHandler(String)</code>&#8201;&#8212;&#8201;Handles the user input, checks if there is a match for username and password match if the user&#8217;s command is <code>login</code>, trys to regster a new account if the user&#8217;s command is <code>register</code>, returns a string to indicate the outcome.</p>
-</li>
-<li>
-<p><code>loadAccounts()</code>&#8201;&#8212;&#8201;Loads all the account information from local storage.</p>
-</li>
-<li>
-<p><code>storeAccounts()</code>&#8201;&#8212;&#8201;Stores all the account information to local storage.</p>
-</li>
-<li>
-<p><code>logout()</code>&#8201;&#8212;&#8201; Logs the user out of the system.</p>
-</li>
-<li>
-<p><code>setLoginStatus(boolean)</code> -- Sets the login status according to the parameter.</p>
-</li>
-<li>
-<p><code>register(String, String)</code>&#8201;&#8212;&#8201;Creates a new account for user.</p>
-</li>
-<li>
-<p><code>weakPassword(String)</code>&#8201;&#8212;&#8201;Check if the password contains at least one lowercase letter, one uppercase letter and one digit.</p>
-</li>
-<li>
-<p><code>doesNotContainDigit(String)</code>&#8201;&#8212;&#8201;Check if the string contains digit, works as a utility function for weakPassword(String).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the login/register/logout mechanism behaves at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user launches the application. The <code>AccountManager</code> will be initialized, <code>loadAccounts</code> will be called to load all the accounts to a <code>HashMap</code> from local storage, the <code>HashMap</code> is used to keep track of all the account information.</p>
-</div>
-<div class="paragraph">
-<p>Step2. The user executes <code>register Doe 123</code> command to register a new account with username Doe and password 123. The new username and the corresponding password will be temporarily put into the <code>HashMap</code>.</p>
-</div>
-<div class="paragraph">
-<p>Step3. The user executes <code>login Doe 123</code> command to login to the system, if the login is successful, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will then be able to start using the addressbook.</p>
-</div>
-<div class="paragraph">
-<p>Step4. The user executes some other commands.</p>
-</div>
-<div class="paragraph">
-<p>Step5. The user executes <code>logout</code> command, <code>setLoginStatus</code> will be called to set the login status accordingly, and the user will be directed back to the login page.</p>
-</div>
-<div class="paragraph">
-<p>Step6. The user terminates the program, <code>storeAccounts</code> will be called to store all the account information in the HashMap to the local storage.</p>
-</div>
-<div class="paragraph">
-<p>The following sequence diagram shows how the login/register/logout mechanism works:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/Login_Register_Logout_Sequence_Diagram.png" alt="Login Register Logout Sequence Diagram" width="800" height=""></span></p>
-</div>
-<div class="paragraph">
-<p>The following activity diagram explains the behaviour of the system during the execution of login/register/logout command.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/Login_Register_Logout_dialog_map.png" alt="Login Register Logout dialog map" width="800" height=""></span></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
-<div class="sect4">
-<h5 id="aspect-data-structure-to-keep-account-information-during-runtime"><a class="link" href="#aspect-data-structure-to-keep-account-information-during-runtime">Aspect: Data structure to keep account information during runtime</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Alternative 1 (current choice):</strong> Use a HashMap to keep the username password pairs.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Higher performance, O(1) for most of the operations.</p>
-</li>
-<li>
-<p>Cons: Larger memory overhead.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong> Alternative 2:</strong> Use a TreeMap to keep the username password pairs.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Lower performance, O(log(n)) for most of the operations.</p>
-</li>
-<li>
-<p>Cons: Less memory overhead.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>HashMap is used because memory is not a serious issue for this program as the program is not memory consuming in nature.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="aspect-file-format-to-keep-account-information-in-local-storage"><a class="link" href="#aspect-file-format-to-keep-account-information-in-local-storage">Aspect: File format to keep account information in local storage</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Alternative 1 (current choice):</strong> Use a Java Properties file to store the username password pairs .</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: High readability, easy to implement as it only requires java.util package to work, small in file size.</p>
-</li>
-<li>
-<p>Cons: Does not support hierarchical data structure well.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Alternative 2:</strong> Use a JSON file to store the username password pairs .</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Key-vaule pair format, similar to HashMap.</p>
-</li>
-<li>
-<p>Cons: Large in file size.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong> Alternative 3:</strong> Use a CSV file to store the username password pairs.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Small in file size.</p>
-</li>
-<li>
-<p>Cons: Complicated to convert to/from HashMap.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong> Alternative 4:</strong> Use a XML file to store the username password pairs</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Compatible with HashMap.</p>
-</li>
-<li>
-<p>Cons: Large in file size.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="add-doctor-feature"><a class="link" href="#add-doctor-feature">Add Doctor feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation-4"><a class="link" href="#current-implementation-4">Current Implementation</a></h4>
-<div class="paragraph">
-<p>the add doctor feature facilitated by the <code>Doctor</code> class, it implements the following operations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Doctor(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Doctor</code>.</p>
-</li>
-<li>
-<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the name of the patient&#8217;s doctor.</p>
-</li>
-<li>
-<p><code>isValidName()</code>&#8201;&#8212;&#8201;Checks if the date is alphanumeric.</p>
-</li>
-<li>
-<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two patients' doctors are equal.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Person(Doctor doctor)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires a Doctor object during its construction.</p>
-</li>
-<li>
-<p><code>getDoctor()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Doctor object of a Person.</p>
-</li>
-<li>
-<p><code>getAsTextShowAll()</code>&#8201;&#8212;&#8201;This operation is updated to allow a person&#8217;s doctor to be printed when an addresbook&#8217;s lastShownList is printed onto the UI.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The example usage scenario is similar to the scenario of the Add appointment feature below.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="add-appointment-feature"><a class="link" href="#add-appointment-feature">Add appointment feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation-5"><a class="link" href="#current-implementation-5">Current Implementation</a></h4>
-<div class="paragraph">
-<p>the add appointment feature is facilitated by the <code>Appointment</code> class, it implements the following operations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Appointment(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Appointment</code>.</p>
-</li>
-<li>
-<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the date of the appointment.</p>
-</li>
-<li>
-<p><code>isValidDate()</code>&#8201;&#8212;&#8201;Checks if the date is alphanumeric.</p>
-</li>
-<li>
-<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two appointment dates are equal.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Person(Apppointment appointment)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires an Appointment object during its construction.</p>
-</li>
-<li>
-<p><code>getAppointment()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Appointment object of a Person.</p>
-</li>
-<li>
-<p><code>getAsTextShowAll()</code>&#8201;&#8212;&#8201;This operation is updated to allow a person&#8217;s appointment date to be printed when an addresbook&#8217;s lastShownList is printed onto the UI.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Next, the parser is updated to recognize user input corresponding to the Appointment object of a person. It works together with an updated <code>Add</code> Command. When adding a new person through the add command, the user has to write <code>m/APPOINTMENTDATE' to signify the `Appointment</code> portion of a <code>Person</code>.</p>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the <code>Appointment</code> feature is incorporated at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user executes command <code>Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]&#8230;&#8203;\n\t"</code></p>
-</div>
-<div class="paragraph">
-<p>Step 2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
-</div>
-<div class="paragraph">
-<p>Step 3. The <code>Addressbook</code> trys to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
-</div>
-<div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="doctorappointments-command"><a class="link" href="#doctorappointments-command">DoctorAppointments command</a></h3>
-<div class="sect3">
-<h4 id="current-implementation-6"><a class="link" href="#current-implementation-6">Current Implementation</a></h4>
-<div class="paragraph">
-<p>This is a new command, that is executed as <code>DoctorAppointments DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
-</div>
-<div class="paragraph">
-<p>For the first part, finding and sorting the list of corresponding persons is facilitated by the <code>DoctorAppointmentsCommand</code> class and the <code>Person</code> class. The following operations are implemented in the <code>DoctorAppointmentsCommand</code> class.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>execute()</code>&#8201;&#8212;&#8201;Upon execution, a new <code>Indicator</code> class stores information indicating that <code>DoctorAppointmentsCommand</code> is the most recently invoked command. Then, the following method <code>getPersonsWithNameContainingAnyKeyword(keywords)</code> is called.</p>
-</li>
-<li>
-<p><code>getPersonsWithNameContainingAnyKeyword(keywords)</code>&#8201;&#8212;&#8201;This method is adapted from the <code>FindCommand</code> class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a <code>LocalDate</code> field in a <code>Person</code> object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare <code>LocalDate</code> dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor&#8217;s name corresponding to the user input&#8217;s doctor. The ArrayList is sorted based on their appointment dates.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>We update the <code>Person</code> class to contain an additional field <code>LocalDate date</code> which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the <code>Person</code> class and their method signatures are updated in the <code>ReadOnlyPerson</code> interface.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>getLocalDate()</code></p>
-</li>
-<li>
-<p><code>setLocalDate()</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the Persons corresponding to a certain doctor are sorted and listed in Chronological order.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user executes command <code>DoctorAppointments DOCTORNAME"</code></p>
-</div>
-<div class="paragraph">
-<p>Step 2. The parser parses the command and prepares the keyword arguments for the <code>DoctorAppointmentsCommand</code> class.</p>
-</div>
-<div class="paragraph">
-<p>Step 3. <code>DoctorAppointmentsCommand</code> is executed and the <code>Indicator</code> class records that this is the most recently invoked command. The execute command calls <code>getPersonsWithNameContainingAnyKeyword(keywords)</code>. For every Person in the existing addressbook, the Doctor&#8217;s name is checked against the keyword (containing DOCTORNAME). If the doctor&#8217;s name of the Person corresponds to DOCTORNAME, the <code>LocalDate</code> class parses the person&#8217;s appointment date, and the Person&#8217;s <code>LocalDate</code> date field is set to be the parsed appointment date.</p>
-</div>
-<div class="paragraph">
-<p>Step 4. The person is added into the matchedPersons list.</p>
-</div>
-<div class="paragraph">
-<p>Step 5. The list of matchedPersons are sorted based on the <code>Localdate</code> date field in each person.</p>
-</div>
-<div class="paragraph">
-<p>Step 6. The sorted list of matchedPersons are returned and displayed in a table format (explained in second part)</p>
-</div>
-<div class="paragraph">
-<p>For the second part of the implementation, we discuss how the list of matchedPersons is formatted to print in a certain manner. To facilitate the printing, we mainly update the format() method of the UI <code>Formatter</code> class.</p>
-</div>
-<div class="paragraph">
-<p>To facilitate the update, a new <code>Indicator</code> class is created and a new method is implemented in the <code>ReadonlyPerson</code> interface.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Indicator.setLastCommand(String)</code> --when called, stores a String that records the last invoked user Command.</p>
-</li>
-<li>
-<p><code>Indicator.getLastCommand()</code> --when called, provides information on the last invoked user Command.</p>
-</li>
-<li>
-<p><code>getAsTextNameDateDoctor()</code> --This is a method of the <code>ReadOnlyPerson</code> interface. It is a new String builder that builds a String of information about the Person. The information contains only the name and appointment date of the person. The String is padded on the right with whitespace to ensure a tabular format.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The UI <code>Formatter</code> is updated in the following way.
-* <code>format(Persons)</code> --Checks if the last invoked user Command is the <code>DoctorAppointmentsCommand</code>. If it is, calls the new String builder method <code>getAsTextNameDateDoctor()</code> for each Person to be formatted.</p>
-</div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above.</p>
-</div>
-<div class="paragraph">
-<p>Step 7. When the dispay method is called in step 6, the format method in <code>Formatter</code> is called.</p>
-</div>
-<div class="paragraph">
-<p>Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace.</p>
-</div>
-<div class="paragraph">
-<p>Step 9. The <code>MainWindow</code> displays the newly formatted Persons in neat rows, displaying only the relevant information on Name and Appointment Date.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="apptdate-feature-coming-in-v1-4"><a class="link" href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></h3>
-
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix C: Non Functional Requirements</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
@@ -1179,4 +1292,4 @@ person.getTags()
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-10 11:09:06 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-10 13:04:37 UTC</div></div></div></body></html>
