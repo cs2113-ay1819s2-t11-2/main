@@ -33,14 +33,12 @@ It is written in Java.</p>
 <li>
 <p>Highlights: This enhancement affects the internalList only when user sort by name. It also required an in-depth analysis of design alternatives.</p>
 </li>
-<li>
-<p>Credits: <em>{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}</em></p>
-</li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Minor enhancement</strong>: added a status column that allows the user to navigate to previous commands using up/down keys.</p>
+<p><strong>Minor enhancement</strong>: added a status column that allows the user to track the status of all the patients so that the user can know the stage of treatment in which the patient is undergoing.
+.</p>
 </li>
 <li>
 <p><strong>Code contributed</strong>: [<a href="https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=WUPEIHSUAN&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-09&amp;timeframe=day&amp;reverse=false&amp;groupSelect=groupByRepos&amp;breakdown=false&amp;tabAuthor=WuPeiHsuan&amp;tabRepo=CS2113-AY1819S2-T11-2_main_master&amp;repoSort=true">RepoSense</a>]</p>
@@ -67,10 +65,7 @@ It is written in Java.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Updated the GUI color scheme (Pull requests <a href="https://github.com">#33</a>, <a href="https://github.com">#34</a>)</p>
-</li>
-<li>
-<p>Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests <a href="https://github.com">#36</a>, <a href="https://github.com">#38</a>)</p>
+<p>Wrote additional tests for existing features</p>
 </li>
 </ul>
 </div>
@@ -118,9 +113,6 @@ It is written in Java.</p>
 </div>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p><em>{you can add/remove categories in the list above}</em></p>
 </div>
 </div>
 </div>
@@ -185,6 +177,66 @@ Shows a list of all persons sorted by appointment date in chronological order in
 </div>
 </div>
 <div class="sect1">
+<h2 id="testing"><a class="link" href="#testing">Testing</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="running-tests"><a class="link" href="#running-tests">Running Tests</a></h3>
+<div class="paragraph">
+<p>There are two ways to run tests.</p>
+</div>
+<div class="paragraph">
+<p><strong>Method 1: Using IntelliJ JUnit test runner</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>To run all tests, right-click on the <code>src/test/java</code> folder and choose <code>Run 'All Tests'</code></p>
+</li>
+<li>
+<p>To run a subset of tests, you can right-click on a test package, test class, or a test and choose <code>Run 'ABC'</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Method 2: Using Gradle</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open a console and run the command <code>gradlew clean allTests</code> (Mac/Linux: <code>./gradlew clean allTests</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="types-of-tests"><a class="link" href="#types-of-tests">Types of tests</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Non-GUI Tests</strong> - These are tests not involving the GUI. They include,</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><em>Unit tests</em> targeting the lowest level methods/classes.<br>
+e.g. <code>seedu.addressbook.common.UtilsTest</code></p>
+</li>
+<li>
+<p><em>Integration tests</em> that are checking the integration of multiple code units (those code units are assumed to be working).<br>
+e.g. <code>seedu.addressbook.storage.StorageFileTest</code></p>
+</li>
+<li>
+<p>Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together.<br>
+e.g. <code>seedu.addressbook.logic.LogicTest</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="implementation"><a class="link" href="#implementation">Implementation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -195,7 +247,7 @@ Shows a list of all persons sorted by appointment date in chronological order in
 <div class="sect3">
 <h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
 <div class="paragraph">
-<p>The sort mechanism is facilitated by <code>UniquePersonList</code>. It stores a list of all persons in the address book as an <code>internalList</code>. Additionally, it implements the following operations:</p>
+<p>The sort mechanism is facilitated by <code>UniquePersonList</code> and <code>SortCommand</code>. <code>UniquePersonList</code> stores a list of all persons in the address book as an <code>internalList</code>. Additionally, it implements the following operations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -203,10 +255,10 @@ Shows a list of all persons sorted by appointment date in chronological order in
 <p><code>UniquePersonList#SortByName()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by name column in alphabetical order</p>
 </li>
 <li>
-<p><code>UniquePersonList#SortByAppointment()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by appointment column in chronological order</p>
+<p><code>SortCommand#getPersonsSortedByDate()</code>&#8201;&#8212;&#8201;Return a list sorted by appointment column in chronological order</p>
 </li>
 <li>
-<p><code>UniquePersonList#SortByStatus()</code>&#8201;&#8212;&#8201;Sort <code>internalList</code> by status column according to the degree of urgency. The sequence of the status in this order is as follows: Critical, Waiting for Surgery, Life-support, Waiting for doctor appointment, Therapy and Observation.</p>
+<p><code>SortCommand#getPersonsSortedByStatus()</code>&#8201;&#8212;&#8201;Return a list sorted by status column according to the degree of urgency. The sequence of the status in this order is as follows: Critical, Waiting for Surgery, Life Support, Waiting for doctor appointment, Therapy and Observation.</p>
 </li>
 </ul>
 </div>
@@ -214,30 +266,80 @@ Shows a list of all persons sorted by appointment date in chronological order in
 <p>These operations are exposed in <code>AddressBook</code> as <code>AddressBook#sorted(String attribute)</code>. Corresponding operation will be called depending on attribute the user wants to sort the list by.</p>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the sort mechanism behaves at each step.</p>
+<p>Given below is two examples usage scenario and how the sort mechanism behaves at each step.</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
+<p>Example 1:</p>
 </div>
 <div class="paragraph">
-<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
+<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
 </div>
 <div class="paragraph">
-<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
+<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
 </div>
 <div class="paragraph">
 <p>Step 4. The user decides to view the list sorted by their name by executing the <code>sort name</code> command. This command will call <code>AddressBook#sorted(String attribute)</code> and pass the string “name” to the method. Since the value of parameter is “name”, <code>SortByName()</code> will be called. <code>internalList</code> will then be sorted by name column in alphabetical order. At last, <code>internalList</code> will be returned and displayed to the user.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="project-powerpointlabs"><a class="link" href="#project-powerpointlabs">PROJECT: PowerPointLabs</a></h2>
-<div class="sectionbody">
-<hr>
 <div class="paragraph">
-<p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
+<p>Example 2:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application for the first time. The <code>UniquePersonList</code> will be initialized with the initial address book state.</p>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <code>add n/…</code> to add some new people. These people will be added sequentially to the end of the list.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as list, will usually not call <code>AddressBook#sorted(String attribute)</code> . Thus, the <code>internalList</code> remains unchanged.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The user decides to view the list sorted by their name by executing the <code>sort appointment</code> command. This command will call <code>SortCommand#execute()</code> and pass the string “appointment” to the method. Since the value of parameter is “appointment”, <code>SortCommand#getPersonsSortedByDate()</code> will be called. A list sorted by appointment column in chronological order will be returned and displayed to the user.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-11 01:19:14 UTC</div></div></div></body></html>
+</div>
+<div class="sect2">
+<h3 id="add-status-feature"><a class="link" href="#add-status-feature">Add Status feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-2"><a class="link" href="#current-implementation-2">Current Implementation</a></h4>
+<div class="paragraph">
+<p>the add status feature facilitated by the <code>Status</code> class, it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>status(String)</code>&#8201;&#8212;&#8201;The constructor for the class <code>Status</code>.</p>
+</li>
+<li>
+<p><code>toString()</code>&#8201;&#8212;&#8201;Returns a String containing the name of the patient&#8217;s status.</p>
+</li>
+<li>
+<p><code>isValidStatus()</code>&#8201;&#8212;&#8201;Checks if if a given string is a valid status.</p>
+</li>
+<li>
+<p><code>equals(Object)</code>&#8201;&#8212;&#8201;Checks if two patients' status are equal.</p>
+</li>
+<li>
+<p><code>isCorrectStatus()</code>&#8201;&#8212;&#8201;Checks if if a given string is any of following status: Critical / Waiting for Surgery / Life Support / Waiting for doctor appointment / Therapy / Observation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to the Appointment class, we update the ReadOnlyPerson interface and the Person class (which implements the interface) to ensure that every Person object is constructed with an Appointment class. To be specific, the following operations are added or updated.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Person(Status status)</code>&#8201;&#8212;&#8201; The class <code>Person</code> now requires a Status object during its construction.</p>
+</li>
+<li>
+<p><code>getStatus()</code>&#8201;&#8212;&#8201;The class <code>Person</code> implements a method that returns the Status object of a Person.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-11 05:49:07 UTC</div></div></div></body></html>
