@@ -209,12 +209,34 @@ Format: <code>list</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="referring-person-indicated-by-user-code-refer-code"><a class="link" href="#referring-person-indicated-by-user-code-refer-code">Referring person indicated by user : <code>refer</code></a></h2>
+<h2 id="referring-patient-indicated-by-user-code-refer-code"><a class="link" href="#referring-patient-indicated-by-user-code-refer-code">Referring patient indicated by user : <code>refer</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Refers patient to Dr Seuss if there is only one entry and shows a success message with patient&#8217;s updated particulars.<br>
-if there are multiple entries, prints all patients in the address book with the keyword and prompts user to key unique keyword.<br>
-Format: <code>refer John</code></p>
+<p>Refers a patient from the address book to a doctor.<br>
+Refer is overloaded with two formats.</p>
+</div>
+<div class="paragraph">
+<p>Format1: <code>refer NAME [MORE_NAMES]</code>
+Refers target patient to default doctor, Dr Seuss, and shows a success message with patient&#8217;s updated particulars if there is only one unique entry.<br>
+if there are multiple entries, all patient entries with the target keywords in the address book will be printed out and user will be prompted to identify the correct patient.<br>
+if patient does not exist in the addressbook, prints out an error message.<br></p>
+</div>
+<div class="paragraph">
+<p>Examples:
+* <code>refer John</code>
+* <code>refer John Doe</code>
+* <code>refer Doe</code></p>
+</div>
+<div class="paragraph">
+<p>Format 2: <code>refer d/ DOCTORNAME p/NAME [MORE_NAMES]</code>
+Refers target patient to a doctor specified by user. Format 2 works exactly like format 1.<br>
+If input contains an invalid doctor names (non-alpha numerical), an invalid command format message will be shown.</p>
+</div>
+<div class="paragraph">
+<p>Examples:
+* <code>refer d/DoctorTan p/John Doe</code>
+* <code>refer d/Dr Tan p/John Doe</code>
+* <code>refer d/Dr Tan p/Doe</code></p>
 </div>
 </div>
 </div>
@@ -434,4 +456,4 @@ Format: <code>exit</code></p>
 <p>There is no need to save manually. Address book data are saved in a file called <code>addressbook.txt</code> in the project root folder.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-12 07:24:09 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 06:42:15 UTC</div></div></div></body></html>
