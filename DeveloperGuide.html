@@ -335,7 +335,7 @@ person.getTags()
 <p>Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"</p>
 </div>
 <div class="paragraph">
-<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and Status parameters, deletes the old and adds the newly modified patient into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and adds a new tag 'refer' to the current collection of tags, deletes the old and adds the newly modified patient entry into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
 </div>
 <div class="paragraph">
 <p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s particulars that are updated.</p>
@@ -868,13 +868,13 @@ person.getTags()
 <p>The user requests to refer patient to another doctor.</p>
 </li>
 <li>
-<p>AddressBook finds patient from the list of entries, and extract all the relevant particulars of the target patient.</p>
+<p>AddressBook finds patient from the list of entries, and extracts all the relevant particulars of the target patient.</p>
 </li>
 <li>
-<p>Addressbook stores the extracted particulars in a temporary location and updates it with the new doctor&#8217;s name and patient tag.</p>
+<p>Addressbook updates the extracted particulars with the new doctor&#8217;s name and patient tag.</p>
 </li>
 <li>
-<p>AddressBook deletes the old patient entry from the main list and updates the main list with the newly updated entry.</p>
+<p>AddressBook deletes the old patient entry from the main list and adds the newly updated one into the main list.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -906,14 +906,30 @@ person.getTags()
 </div>
 </li>
 <li>
-<p>1b. Patient name has duplicates.</p>
+<p>1b. There are multiple entries in the addressbook with the same patient name(s) entered by the user.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>1a1. AddressBook prints out patients' indexes and prompts users to select the correct index.</p>
+<p>1b1. AddressBook prints out all similar patient entries and prompts users to to identify the correct patient.</p>
 </li>
 <li>
-<p>1a2. User enters correct patient&#8217;s index.</p>
+<p>1b2. User enters correct patient&#8217;s full name.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>1c. The format of the doctor&#8217;s name entered by the user is incorrect (non-alphanumeric).</p>
+<div class="ulist">
+<ul>
+<li>
+<p>1c1. AddressBook shows an error message and reminds users that doctor names can only contain alphanumeric characters.</p>
+</li>
+<li>
+<p>1c2. User enters a valid doctor&#8217;s name that follows the condition above.</p>
 <div class="paragraph">
 <p>Use case resumes at step 2.</p>
 </div>
@@ -1295,4 +1311,4 @@ person.getTags()
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 17:22:26 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 17:54:40 UTC</div></div></div></body></html>
