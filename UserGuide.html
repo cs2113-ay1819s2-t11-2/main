@@ -28,7 +28,7 @@ Please refer to the <a href="DeveloperGuide.html#setting-up">Setting up</a> sect
 <li>
 <p>The GUI should appear in a few seconds</p>
 <div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/Ui.png" alt="Ui" width="800"></span></p>
+<p><span class="image"><img src="https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/UI_1.4.png" alt="UI 1.4" width="800"></span></p>
 </div>
 </li>
 </ol>
@@ -191,15 +191,6 @@ Examples:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="finding-out-the-current-length-of-the-address-book-code-length-code"><a class="link" href="#finding-out-the-current-length-of-the-address-book-code-length-code">Finding out the current length of the address book : <code>length</code></a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Shows the number of entries in the address book.<br>
-Format: <code>length</code></p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="listing-all-persons-code-list-code"><a class="link" href="#listing-all-persons-code-list-code">Listing all persons : <code>list</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -209,33 +200,39 @@ Format: <code>list</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="referring-patient-indicated-by-user-code-refer-code"><a class="link" href="#referring-patient-indicated-by-user-code-refer-code">Referring patient indicated by user : <code>refer</code></a></h2>
+<h2 id="getting-length-of-the-address-book-code-length-code"><a class="link" href="#getting-length-of-the-address-book-code-length-code">Getting length of the address book : <code>length</code></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Shows the number of entries in the address book at the point of query.<br>
+Format: <code>length</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referring-a-patient-to-a-doctor-code-refer-code"><a class="link" href="#referring-a-patient-to-a-doctor-code-refer-code">Referring a patient to a doctor: <code>refer</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refers a patient from the address book to a doctor.<br>
-Refer is overloaded with two formats.</p>
+Note: This command is overloaded with two formats.</p>
 </div>
 <div class="paragraph">
-<p>Format1: <code>refer NAME [MORE_NAMES]</code>
-Refers target patient to default doctor, Dr Seuss, and shows a success message with patient&#8217;s updated particulars if there is only one unique entry.<br>
-if there are multiple entries, all patient entries with the target keywords in the address book will be printed out and user will be prompted to identify the correct patient.<br>
-if patient does not exist in the addressbook, prints out an error message.<br></p>
+<p>Format 1: <code>refer NAME [MORE_NAMES]</code><br>
+Refers target patient to a default doctor, Dr Seuss, and shows a success message with patient&#8217;s updated particulars if there is only one unique entry. If there are multiple entries, all patient entries with the target keywords in the addressbook will be printed and user will be prompted to identify the correct patient. If target patient does not exist in the addressbook, an error message will be printed.<br></p>
 </div>
 <div class="paragraph">
-<p>Examples:
-* <code>refer John</code>
-* <code>refer John Doe</code>
+<p>Examples:<br>
+* <code>refer John</code><br>
+* <code>refer John Doe</code><br>
 * <code>refer Doe</code></p>
 </div>
 <div class="paragraph">
-<p>Format 2: <code>refer d/ DOCTORNAME p/NAME [MORE_NAMES]</code>
-Refers target patient to a doctor specified by user. Format 2 works exactly like format 1.<br>
-If input contains an invalid doctor names (non-alpha numerical), an invalid command format message will be shown.</p>
+<p>Format 2: <code>refer d/ DOCTORNAME p/NAME [MORE_NAMES]</code><br>
+Refers target patient to a doctor specified by the user. Format 2 works exactly like format 1. If input contains an invalid doctor name (non-alphanumeric), an invalid command format message will be printed.</p>
 </div>
 <div class="paragraph">
-<p>Examples:
-* <code>refer d/DoctorTan p/John Doe</code>
-* <code>refer d/Dr Tan p/John Doe</code>
+<p>Examples:<br>
+* <code>refer d/DoctorTan p/John Doe</code><br>
+* <code>refer d/Dr Tan p/John Doe</code><br>
 * <code>refer d/Dr Tan p/Doe</code></p>
 </div>
 </div>
@@ -456,4 +453,4 @@ Format: <code>exit</code></p>
 <p>There is no need to save manually. Address book data are saved in a file called <code>addressbook.txt</code> in the project root folder.</p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 10:28:34 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 10:57:00 UTC</div></div></div></body></html>

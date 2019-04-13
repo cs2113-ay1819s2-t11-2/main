@@ -868,10 +868,13 @@ person.getTags()
 <p>The user requests to refer patient to another doctor.</p>
 </li>
 <li>
-<p>AddressBook finds patient in the list and copies patient together with particulars to a separate list archive with an addition tag specifying which doctor he/ she is being referred to.</p>
+<p>AddressBook finds patient from the list of entries, and extract all the relevant particulars of the target patient.</p>
 </li>
 <li>
-<p>AddressBook deletes patient entry from the main list.</p>
+<p>Addressbook stores the extracted particulars in a temporary location and updates it with the new doctor&#8217;s name and patient tag.</p>
+</li>
+<li>
+<p>AddressBook deletes the old patient entry from the main list and updates the main list with the newly updated entry.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1292,4 +1295,4 @@ person.getTags()
 </dl>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 10:28:34 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-13 10:57:00 UTC</div></div></div></body></html>
