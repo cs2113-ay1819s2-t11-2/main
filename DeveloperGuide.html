@@ -1713,51 +1713,11 @@ Expected: The most recent window size and location is retained.</p>
 </div>
 <div class="sect2">
 <h3 id="sort-feature-2"><a class="link" href="#sort-feature-2">Sort feature</a></h3>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Prerequisites: Please add some patient entries.<br></p>
-</li>
-<li>
-<p>Test case 1: <code>sort name</code><br>
-Expected: Prints out a list of all patients sort by name in lexicographically order.<br></p>
-</li>
-<li>
-<p>Test case 2: <code>sort status</code><br>
-Expected: Prints out a list of all patients sort by status according to the degree of urgency.<br></p>
-</li>
-<li>
-<p>Test case 3: <code>sort appointment</code><br>
-Expected: Prints out a list of all patients sort by appointment in chronological order.<br></p>
-</li>
-<li>
-<p>Other incorrect commands to try: <code>sort</code>, <code>sort abc</code><br>
-Expected: An error message: <code>Invalid command format!</code> is displayed on the screen, with the displays the correct format below.</p>
-</li>
-</ol>
-</div>
+
 </div>
 <div class="sect2">
 <h3 id="add-status-feature-2"><a class="link" href="#add-status-feature-2">Add Status feature</a></h3>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Prerequisites: The user has logged in to the system.</p>
-</li>
-<li>
-<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation</code><br>
-Expected: New person added: John Phone: 98765432 Email: <a href="mailto:john@gmail.com">john@gmail.com</a> Address: John street, block 123, #01-01  Appointment: 2019 12 11 12 30 Doctor: DoctorTan Status: Observation Tags:</p>
-</li>
-<li>
-<p>Test case 2: <code>add Amy p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Waiting for Surgery</code><br>
-Expected:  New person added: Amy Phone: 98765432 Email: <a href="mailto:john@gmail.com">john@gmail.com</a> Address: John street, block 123, #01-01  Appointment: 2019 12 11 12 30 Doctor: DoctorTan Status: Waiting for Surgery Tags:</p>
-</li>
-<li>
-<p>Other incorrect commands to try:  <code>add Sherry p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/nothing</code><br>
-Expected: An error message: Status should be Observation/ Critical / Waiting for Surgery / Therapy / Life Support / Waiting for doctor appointment</p>
-</li>
-</ol>
-</div>
+
 </div>
 <div class="sect2">
 <h3 id="login-register-logout-feature-2"><a class="link" href="#login-register-logout-feature-2">Login/Register/Logout Feature</a></h3>
@@ -1768,7 +1728,7 @@ Expected: An error message: Status should be Observation/ Critical / Waiting for
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The username password pair: <code>Admin</code> <code>Admin123</code> is registered by default for testing purpose.
+The username password pair: <code>Admin</code> <code>Admin123</code> is registered by default for testing purpose. (This is only valid for the user who has cloned our project repo. For jar file there is no such default account, and user will have to register a new account before starting to use the application.)
 </td>
 </tr>
 </table>
@@ -1994,4 +1954,4 @@ Expected:  <code>Length of the address book is: 0</code></p>
 
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:29:09 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:30:59 UTC</div></div></div></body></html>
