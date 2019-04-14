@@ -16,7 +16,7 @@ This application was developed by team T11-2 of CS2113T in National University o
 
 * *Code contributed*:
 
-https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&sort=displayName&since=2019-02-10&until=2019-04-09&timeframe=day&reverse=false&repoSort=true
+https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=shawn-t&sort=displayName&since=2019-02-10&until=2019-04-14&timeframe=day&reverse=false&repoSort=true
 
 == Features implemented: Refer Patient (major/ main feature), length (minor feature)
 
