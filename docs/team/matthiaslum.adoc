@@ -13,16 +13,21 @@ Doctor on Call is a secure desktop address book application used for doctors to 
 
 == Summary of contributions
 
-* *Major enhancement*: added a `DoctorsAppointment` command that generates a timetable for the doctor, displaying in chronological order the appointments he has.
+* *First Major enhancement*: added an `appointment` feature that generates a timetable for the doctor, displaying in chronological order the appointments he has.
 ** What it does: First, it searches for all patients who are patients of this doctor. Then, it sorts them by their appointment date. Lastly, it removes the unimportant information of the patient and displays it on the UI.
 ** Justification: This feature improves the productivity and time management skills of a doctor because in one glance, he is able to see all the appointments that he has. 
 ** Highlights: This enhancement required the implementation of new attributes to a person. Two new columns were added to store the information about the doctor and the appointment date. It required changes to the existing add command and in-depth analysis of the parser, logic, person and mainwindow classes. The implementation of this command utilized several methods and packages such as the LocalDateTime package. The methods used to implement the new classes here were studied and used by other team members, especially for the `SortAppointment` command.
+
+* *Second Major enhancement*: added a `apptDate` feature that prints out the timetable for a doctor on a specific day.
+** What it does: First, it searches for all patients who are patients of this doctor. Then, it sorts them by their appointment date. Lastly, it traverses this list of persons to select only those who have appointments on the specified date.
+** Justification: This feature allows doctor to see a beautiful timeline of his appointments for that day.
+** Highlights: Its a beautiful timeline that was tedious to implement
 
 ** Credits: _{utilized the Java package LocalDateTime, and adapted much code from the name class corresponding to a person}_
 
 * *Minor enhancement*: added two new columns that allows a doctor to add appointment date and doctors corresponding to a patient.
 
-* *Code contributed*: [https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=matthiaslum&sort=displayName&since=2019-02-10&until=2019-04-14&timeframe=day&reverse=false&repoSort=true[Reposense]] 
+* *Code contributed*: [https://nuscs2113-ay1819s2.github.io/dashboard-beta/#=undefined&search=matthiaslum[Reposense]]
 
 * *Other contributions*:
 
@@ -57,9 +62,13 @@ Words in `UPPER_CASE` are the parameters, items in `SQUARE_BRACKETS` are optiona
 items with `...` after them can have multiple instances. Order of parameters are fixed.
 
 Note that the appointment date must be in the format of YYYY MM DD HH MM, in other for the DoctorAppointment Command to work.
-The hour and minute follows the 24hour clock format. Incorrect time formats will throw an error in parsing.
+The hour and minute follows the 24hour clock format. Appointment timings must be in blocks of 15minutes. The accepted minutes are 00, 15, 30, 45.
+No appointments are allowed before 8am or before system current time. Incorrect time formats will throw an error in parsing.
+Appointments with the same doctor at the same timing is not allowed.
 
-The status must be any of following status: Critical / Waiting for Surgery / Life-support / Waiting for doctor appointment / Therapy / Observation.
+The doctor's name is case sensitive.
+
+The status must be any of following status: Critical / Waiting for Surgery / Life Support / Waiting for doctor appointment / Therapy / Observation.
 
 Put a `p` before the phone / email / address prefixes to mark it as `private`. `private` details can only
 be seen using the `viewall` command.
@@ -69,25 +78,43 @@ Persons can have any number of tags (including 0)
 
 Examples:
 
-* `add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2009 12 11 14 30 d/DoctorTan s/Observation`
-* `add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2011 11 04 08 00 d/DoctorTan s/Observation t/criminal t/friend`
+* `add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2020 12 11 14 30 d/DoctorTan s/Observation`
+* `add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2020 11 04 08 00 d/DoctorTan s/Observation t/criminal t/friend`
 
-== Listing all appointments of a Doctor : `DoctorAppointments`
+//@@author matthiaslum
+== Listing all appointments of a Doctor : `appointment`
 
-Displays a list of all persons who have appointments with a specific doctor. 
+Displays a list of all patients who have appointments with a specific doctor.
 The list of persons are sorted by on chronological order of their appointment dates.
 For easy-readability, only the name and appointment date of each person is displayed.
 
-Examples: 
+Format: `appointment DOCTOR_NAME`
 
-* `DoctorAppointments DoctorTan` +
+Examples:
+
+* `appointment DoctorTan` +
 Shows a list of all patients who have appointments with DoctorTan.
+
+== Printing out the timetable (day) of a Doctor : `apptDate`
+
+Displays the doctor's appointment timetable for a specific day.
+A nice timeline will be shown. Can be used for dates older than the current date. (appointment history)
+Each time slot is 15 minutes. The timeline shows all the slots in the day, and indicates which slots are available or occupied.
+
+Format: `apptDate DOCTOR_NAME m/YYYY MM DD`
+
+Examples:
+
+* `apptDate DoctorTan m/2020 11 04` +
+Shows a list of all patients who have appointments with DoctorTan on 4th of November.
+//@@author
 
 == Contributions to the Developer Guide
 
 |===
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
+//@@author matthiaslum
 
 === Add Doctor feature
 ==== Current Implementation
@@ -107,10 +134,10 @@ In addition to the Appointment class, we update the ReadOnlyPerson interface and
 
 The example usage scenario is similar to the scenario of the Add appointment feature below.
 
-=== Add appointment feature 
+=== Add Appointment feature
 ==== Current Implementation
 
-the add appointment feature facilitated by the `Appointment` class, it implements the following operations:
+the add appointment feature is facilitated by the `Appointment` class, it implements the following operations:
 
 * `Appointment(String)` -- The constructor for the class `Appointment`.
 * `toString()` -- Returns a String containing the date of the appointment.
@@ -123,48 +150,48 @@ In addition to the Appointment class, we update the ReadOnlyPerson interface and
 * `getAppointment()` -- The class `Person` implements a method that returns the Appointment object of a Person.
 * `getAsTextShowAll()` -- This operation is updated to allow a person's appointment date to be printed when an addresbook's lastShownList is printed onto the UI.
 
-Next, the parser is updated to recognize user input corresponding to the Appointment object of a person. It works together with an updated `Add` Command. When adding a new person through the add command, the user has to write `m/APPOINTMENTDATE' to signify the `Appointment` portion of a `Person`. 
+Next, the parser is updated to recognize user input corresponding to the Appointment object of a person. It works together with an updated `Add` Command. When adding a new person through the add command, the user has to write `m/APPOINTMENTDATE' to signify the `Appointment` portion of a `Person`.
 
 Given below is an example usage scenario and how the `Appointment` feature is incorporated at each step.
 
 Step 1. The user executes command `Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]...\n\t"`
 
-Step 2. The parser parses the user command, and creates the relevant object for `Appointment`, `Address` etc, and a new `Person` object is constructed. The `Logic` class executes the `AddCommand` with the prepared arguments. 
+Step 2. The parser parses the user command, verifying that the APPOINTMENT is of the 24 hour format YYYY MM DD HH MM. Then, it creates the relevant object for `Appointment`, `Address` etc, and a new `Person` object is constructed. The `Logic` class executes the `AddCommand` with the prepared arguments.
 
-Step 3. The `Addressbook` trys to add the new person into the `uniquePersonList`. But first, the `uniquePersonList` checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.
+Step 3. The `Addressbook` tries to add the new person into the `uniquePersonList`. But first, the `uniquePersonList` checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved. Note that two patients cannot have the same appointment timing with the same doctor.
 
-Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.
+Step 4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.
 
-=== DoctorAppointments command 
+=== DoctorAppointments feature
 ==== Current Implementation
 
-This is a new command, that is executed as `DoctorAppointments DOCTORNAME`. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input's name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.
+This is a new feature, that is executed as `appointment DOCTORNAME`. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input's name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.
 
 For the first part, finding and sorting the list of corresponding persons is facilitated by the `DoctorAppointmentsCommand` class and the `Person` class. The following operations are implemented in the `DoctorAppointmentsCommand` class.
 
-* `execute()` -- Upon execution, a new `Indicator` class stores information indicating that `DoctorAppointmentsCommand` is the most recently invoked command. Then, the following method `getPersonsWithNameContainingAnyKeyword(keywords)` is called. 
-* `getPersonsWithNameContainingAnyKeyword(keywords)` -- This method is adapted from the `FindCommand` class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a `LocalDate` field in a `Person` object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare `LocalDate` dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor's name corresponding to the user input's doctor. The ArrayList is sorted based on their appointment dates.
+* `execute()` -- Upon execution, a new `Indicator` class stores information indicating that `DoctorAppointmentsCommand` is the most recently invoked command. Then, the following method `getPersonsWithName(doctor)` is called.
+* `getPersonsWithName(doctor)` -- This method is adapted from the `FindCommand` class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a `LocalDateTime` field in a `Person` object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare `LocalDate` dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor's name corresponding to the user input's doctor. The ArrayList is sorted based on their appointment dates.
 
-We update the `Person` class to contain an additional field `LocalDate date` which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the `Person` class and their method signatures are updated in the `ReadOnlyPerson` interface.
+We update the `Person` class to contain an additional field `LocalDateTime date` which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the `Person` class and their method signatures are updated in the `ReadOnlyPerson` interface.
 
-* `getLocalDate()`
-* `setLocalDate()`
+* `getLocalDateTime()`
+* `setLocalDateTime()`
 
 Given below is an example usage scenario and how the Persons corresponding to a certain doctor are sorted and listed in Chronological order.
 
-Step 1. The user executes command `DoctorAppointments DOCTORNAME"`
+Step 1. The user executes command `appointment DOCTORNAME"`
 
-Step 2. The parser parses the command and prepares the keyword arguments for the `DoctorAppointmentsCommand` class. 
+Step 2. The parser parses the command and prepares the keyword arguments for the `DoctorAppointmentsCommand` class.
 
-Step 3. `DoctorAppointmentsCommand` is executed and the `Indicator` class records that this is the most recently invoked command. The execute command calls `getPersonsWithNameContainingAnyKeyword(keywords)`. For every Person in the existing addressbook, the Doctor's name is checked against the keyword (containing DOCTORNAME). If the doctor's name of the Person corresponds to DOCTORNAME, the `LocalDate` class parses the person's appointment date, and the Person's `LocalDate` date field is set to be the parsed appointment date.
+Step 3. `DoctorAppointmentsCommand` is executed and the `Indicator` class records that this is the most recently invoked command. The execute command calls `getPersonsWithName(doctor)`. For each Person in the existing addressbook, if the Person's doctor corresponds to DOCTORNAME, the `LocalDateTime` class parses the person's appointment date, and the Person's `LocalDateTime` date field is set to be the parsed appointment date.
 
 Step 4. The person is added into the matchedPersons list.
 
-Step 5. The list of matchedPersons are sorted based on the `Localdate` date field in each person.
+Step 5. The list of matchedPersons are sorted based on the `LocaldateTime` date field in each person.
 
 Step 6. The sorted list of matchedPersons are returned and displayed in a table format (explained in second part)
 
-For the second part of the implementation, we discuss how the list of matchedPersons is formatted to print in a certain manner. To facilitate the printing, we mainly update the format() method of the UI `Formatter` class. 
+For the second part of the implementation, we discuss how the list of matchedPersons is formatted to print in a certain manner. To facilitate the printing, we mainly update the format() method of the UI `Formatter` class.
 
 To facilitate the update, a new `Indicator` class is created and a new method is implemented in the `ReadonlyPerson` interface.
 
@@ -173,12 +200,206 @@ To facilitate the update, a new `Indicator` class is created and a new method is
 * `getAsTextNameDateDoctor()` --This is a method of the `ReadOnlyPerson` interface. It is a new String builder that builds a String of information about the Person. The information contains only the name and appointment date of the person. The String is padded on the right with whitespace to ensure a tabular format.
 
 The UI `Formatter` is updated in the following way.
+
 * `format(Persons)` --Checks if the last invoked user Command is the `DoctorAppointmentsCommand`. If it is, calls the new String builder method `getAsTextNameDateDoctor()` for each Person to be formatted.
 
-Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above. 
+Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above.
 
-Step 7. When the dispay method is called in step 6, the format method in `Formatter` is called. 
+Step 7. When the display method is called in step 6, the format method in `Formatter` is called.
 
-Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace. 
+Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace.
 
 Step 9. The `MainWindow` displays the newly formatted Persons in neat rows, displaying only the relevant information on Name and Appointment Date.
+
+The sequence diagram below shows the interactions between the various classes when the `appointment DOCTOR` command is executed.
+
+.Appointment Diagram
+image::DoctorAppointmentsFeature.png[width="800"]
+
+//@@author
+
+//@@author matthiaslum
+
+=== ApptDate feature
+==== Current Implementation
+
+This feature displays a doctor's appointment timetable for a specific day.
+This is a new feature, that is executed as `apptDate DOCTORNAME m/YYYY MM DD`.
+
+When the parser parses the user command that starts with the `apptDate` commandword, it instantiates an object of the class ApptDate.
+The user specfied date and doctor's name are stored as static fields in the class.
+
+Next, the logic class calls this object to be executed.
+
+The method `execute()` is similar in implementation to the `execute()` method of the previous appointment feature.
+
+In summary, the `execute()` method calls the method `getPersonsWithSameDoctorSameDate()`.
+
+`getPersonsWithSameDoctorSameDate()` finds all Persons in the addressbook that have the same doctor as the user's specified doctor.
+Then, it traverses the lists of matchedPersons to select only the Persons that have the same appointment date as the user specified date that is of the format YYYY MM DD.
+
+Then, it returns a matchedPersonsList that is used for the Command Result and for the last shown list.
+
+At the same time, we build a long string called `timetable`. This formatting of this string is tedious.
+Some methods involve padding of whitespaces and printing out time-slots of 15min starting from 6am.
+If anyone is confused by the 'for' loop, the iterator 'i' signifies the number of minutes that have elapsed since 00:00 hours of that day.
+We convert the appointment time of each matchedPerson into the number of minutes from 00:00.
+
+If the iterator 'i' matches the appointment timing of a Person, we print out the Person beside that time-slot.
+
+The UI `Formatter` facilitates the printing of timetable.
+
+* `format(Persons)` --Checks if the last invoked user Command is the `ApptDateCommand`. If it is, it retrieves the timetable from the `ApptDate` class,
+and prints out the neatly formatted timetable.
+
+//@@author
+
+//@@author matthiaslum
+=== Add Appointment feature
+
+. Invalid appointment value
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/1800 12 11 12 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments earlier than the current time are not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+`Appointment timings must not be earlier than current time, +
+must be in the 24hr format of yyyy MM dd hh mm. +
+Additionally appointment slots are in blocks of 15min. +
+Thus, the time in minutes must be 00, 15, 30 or 45. No appointments earlier than 6am.` +
+
+.. Test case 2: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because it does not follow the 24hr format required. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 3: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 100 11 12 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because 100 is not a valid month value. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 4: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 01 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments before 6am are not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 5: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 22 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments must be in blocks of 15min slots. 22minutes is not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+. Invalid Doctor's name
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 12 11 12 30 d/Docto!Tan s/Observation` +
+Expected: The test case fails because the doctor's name must be alphanumeric. +
+Prints out `Invalid command format!` message followed by a reminder +
+`Doctor's names should only contain spaces and/or alphanumeric characters +
+Special characters like . ! @ # , etc are not allowed! +
+Please re-enter with an appropriate doctor name.` +
+
+. Same appointment timing with the same doctor
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+Expected: Even though Xiao Ming is a different person, the test case fails because two persons cannot have an appointment with the same doctor at the same time +
+Prints out `This person already exists in the address book, or another person has the same appointment time` +
+
+. Same appointment timing with another Person, but different doctor
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation` +
+Expected: The test case succeeds and the `New Person added...` message is printed. +
+
+. Duplicate person details but different appointment
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 20 08 00 d/DoctorTan s/Observation` +
+Expected: The test case fails because the person John has the same name, phone and email as an existing person.
+Prints out `This person already exists in the address book, or another person has the same appointment time` +
+
+. Successful adding of person
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation` +
+Expected: The test case succeeds and the `New Person added...` message is printed. +
+
+=== DoctorAppointments feature
+
+. appointment command
+
+.. Prerequisites: please clear the addressbook and add the following patient entries being proceeding: +
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation +
+add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/doctor tan s/Observation +
+add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DOCTOR TAN s/Observation +
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation +
+
+.. Test case 1: `appointment` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Parameters: DOCTOR_NAME +
+Example: appointment DoctorTan.` +
+
+.. Test case 2: `appointment DoctorTan` +
+Expected: A table with header columns `Name`,   `Date`  and `Doctor.` +
+Shawn Tan and John should be inside the table. +
+
+.. Test case 3: `appointment doctor tan` +
+Expected: A table with header columns `Name`,   `Date`  and `Doctor.` +
+Xiao ming should be inside the table. +
+
+.. Test case 4: `appointment DOCTOR TAN` +
+Expected: A table with header columns `Name`,   `Date`  and `Doctor`. +
+Kumar should be inside the table. +
+
+
+=== ApptDate feature
+
+. apptDate command
+
+.. Prerequisites: please clear the addressbook and add the following patient entries being proceeding: +
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation +
+add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation +
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation +
+add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2020 12 11 11 30 d/DoctorTan s/Observation +
+
+
+.. Test case 1: `apptDate` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Parameters: NAME m/APPOINTMENT +
+Example: appointment DoctorTan.` +
+
+.. Test case 2: `apptDate DoctorTan` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Parameters: NAME m/APPOINTMENT +
+Example: appointment DoctorTan.` +
+
+.. Test case 3: `apptDate DoctorTan m/30November` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Dates must be in the 24hr format of yyyy MM dd.` +
+
+.. Test case 4: `apptDate DoctorTan m/2020 12 11` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Doctor's names should only contain spaces and/or alphanumeric characters +
+Special characters like . ! @ # , etc are not allowed! +
+Please re-enter with an appropriate doctor name.` +
+
+.. Test case 5: `apptDate DoctorTan m/2019 12 11` +
+Expected: `This is your Appointment timetable for the date: 2019-12-11` message followed by timeline +
+Shawn, Xiao ming and John should appear in the timeline, following that that order.
+
+.. Test case 6: `apptDate DoctorTan m/2020 12 11` +
+Expected: `This is your Appointment timetable for the date: 2019-12-11` message followed by timeline +
+Only Kumar should appear in the timeline at the 11:30 time-slot.
+
+//@@author
