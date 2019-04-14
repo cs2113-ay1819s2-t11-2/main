@@ -175,11 +175,6 @@ Examples:
 * `appointment DoctorTan` +
 Shows a list of all patients who have appointments with DoctorTan.
 
-== Finding all persons containing any keyword in their name: `find`
-
-Finds persons whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
-
 == Printing out the timetable (day) of a Doctor : `apptDate`
 
 Displays the doctor's appointment timetable for a specific day.
@@ -193,6 +188,11 @@ Examples:
 * `apptDate DoctorTan m/2020 11 04` +
 Shows a list of all patients who have appointments with DoctorTan on 4th of November.
 //@@author 
+
+== Finding all persons containing any keyword in their name: `find`
+
+Finds persons whose names contain any of the given keywords. +
+Format: `find KEYWORD [MORE_KEYWORDS]`
 
 == Deleting a person : `delete`
 
