@@ -936,7 +936,7 @@ Expected:  `Length of the address book is: 9`
 `length`
 Expected:  `Length of the address book is: 0`
 
-//@@author
+//@@author matthiaslum
 === Add Appointment feature
 
 === DoctorAppointments feature
