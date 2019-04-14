@@ -2046,7 +2046,135 @@ Expected:  <code>Length of the address book is: 0</code></p>
 </div>
 <div class="sect2">
 <h3 id="add-appointment-feature-2"><a class="link" href="#add-appointment-feature-2">Add Appointment feature</a></h3>
-
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Invalid appointment value</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/1800 12 11 12 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments earlier than the current time are not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Appointment timings must not be earlier than current time,<br>
+must be in the 24hr format of yyyy MM dd hh mm.<br>
+Additionally appointment slots are in blocks of 15min.<br>
+Thus, the time in minutes must be 00, 15, 30 or 45. No appointments earlier than 6am.</code><br></p>
+</li>
+<li>
+<p>Test case 2: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because it does not follow the 24hr format required.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 3: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 100 11 12 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because 100 is not a valid month value.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 4: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 01 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments before 6am are not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 5: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 22 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments must be in blocks of 15min slots. 22minutes is not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Invalid Doctor&#8217;s name</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 12 11 12 30 d/Docto!Tan s/Observation</code><br>
+Expected: The test case fails because the doctor&#8217;s name must be alphanumeric.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
+Special characters like . ! @ # , etc are not allowed!<br>
+Please re-enter with an appropriate doctor name.</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Same appointment timing with the same doctor</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br>
+Expected: Even though Xiao Ming is a different person, the test case fails because two persons cannot have an appointment with the same doctor at the same time<br>
+Prints out <code>This person already exists in the address book, or another person has the same appointment time</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Same appointment timing with another Person, but different doctor</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation</code><br>
+Expected: The test case succeeds and the <code>New Person added&#8230;&#8203;</code> message is printed.<br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Duplicate person details but different appointment</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 20 08 00 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because the person John has the same name, phone and email as an existing person.
+Prints out <code>This person already exists in the address book, or another person has the same appointment time</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Successful adding of person</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation</code><br>
+Expected: The test case succeeds and the <code>New Person added&#8230;&#8203;</code> message is printed.<br></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="doctorappointments-feature-2"><a class="link" href="#doctorappointments-feature-2">DoctorAppointments feature</a></h3>
@@ -2057,7 +2185,7 @@ Expected:  <code>Length of the address book is: 0</code></p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: please add the following patient entries being proceeding:<br>
+<p>Prerequisites: please clear the addressbook and add the following patient entries being proceeding:<br>
 add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation<br>
 add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/doctor tan s/Observation<br>
 add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DOCTOR TAN s/Observation<br>
@@ -2099,7 +2227,7 @@ Kumar should be inside the table.<br></p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: please add the following patient entries being proceeding:<br>
+<p>Prerequisites: please clear the addressbook and add the following patient entries being proceeding:<br>
 add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation<br>
 add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation<br>
 add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation<br>
@@ -2146,4 +2274,4 @@ Only Kumar should appear in the timeline at the 11:30 time-slot.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:03:27 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:12:40 UTC</div></div></div></body></html>
