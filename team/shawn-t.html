@@ -26,7 +26,7 @@ This application was developed by team T11-2 of CS2113T in National University o
 </ul>
 </div>
 <div class="paragraph">
-<p><a href="https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-09&amp;timeframe=day&amp;reverse=false&amp;repoSort=true" class="bare">https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-09&amp;timeframe=day&amp;reverse=false&amp;repoSort=true</a></p>
+<p><a href="https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=shawn-t&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-14&amp;timeframe=day&amp;reverse=false&amp;repoSort=true" class="bare">https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=shawn-t&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-14&amp;timeframe=day&amp;reverse=false&amp;repoSort=true</a></p>
 </div>
 </div>
 </div>
@@ -72,10 +72,10 @@ This application was developed by team T11-2 of CS2113T in National University o
 <div class="ulist">
 <ul>
 <li>
-<p>Project management: Managed releases v1.1 - v1.3, as well as updated issue tracker.</p>
+<p>Project management: Managed releases v1.1 - v1.4, as well as raise and resolve issues on issues tracker.</p>
 </li>
 <li>
-<p>Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide</p>
+<p>Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as design overview.</p>
 </li>
 </ul>
 </div>
@@ -100,21 +100,46 @@ This application was developed by team T11-2 of CS2113T in National University o
 </div>
 </div>
 <div class="sect1">
-<h2 id="finding-out-the-current-length-of-the-address-book-code-length-code"><a class="link" href="#finding-out-the-current-length-of-the-address-book-code-length-code">Finding out the current length of the address book : <code>length</code></a></h2>
+<h2 id="getting-length-of-the-address-book-code-length-code"><a class="link" href="#getting-length-of-the-address-book-code-length-code">Getting length of the address book : <code>length</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Shows the number of entries in the address book.<br>
+<p>Shows the number of entries in the address book at the point of query.<br>
 Format: <code>length</code></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="referring-person-indicated-by-user-code-refer-code"><a class="link" href="#referring-person-indicated-by-user-code-refer-code">Referring person indicated by user : <code>refer</code></a></h2>
+<h2 id="referring-a-patient-to-a-doctor-code-refer-code"><a class="link" href="#referring-a-patient-to-a-doctor-code-refer-code">Referring a patient to a doctor: <code>refer</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Refers patient to Dr Seuss if there is only one entry and shows a success message with patient&#8217;s updated particulars.<br>
-if there are multiple entries, prints all patients in the address book with the keyword and prompts user to key unique keyword.<br>
-Format: <code>refer John</code></p>
+<p>Refers a patient from the address book to a doctor.<br>
+Note: This command is overloaded with two formats.</p>
+</div>
+<div class="paragraph">
+<p>Format 1: <code>refer NAME [MORE_NAMES]</code><br>
+Refers target patient to a default doctor and shows a success message with patient&#8217;s updated particulars if there is only one unique entry. If there are multiple entries, all patient entries with the target keywords in the addressbook will be printed and user will be prompted to identify the correct patient. If target patient does not exist in the addressbook, an error message will be printed.<br></p>
+</div>
+<div class="paragraph">
+<p>Default doctor is the last specified doctor or <code>Dr Seuss</code> if never specified before previously.</p>
+</div>
+<div class="paragraph">
+<p>Examples:<br>
+* <code>refer John</code><br>
+* <code>refer John Doe</code><br>
+* <code>refer Doe</code></p>
+</div>
+<div class="paragraph">
+<p>Format 2: <code>refer d/ DOCTORNAME p/NAME [MORE_NAMES]</code><br>
+Refers target patient to a doctor specified by the user. Format 2 works exactly like format 1. If input contains an invalid doctor name (non-alphanumeric), an invalid command format message will be printed.<br></p>
+</div>
+<div class="paragraph">
+<p>When a refer is successful using this format, the default doctor would be updated as this new doctor specified in the latest format 2 entry.</p>
+</div>
+<div class="paragraph">
+<p>Examples:<br>
+* <code>refer d/DoctorTan p/John Doe</code><br>
+* <code>refer d/Dr Tan p/John Doe</code><br>
+* <code>refer d/Dr Tan p/Doe</code></p>
 </div>
 </div>
 </div>
@@ -131,95 +156,213 @@ Format: <code>refer John</code></p>
 </tr>
 </tbody>
 </table>
-<div class="sect2">
-<h3 id="use-case-uc03-refer-patient"><a class="link" href="#use-case-uc03-refer-patient">Use case: UC03 - Refer patient</a></h3>
+<div class="imageblock">
+<div class="content">
+<img src="../images/Architecture.png" alt="Architecture" width="800">
+</div>
+<div class="title">Figure 1. Simplified Architecture Diagram</div>
+</div>
 <div class="paragraph">
-<p><strong>Main success scenario:</strong></p>
+<p>The <strong><em>Simplified Architecture Diagram</em></strong> above is an abstraction of the first diagram provided. It categorises classes into the respective components by colour. Given below is a quick overview of each component.</p>
+</div>
+<div class="paragraph">
+<p><code>Main</code> has only one class called <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/Main.java"><code>Main</code></a>. It is responsible for,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>At app launch: Initializing the components, and creating the GUI.</p>
+</li>
+<li>
+<p>At shut down: Shutting down the components, closing the GUI and exiting the program.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The rest of the App consists of the following eight components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#Design-AccountManager"><strong><code>AccountManager</code></strong></a>: Manages the logging in / out of user accounts.</p>
+</li>
+<li>
+<p><a href="#Design-Command"><strong><code>Command</code></strong></a>: represents a collection of classes that defines the behaviour of the respective commands.</p>
+</li>
+<li>
+<p><a href="#Design-Commons"><strong><code>Commons</code></strong></a> represents a collection of classes used by multiple other components.</p>
+</li>
+<li>
+<p><a href="#Design-Data"><strong><code>Data</code></strong></a>: Holds the data of the App in-memory.</p>
+</li>
+<li>
+<p><a href="#Design-Logic"><strong><code>Logic</code></strong></a>: The command executor.</p>
+</li>
+<li>
+<p><a href="#Design-Parser"><strong><code>Parser</code></strong></a>: Parses user input.</p>
+</li>
+<li>
+<p><a href="#Design-Storage"><strong><code>Storage</code></strong></a>: Reads data from, and writes data to, the hard disk.</p>
+</li>
+<li>
+<p><a href="#Design-Ui"><strong><code>Ui</code></strong></a>: The UI of the App.</p>
+</li>
+</ul>
+</div>
+<h4 id="how-the-architecture-components-interact-with-each-other" class="discrete">How the architecture components interact with each other</h4>
+<div class="paragraph">
+<p>The <em>Sequence Diagram</em> below shows how the components interact with each other for the scenario where the user issues the command <code>delete 1</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/SDforDeletePerson.png" alt="SDforDeletePerson" width="800">
+</div>
+<div class="title">Figure 2. Component interactions for <code>delete 1</code> command</div>
+</div>
+<div class="paragraph">
+<p>The sections below give more details of each component.</p>
+</div>
+<div class="sect2">
+<h3 id="Design-AccountManager"><a class="link" href="#Design-AccountManager">AccountManager Component</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/accountmanager/AccountManager.java"><code>AccountManager</code></a><br>
+For detailed implementation for AccountManager Component, please refer to <a href="#Implementation"><strong><code>Implementation</code></strong></a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Design-Data"><a class="link" href="#Design-Data">Data Component</a></h3>
+<div class="imageblock">
+<div class="content">
+<img src="../images/DataComponent.png" alt="DataComponent" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/data/AddressBook.java"><code>AddressBook.java</code></a></p>
+</div>
+<div class="paragraph">
+<p>The <code>AddressBook.java</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores the Address Book data.</p>
+</li>
+<li>
+<p>exposes an unmodifiable <code>ReadOnlyPerson&lt;Person&gt;</code> that can be 'read' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Design-Logic"><a class="link" href="#Design-Logic">Logic Component</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/logic/Logic.java"><code>Logic.java</code></a></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The user requests to refer patient to another doctor.</p>
+<p><code>Logic</code> uses the <code>Parser</code> class to parse the user command.</p>
 </li>
 <li>
-<p>AddressBook finds patient in the list and copies patient together with particulars to a separate list archive with an addition tag specifying which doctor he/ she is being referred to.</p>
+<p>This results in a <code>Command</code> object which is executed by the matching Command class (e.g. DeleteCommand class exceutes delete).</p>
 </li>
 <li>
-<p>AddressBook deletes patient entry from the main list.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
+<p>The command execution can affect the <code>UniquePersonList</code> (e.g. deleting a person).</p>
+</li>
+<li>
+<p>The result of the command execution is encapsulated as a <code>CommandResult</code> object which is passed back to the <code>Ui</code>.</p>
+</li>
+<li>
+<p>In addition, the <code>CommandResult</code> object can also instruct the <code>Ui</code> to perform certain actions, such as displaying help to the user.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p><strong>Extensions</strong></p>
+<p>Given below is the Sequence Diagram for interactions within the <code>Logic</code> component for the <code>execute("delete 1")</code> API call.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>1a. The format entered by the user is incorrect.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>1a1. AddressBook shows an error message and prints the format for user to follow.</p>
-</li>
-<li>
-<p>1a2. User re-enters new patient&#8217;s particulars.</p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="../images/LogicComponent.png" alt="LogicComponent" width="800">
 </div>
-</li>
-<li>
-<p>Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Design-Parser"><a class="link" href="#Design-Parser">Parser Component</a></h3>
 <div class="paragraph">
-<p>Use case resumes at step 2.</p>
+<div class="title">Interactions Inside the Logic Component for the <code>delete 1</code> Command</div>
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/parser/Parser.java"><code>Parser.java</code></a></p>
 </div>
-</li>
-<li>
-<p>1b. Patient name has duplicates.</p>
+</div>
+<div class="sect2">
+<h3 id="Design-Storage"><a class="link" href="#Design-Storage">Storage Component</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/storage/jaxb/StorageFile.java"><code>StorageFile.java</code></a></p>
+</div>
+<div class="paragraph">
+<p>The <code>Storage</code> component,</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>1a1. AddressBook prints out patients' indexes and prompts users to select the correct index.</p>
-</li>
-<li>
-<p>1a2. User enters correct patient&#8217;s index.</p>
-</li>
-</ul>
-</div>
+<p>can save the Address Book data in a default .txt file named addressbook.txt and read it back.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc06-length-of-address-book"><a class="link" href="#use-case-uc06-length-of-address-book">Use case: UC06 - Length of address book</a></h3>
+<h3 id="Design-Ui"><a class="link" href="#Design-Ui">Ui Component</a></h3>
 <div class="paragraph">
-<p><strong>Main success scenario:</strong></p>
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/ui/Gui.java"><code>Gui.java</code></a></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>User requests for length of address book.</p>
-</li>
-<li>
-<p>AddressBook gets the current length and prints out the number of entries.</p>
 <div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="refer-feature"><a class="link" href="#refer-feature">Refer feature</a></h3>
-<div class="sect3">
-<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
-<div class="paragraph">
-<p>The refer feature is facilitated by the ReferCommand class and AddressBook class, and it implements the following operations:</p>
+<p>The <code>Gui.java</code> component,</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p>Executes user commands using the <code>Logic</code> component.</p>
+</li>
+<li>
+<p>Listens for changes to <code>Data</code> component so that the UI can be updated with the modified data.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UiComponent.png" alt="UiComponent" width="800">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="command-classes"><a class="link" href="#command-classes">Command classes</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/commands"><code>Commands</code></a></p>
+</div>
+<div class="paragraph">
+<p>Classes in this component defines the behaviour of the respective commands. Examples include the SortCommand, ReferCommand, IncorrectCommand class etc, as well as the CommandResult class.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Design-Commons"><a class="link" href="#Design-Commons">Common classes</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/common"><code>Common</code></a></p>
+</div>
+<div class="paragraph">
+<p>Classes used by multiple components are in the <code>seedu.addressbook.commons</code> package. In our project, Messages class and Utils class are the only two classes in this package.
+=== Refer feature
+==== Current Implementation</p>
+</div>
+<div class="paragraph">
+<p>The refer feature is facilitated by the ReferCommand class, Logic class, Parser class and AddressBook class, and it implements the following operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>prepareRefer()</code>&#8201;&#8212;&#8201;checks if input is valid and splits it at the specific prefix d/ when necessary</p>
+</li>
+<li>
+<p><code>getPatientToRefer()</code>&#8201;&#8212;&#8201;looks up addressbook and returns target patient to refer</p>
+</li>
 <li>
 <p><code>toRefer = new Person(
 person.getName(),
@@ -227,35 +370,294 @@ person.getPhone(),
 person.getEmail(),
 person.getAddress(),
 person.getAppointment(),
-new Doctor("Dr Seuss"),
-new Status("Referred"),
+new Doctor(referraldoctor),
+person.getStatus(),
 person.getTags()
-);</code>&#8201;&#8212;&#8201;Copies and modifies taget person&#8217;s parameters</p>
+);</code>&#8201;&#8212;&#8201;Copies and modifies taget patient&#8217;s doctor name</p>
 </li>
 <li>
-<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target person</p>
+<p><code>tagSet.add(new Tag("referred"))</code>&#8201;&#8212;&#8201;adds a refer tag</p>
 </li>
 <li>
-<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the edited person back into the addressbook</p>
+<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target patient</p>
+</li>
+<li>
+<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the newly update patient entry back into the addressbook</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the refer feature is incorporated at each step.</p>
+<p>Given below is an example usage scenario and how the refer feature is incorporated at each step. The <em>Sequence Diagram for referring a patient</em> is being provided at the end to further aid in illustrating this example.</p>
 </div>
 <div class="paragraph">
 <p>Step 1. The user executes command "refer john"</p>
 </div>
 <div class="paragraph">
-<p>Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"</p>
+<p>Step 2.Logic class calls Parser class through command <code>parserCommand("refer John")</code></p>
 </div>
 <div class="paragraph">
-<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and Status parameters, deletes the old and adds the newly modified patient into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+<p>Step 3. Parser class calls method <code>prepareRefer("John")</code> to checks if input is valid and splits it at the specific prefix d/ when necessary.</p>
 </div>
 <div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s particulars that are updated.</p>
+<p>Step 4. Parser class calls ReferCommand to start evoke the refer.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. ReferComand class calls method <code>getPatientToRefer("John")</code> to looks through the Addressbook for all entries containing the keyword "john"</p>
+</div>
+<div class="paragraph">
+<p>Step 6. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and adds a new tag 'refer' to the current collection of tags, deletes the old and adds the newly modified patient entry into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+</div>
+<div class="paragraph">
+<p>Step7. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s updated particulars.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/ReferCommandSequenceDiagram.png" alt="ReferCommandSequenceDiagram" width="800">
+</div>
+<div class="title">Figure 3. Sequence Diagram for referring a patient</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="length-feature"><a class="link" href="#length-feature">Length feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The refer feature is facilitated by the LengthCommand class, Logic class, Parser class and AddressBook class, and it implements the following operation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>addressBook.size()</code>&#8201;&#8212;&#8201;queries and returns the size of the addressbook</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the length feature is incorporated at each step. The <em>Sequence Diagram for getting addressbook length</em> is being provided at the end to further aid in illustrating this example.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command "length"</p>
+</div>
+<div class="paragraph">
+<p>Step 2.Logic class calls Parser class through command <code>parserCommand("length")</code></p>
+</div>
+<div class="paragraph">
+<p>Step 3. Parser class calls LengthCommand to query the size of addressbook.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The successful execution returns the length of the address book.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/LengthCommandSequenceDiagram.png" alt="LengthCommandSequenceDiagram" width="800">
+</div>
+<div class="title">Figure 4. Sequence Diagram for getting address book length</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[appendix]</p>
+<p class="tableblock">== Use Cases</p>
+<p class="tableblock">(For all use cases below, the <strong>System</strong> is the <code>AddressBook</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
+<p class="tableblock">=== Use case: UC01 - Login</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. The user opens the addressbook
+. Addressbook prompts’ user for username and password
+. The user inputs the username/password and hits enter
+. Addresbook authenticates the user and displays welcome address</p>
+<p class="tableblock">Use case ends.</p>
+<p class="tableblock">=== Use case: UC02 - Sort entries</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to sort the list in address book based on specified attribute.
+. AddressBook sorts and prints out all entries sorted by attribute specified by user.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+</strong> 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC03 - Refer patient</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. The user requests to refer patient to another doctor.
+. AddressBook finds patient from the list of entries, and extracts all the relevant particulars of the target patient.
+. Addressbook updates the extracted particulars with the new doctor&#8217;s name and patient tag.
+. AddressBook deletes the old patient entry from the main list and adds the newly updated one into the main list.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+</strong> 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">* 1b. There are multiple entries in the addressbook with the same patient name(s) entered by the user.
+<strong> 1b1. AddressBook prints out all similar patient entries and prompts users to to identify the correct patient.
+</strong> 1b2. User enters correct patient&#8217;s full name.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">* 1c. The format of the doctor&#8217;s name entered by the user is incorrect (non-alphanumeric).
+<strong> 1c1. AddressBook shows an error message and reminds users that doctor names can only contain alphanumeric characters.
+</strong> 1c2. User enters a valid doctor&#8217;s name that follows the condition above.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC04 - Manage appointments</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. The user types a command appointments in the command line
+. The system finds all scheduled appointments and prints them to the screen in chronological order
+. If possible, can print a literal timetable on the screen
+. The expired appointments should be excluded from the timetable if possible</p>
+<p class="tableblock">Use case ends.</p>
+<p class="tableblock">=== Use case: UC05 - Add patient</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User adds a patient in the address book.
+. AddressBook adds patient to address book and prints the newly added patient&#8217;s details.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+</strong> 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC06 - Length of address book</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests for length of address book.
+. AddressBook gets the current length and prints out the number of entries.
++
+Use case ends.</p>
+<p class="tableblock">=== Use case: UC07 - List all entries</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests for list of address book.
+. AddressBook prints out all entries in the address book with their respective particulars that are not private.
++
+Use case ends.</p>
+<p class="tableblock">=== Use case: UC08 - Find patients</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to find all patients containing any keyword in their name from the list.
+. AddressBook looks through the list and prints out all entries with the keyword specified by user.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+</strong> 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC09 - Delete patient</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to list patients
+. AddressBook shows a list of patients
+. User requests to delete a specific patient in the list
+. AddressBook deletes the patient.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 2a. The list is empty.
++
+Use case ends.</p>
+<p class="tableblock">* 3a. The given index is invalid.
+<strong> 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC10 - View patient by index</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to view patient particulars at a certain index in the list.
+. AddressBook prints out patient with his/ her respective particulars that are not private at the specified index.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+</strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+<strong> 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC11 - View all particulars of a patient by index</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to view patient with ALL particulars at a certain index in the list.
+. AddressBook prints out patient with his/ her respective particulars - including particulars that are private - at the specified index.
++
+Use case ends.</p>
+<p class="tableblock"><strong>Extensions</strong></p>
+<p class="tableblock">* 1a. The format entered by the user is incorrect.
+</strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
+<strong>* 1a2. User re-enters new patient&#8217;s particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.</p>
+<p class="tableblock">=== Use case: UC12 - Clear all entries</p>
+<p class="tableblock">*Main success scenario:</strong></p>
+<p class="tableblock">. User requests for list of address book.
+. AddressBook deletes all entries in the address book.
++
+Use case ends.</p>
+<p class="tableblock">=== Use case: UC13 - Exit</p>
+<p class="tableblock"><strong>Main success scenario:</strong></p>
+<p class="tableblock">. User requests to exit AddressBook.
+. AddressBook cloese and quits the application.
++
+Use case ends.
+=== Refer feature</p>
+<p class="tableblock">[NOTE]
+Please ensure the following entries have been added into the addressbook before trying the test cases below. If there are not entries in the addressbook, the 'no such person' execption will be shown.</p>
+<p class="tableblock">. refer NAME [MORE_NAMES]</p>
+<p class="tableblock">.. Prerequisites: please add the following patient entries being proceeding:<br>
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation<br>
+add John Doe p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation<br>
+add John Teo p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DoctorTan s/Observation<br>
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation<br>
+add Shawn Doe p/98765432 e/shawnd@gmail.com a/ShawnD street, block 123, #01-01 m/2019 12 11 10 30 d/DoctorTan s/Observation<br>
+add Shawn Teo p/98765432 e/shawnteo@gmail.com a/ShawnT street, block 123, #01-01 m/2019 12 11 10 00 d/DoctorTan s/Observation<br>
+add Abigail p/98765432 e/shawnteo@gmail.com a/ShawnT street, block 123, #01-01 m/2019 12 11 09 30 d/DoctorTan s/Observation<br>
+add Abigail Doe p/98765432 e/shawnteo@gmail.com a/Abigail street, block 123, #01-01 m/2019 12 11 09 00 d/DoctorTan s/Observation<br>
+add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Crowe Newgate m/2019 11 14 08 30 d/DoctorTan s/Observation<br>
+add Betsy Doe pp/1234567 e/betsycrowe@gmail.com pa/Doe Newgate m/2019 11 14 08 00 d/DoctorTan s/Observation<br></p>
+<p class="tableblock">.. Test case 1: <code>refer</code><br>
+Expected: An error message: <code>Invalid command format!</code> is displayed on the screen, with the displays the correct format below.<br></p>
+<p class="tableblock">.. Test case 2: <code>refer Shawn</code><br>
+Expected: Prints out full particulars of all 3 patients with the name of <code>Shawn</code>, followed by a message: <code>3 similar entries have been found. Please re-enter patient&#8217;s FULL NAME to refer</code> to prompt for a re-entry of the ful name of the target patient.<br></p>
+<p class="tableblock">.. Test case 3: <code>refer Shawn Doe</code><br>
+Expected: Prints out success message: <code>Patient Shawn Doe has been successfully referred to Dr Seuss!! :D</code>, followed by the patient&#8217;s updated entry below.<br></p>
+<p class="tableblock">.. Test case 4: <code>refer John</code><br>
+Expected: Prints out success message: <code>Patient John has been successfully referred to Dr Seuss!! :D</code>, followed by the patient&#8217;s updated entry below. <br>
+[NOTE]
+This is an edge case test. It is a successful refer (unlike test case 2) because there is an entry <code>John</code> without any last names in this case - this leads to the patient name being an exact and unique match of the keyword inputted unlike test case 2 where every <code>Shawn</code> has a last name (therefore no patient name == keyword inputted).</p>
+<p class="tableblock">.. Test case 5: <code>refer d/Dr Elizabeth p/John</code><br>
+Expected: Prints out success message: <code>Patient John has been successfully referred to Dr Elizabeth!! :D</code>, followed by the patient&#8217;s updated entry below. <br></p>
+<p class="tableblock">.. Test case 6: <code>refer Abigail</code><br>
+Expected: Prints out success message: <code>Patient Abigail has been successfully referred to Dr Elizabeth!! :D</code>, followed by the patient&#8217;s updated entry below. <br>
+[NOTE]
+The default doctor is Dr Seuss. However, once a new doctor of preferrence is introduced (Dr Elizabeth in this case), the new doctor will be the new default foctor for subsequent refer commands that do not specify a change in referral doctor. Please note that it is part of the feature&#8217;s design and not a bug :).</p>
+<p class="tableblock">.. Test case 7: <code>refer d/Dr. Tan p/Abigail</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
+Special characters like . ! @ # , etc are not allowed!<br>
+Please re-enter with an appropriate doctor name.</code></p>
+<p class="tableblock">=== Length feature</p>
+<p class="tableblock">. length</p>
+<p class="tableblock">.. Prerequisites: NIL</p>
+<p class="tableblock">.. Test case 1: <code>length</code>
+Expected:  <code>Length of the address book is: 10</code>
+[NOTE]
+The length will be 10 if the 10 test case inputs from the previous section (refer feature) is not cleared.</p>
+<p class="tableblock">.. Test case 2: <code>delete 1</code><br>
+<code>length</code>
+Expected:  <code>Length of the address book is: 9</code></p>
+<p class="tableblock">.. Test case 3: <code>clear</code><br>
+<code>length</code>
+Expected:  <code>Length of the address book is: 0</code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
-</div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:59:36 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:03:27 UTC</div></div></div></body></html>
