@@ -364,7 +364,7 @@ HashMap is used because memory is not a serious issue for this program as the pr
 ** Pros: Compatible with HashMap. 
 ** Cons: Large in file size.
 
-//@@matthiaslum
+//@@author
 
 //@@author matthiaslum
 
