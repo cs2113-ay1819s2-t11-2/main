@@ -458,30 +458,7 @@ person.getTags()
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[appendix]</p>
-<p class="tableblock">== Use Cases</p>
-<p class="tableblock">(For all use cases below, the <strong>System</strong> is the <code>AddressBook</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
-<p class="tableblock">=== Use case: UC01 - Login</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. The user opens the addressbook
-. Addressbook prompts’ user for username and password
-. The user inputs the username/password and hits enter
-. Addresbook authenticates the user and displays welcome address</p>
-<p class="tableblock">Use case ends.</p>
-<p class="tableblock">=== Use case: UC02 - Sort entries</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to sort the list in address book based on specified attribute.
-. AddressBook sorts and prints out all entries sorted by attribute specified by user.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 1a. The format entered by the user is incorrect.
-<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
-</strong> 1a2. User re-enters new patient&#8217;s particulars.
-* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
-+
-Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC03 - Refer patient</p>
+<td class="tableblock halign-left valign-top"><p class="tableblock">=== Use case: UC03 - Refer patient</p>
 <p class="tableblock"><strong>Main success scenario:</strong></p>
 <p class="tableblock">. The user requests to refer patient to another doctor.
 . AddressBook finds patient from the list of entries, and extracts all the relevant particulars of the target patient.
@@ -506,105 +483,13 @@ Use case resumes at step 2.</p>
 </strong> 1c2. User enters a valid doctor&#8217;s name that follows the condition above.
 +
 Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC04 - Manage appointments</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. The user types a command appointments in the command line
-. The system finds all scheduled appointments and prints them to the screen in chronological order
-. If possible, can print a literal timetable on the screen
-. The expired appointments should be excluded from the timetable if possible</p>
-<p class="tableblock">Use case ends.</p>
-<p class="tableblock">=== Use case: UC05 - Add patient</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User adds a patient in the address book.
-. AddressBook adds patient to address book and prints the newly added patient&#8217;s details.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 1a. The format entered by the user is incorrect.
-<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
-</strong> 1a2. User re-enters new patient&#8217;s particulars.
-* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
-+
-Use case resumes at step 2.</p>
 <p class="tableblock">=== Use case: UC06 - Length of address book</p>
 <p class="tableblock"><strong>Main success scenario:</strong></p>
 <p class="tableblock">. User requests for length of address book.
 . AddressBook gets the current length and prints out the number of entries.
 +
 Use case ends.</p>
-<p class="tableblock">=== Use case: UC07 - List all entries</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests for list of address book.
-. AddressBook prints out all entries in the address book with their respective particulars that are not private.
-+
-Use case ends.</p>
-<p class="tableblock">=== Use case: UC08 - Find patients</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to find all patients containing any keyword in their name from the list.
-. AddressBook looks through the list and prints out all entries with the keyword specified by user.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 1a. The format entered by the user is incorrect.
-<strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
-</strong> 1a2. User re-enters new patient&#8217;s particulars.
-* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
-+
-Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC09 - Delete patient</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to list patients
-. AddressBook shows a list of patients
-. User requests to delete a specific patient in the list
-. AddressBook deletes the patient.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 2a. The list is empty.
-+
-Use case ends.</p>
-<p class="tableblock">* 3a. The given index is invalid.
-<strong> 3a1. AddressBook shows an error message.
-+
-Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC10 - View patient by index</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to view patient particulars at a certain index in the list.
-. AddressBook prints out patient with his/ her respective particulars that are not private at the specified index.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 1a. The format entered by the user is incorrect.
-</strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
-<strong> 1a2. User re-enters new patient&#8217;s particulars.
-* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
-+
-Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC11 - View all particulars of a patient by index</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to view patient with ALL particulars at a certain index in the list.
-. AddressBook prints out patient with his/ her respective particulars - including particulars that are private - at the specified index.
-+
-Use case ends.</p>
-<p class="tableblock"><strong>Extensions</strong></p>
-<p class="tableblock">* 1a. The format entered by the user is incorrect.
-</strong> 1a1. AddressBook shows an error message and prints the format for user to follow.
-<strong>* 1a2. User re-enters new patient&#8217;s particulars.
-* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
-+
-Use case resumes at step 2.</p>
-<p class="tableblock">=== Use case: UC12 - Clear all entries</p>
-<p class="tableblock">*Main success scenario:</strong></p>
-<p class="tableblock">. User requests for list of address book.
-. AddressBook deletes all entries in the address book.
-+
-Use case ends.</p>
-<p class="tableblock">=== Use case: UC13 - Exit</p>
-<p class="tableblock"><strong>Main success scenario:</strong></p>
-<p class="tableblock">. User requests to exit AddressBook.
-. AddressBook cloese and quits the application.
-+
-Use case ends.
+<p class="tableblock">Use case ends.
 === Refer feature</p>
 <p class="tableblock">[NOTE]
 Please ensure the following entries have been added into the addressbook before trying the test cases below. If there are not entries in the addressbook, the 'no such person' execption will be shown.</p>
@@ -660,4 +545,4 @@ Expected:  <code>Length of the address book is: 0</code></p></td>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:17:24 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:21:54 UTC</div></div></div></body></html>
