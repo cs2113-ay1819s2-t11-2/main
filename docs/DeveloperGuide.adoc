@@ -936,14 +936,95 @@ Expected:  `Length of the address book is: 9`
 `length`
 Expected:  `Length of the address book is: 0`
 
+//@@author
+
+
 //@@author matthiaslum
 === Add Appointment feature
+
+. Invalid appointment value
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/1800 12 11 12 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments earlier than the current time are not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+`Appointment timings must not be earlier than current time, +
+must be in the 24hr format of yyyy MM dd hh mm. +
+Additionally appointment slots are in blocks of 15min. +
+Thus, the time in minutes must be 00, 15, 30 or 45. No appointments earlier than 6am.` +
+
+.. Test case 2: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because it does not follow the 24hr format required. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 3: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 100 11 12 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because 100 is not a valid month value. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 4: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 01 30 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments before 6am are not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+.. Test case 5: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 22 d/DoctorTan s/Observation` +
+Expected: The test case fails because appointments must be in blocks of 15min slots. 22minutes is not allowed. +
+Prints out `Invalid command format!` message followed by a reminder +
+that is similar to that of test case 1. +
+
+. Invalid Doctor's name
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 12 11 12 30 d/Docto!Tan s/Observation` +
+Expected: The test case fails because the doctor's name must be alphanumeric. +
+Prints out `Invalid command format!` message followed by a reminder +
+`Doctor's names should only contain spaces and/or alphanumeric characters +
+Special characters like . ! @ # , etc are not allowed! +
+Please re-enter with an appropriate doctor name.` +
+
+. Same appointment timing with the same doctor
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+Expected: Even though Xiao Ming is a different person, the test case fails because two persons cannot have an appointment with the same doctor at the same time +
+Prints out `This person already exists in the address book, or another person has the same appointment time` +
+
+. Same appointment timing with another Person, but different doctor
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation` +
+Expected: The test case succeeds and the `New Person added...` message is printed. +
+
+. Duplicate person details but different appointment
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+Then, add the following person before proceeding. +
+`add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation` +
+
+.. Test case 1: `add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 20 08 00 d/DoctorTan s/Observation` +
+Expected: The test case fails because the person John has the same name, phone and email as an existing person.
+Prints out `This person already exists in the address book, or another person has the same appointment time` +
+
+. Successful adding of person
+
+.. Prerequisites: please ensure that the addressbook is cleared. You can do this by the `clear` command. +
+.. Test case 1: `add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation` +
+Expected: The test case succeeds and the `New Person added...` message is printed. +
 
 === DoctorAppointments feature
 
 . appointment command
 
-.. Prerequisites: please add the following patient entries being proceeding: +
+.. Prerequisites: please clear the addressbook and add the following patient entries being proceeding: +
 add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation +
 add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/doctor tan s/Observation +
 add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DOCTOR TAN s/Observation +
@@ -971,7 +1052,7 @@ Kumar should be inside the table. +
 
 . apptDate command
 
-.. Prerequisites: please add the following patient entries being proceeding: +
+.. Prerequisites: please clear the addressbook and add the following patient entries being proceeding: +
 add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation +
 add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation +
 add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation +
@@ -1005,3 +1086,5 @@ Shawn, Xiao ming and John should appear in the timeline, following that that ord
 .. Test case 6: `apptDate DoctorTan m/2020 12 11` +
 Expected: `This is your Appointment timetable for the date: 2019-12-11` message followed by timeline +
 Only Kumar should appear in the timeline at the 11:30 time-slot.
+
+//@@author
