@@ -2002,19 +2002,19 @@ add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019
 add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation<br></p>
 </li>
 <li>
-<p>Test case 1: <code>appointment `+
-Expected: Prints out `Invalid command format!</code> message followed by a reminder<br>
-`	Parameters: DOCTOR_NAME<br>
-Example: appointment DoctorTan.`<br></p>
+<p>Test case 1: <code>appointment</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Parameters: DOCTOR_NAME<br>
+Example: appointment DoctorTan.</code><br></p>
 </li>
 <li>
 <p>Test case 2: <code>appointment DoctorTan</code><br>
-Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor</code>.<br>
+Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor.</code><br>
 Shawn Tan and John should be inside the table.<br></p>
 </li>
 <li>
 <p>Test case 3: <code>appointment doctor tan</code><br>
-Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor</code>.<br>
+Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor.</code><br>
 Xiao ming should be inside the table.<br></p>
 </li>
 <li>
@@ -2044,36 +2044,36 @@ add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/
 add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2020 12 11 11 30 d/DoctorTan s/Observation<br></p>
 </li>
 <li>
-<p>Test case 1: <code>apptDate `+
-Expected: Prints out `Invalid command format!</code> message followed by a reminder<br>
-`	Parameters: NAME m/APPOINTMENT<br>
-Example: appointment DoctorTan.`<br></p>
-</li>
-<li>
-<p>Test case 2: <code>apptDate DoctorTan</code>+
+<p>Test case 1: <code>apptDate</code><br>
 Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
-`	Parameters: NAME m/APPOINTMENT<br>
-Example: appointment DoctorTan.`<br></p>
+<code>Parameters: NAME m/APPOINTMENT<br>
+Example: appointment DoctorTan.</code><br></p>
 </li>
 <li>
-<p>Test case 3: <code>apptDate DoctorTan m/30November</code>+
+<p>Test case 2: <code>apptDate DoctorTan</code><br>
 Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
-` Dates must be in the 24hr format of yyyy MM dd.`<br></p>
+<code>Parameters: NAME m/APPOINTMENT<br>
+Example: appointment DoctorTan.</code><br></p>
 </li>
 <li>
-<p>Test case 4: <code>apptDate DoctorTan m/2020 12 11</code>+
+<p>Test case 3: <code>apptDate DoctorTan m/30November</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Dates must be in the 24hr format of yyyy MM dd.</code><br></p>
+</li>
+<li>
+<p>Test case 4: <code>apptDate DoctorTan m/2020 12 11</code><br>
 Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
 <code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
 Special characters like . ! @ # , etc are not allowed!<br>
 Please re-enter with an appropriate doctor name.</code><br></p>
 </li>
 <li>
-<p>Test case 5: <code>apptDate DoctorTan m/2019 12 11</code>+
+<p>Test case 5: <code>apptDate DoctorTan m/2019 12 11</code><br>
 Expected: <code>This is your Appointment timetable for the date: 2019-12-11</code> message followed by timeline<br>
 Shawn, Xiao ming and John should appear in the timeline, following that that order.</p>
 </li>
 <li>
-<p>Test case 6: <code>apptDate DoctorTan m/2020 12 11</code>+
+<p>Test case 6: <code>apptDate DoctorTan m/2020 12 11</code><br>
 Expected: <code>This is your Appointment timetable for the date: 2019-12-11</code> message followed by timeline<br>
 Only Kumar should appear in the timeline at the 11:30 time-slot.</p>
 </li>
@@ -2084,4 +2084,4 @@ Only Kumar should appear in the timeline at the 11:30 time-slot.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:38:50 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:40:32 UTC</div></div></div></body></html>
