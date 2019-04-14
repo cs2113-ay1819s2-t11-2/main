@@ -522,4 +522,3 @@ Expected:  `Length of the address book is: 9`
 .. Test case 3: `clear` +
 `length`
 Expected:  `Length of the address book is: 0`
-
