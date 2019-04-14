@@ -16,7 +16,7 @@ This application was developed by team T11-2 of CS2113T in National University o
 
 * *Code contributed*:
 
-https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&sort=displayName&since=2019-02-10&until=2019-04-09&timeframe=day&reverse=false&repoSort=true
+https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=shawn-t&sort=displayName&since=2019-02-10&until=2019-04-14&timeframe=day&reverse=false&repoSort=true
 
 == Features implemented: Refer Patient (major/ main feature), length (minor feature)
 
@@ -32,37 +32,245 @@ https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&sort=displayName&si
 
 
 * *Other contributions*:
-** Project management: Managed releases v1.1 - v1.3, as well as updated issue tracker.
-** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide
+** Project management: Managed releases v1.1 - v1.4, as well as raise and resolve issues on issues tracker.
+** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as design overview.
 
 == Contributions to the User Guide
 |===
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-== Finding out the current length of the address book : `length`
+//@@author shawn-t
+== Getting length of the address book : `length`
 
-Shows the number of entries in the address book. +
+Shows the number of entries in the address book at the point of query. +
 Format: `length`
 
-== Referring person indicated by user : `refer`
+//@@author shawn-t
+== Referring a patient to a doctor: `refer`
+Refers a patient from the address book to a doctor. +
+Note: This command is overloaded with two formats.
 
-Refers patient to Dr Seuss if there is only one entry and shows a success message with patient's updated particulars. +
-if there are multiple entries, prints all patients in the address book with the keyword and prompts user to key unique keyword. +
-Format: `refer John`
+Format 1: `refer NAME [MORE_NAMES]` +
+Refers target patient to a default doctor and shows a success message with patient's updated particulars if there is only one unique entry. If there are multiple entries, all patient entries with the target keywords in the addressbook will be printed and user will be prompted to identify the correct patient. If target patient does not exist in the addressbook, an error message will be printed. +
+[Note]
+Default doctor is the last specified doctor or `Dr Seuss` if never specified before previously.
+
+Examples: +
+* `refer John` +
+* `refer John Doe` +
+* `refer Doe`
+
+Format 2: `refer d/ DOCTORNAME p/NAME [MORE_NAMES]` +
+Refers target patient to a doctor specified by the user. Format 2 works exactly like format 1. If input contains an invalid doctor name (non-alphanumeric), an invalid command format message will be printed. +
+[Note]
+When a refer is successful using this format, the default doctor would be updated as this new doctor specified in the latest format 2 entry.
+
+Examples: +
+* `refer d/DoctorTan p/John Doe` +
+* `refer d/Dr Tan p/John Doe` +
+* `refer d/Dr Tan p/Doe`
 
 == Contributions to the Developer Guide:
 |===
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-=== Use case: UC03 - Refer patient
+//@@author shawn-t
+.Simplified Architecture Diagram
+image::Architecture.png[width="800"]
+
+The *_Simplified Architecture Diagram_* above is an abstraction of the first diagram provided. It categorises classes into the respective components by colour. Given below is a quick overview of each component.
+
+`Main` has only one class called link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/Main.java[`Main`]. It is responsible for,
+
+* At app launch: Initializing the components, and creating the GUI.
+* At shut down: Shutting down the components, closing the GUI and exiting the program.
+
+The rest of the App consists of the following eight components:
+
+* <<Design-AccountManager,*`AccountManager`*>>: Manages the logging in / out of user accounts.
+* <<Design-Command,*`Command`*>>: represents a collection of classes that defines the behaviour of the respective commands.
+* <<Design-Commons,*`Commons`*>> represents a collection of classes used by multiple other components.
+* <<Design-Data,*`Data`*>>: Holds the data of the App in-memory.
+* <<Design-Logic,*`Logic`*>>: The command executor.
+* <<Design-Parser,*`Parser`*>>: Parses user input.
+* <<Design-Storage,*`Storage`*>>: Reads data from, and writes data to, the hard disk.
+* <<Design-Ui,*`Ui`*>>: The UI of the App.
+
+[discrete]
+==== How the architecture components interact with each other
+
+The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+
+.Component interactions for `delete 1` command
+image::SDforDeletePerson.png[width="800"]
+
+The sections below give more details of each component.
+
+[[Design-AccountManager]]
+=== AccountManager Component
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/accountmanager/AccountManager.java[`AccountManager`] +
+For detailed implementation for AccountManager Component, please refer to <<Implementation,*`Implementation`*>>
+
+[[Design-Data]]
+=== Data Component
+
+image::DataComponent.png[width="800"]
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/data/AddressBook.java[`AddressBook.java`]
+
+The `AddressBook.java`,
+
+* stores the Address Book data.
+* exposes an unmodifiable `ReadOnlyPerson<Person>` that can be 'read' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+
+[[Design-Logic]]
+=== Logic Component
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/logic/Logic.java[`Logic.java`]
+
+.  `Logic` uses the `Parser` class to parse the user command.
+.  This results in a `Command` object which is executed by the matching Command class (e.g. DeleteCommand class exceutes delete).
+.  The command execution can affect the `UniquePersonList` (e.g. deleting a person).
+.  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
+.  In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
+
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+
+image::LogicComponent.png[width="800"]
+
+.Interactions Inside the Logic Component for the `delete 1` Command
+
+[[Design-Parser]]
+=== Parser Component
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/parser/Parser.java[`Parser.java`]
+
+[[Design-Storage]]
+=== Storage Component
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/storage/jaxb/StorageFile.java[`StorageFile.java`]
+
+The `Storage` component,
+
+* can save the Address Book data in a default .txt file named addressbook.txt and read it back.
+
+[[Design-Ui]]
+=== Ui Component
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/ui/Gui.java[`Gui.java`]
+
+The `Gui.java` component,
+
+* Executes user commands using the `Logic` component.
+* Listens for changes to `Data` component so that the UI can be updated with the modified data.
+
+image::UiComponent.png[width="800"]
+
+=== Command classes
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/commands[`Commands`]
+
+Classes in this component defines the behaviour of the respective commands. Examples include the SortCommand, ReferCommand, IncorrectCommand class etc, as well as the CommandResult class.
+
+[[Design-Commons]]
+=== Common classes
+
+*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/common[`Common`]
+
+Classes used by multiple components are in the `seedu.addressbook.commons` package. In our project, Messages class and Utils class are the only two classes in this package.
+//@@author shawn-t
+=== Refer feature
+==== Current Implementation
+
+The refer feature is facilitated by the ReferCommand class, Logic class, Parser class and AddressBook class, and it implements the following operations:
+
+* `prepareRefer()` -- checks if input is valid and splits it at the specific prefix d/ when necessary
+* `getPatientToRefer()` -- looks up addressbook and returns target patient to refer
+* `toRefer = new Person(
+             person.getName(),
+             person.getPhone(),
+             person.getEmail(),
+             person.getAddress(),
+             person.getAppointment(),
+             new Doctor(referraldoctor),
+             person.getStatus(),
+             person.getTags()
+             );` -- Copies and modifies taget patient's doctor name
+* `tagSet.add(new Tag("referred"))` -- adds a refer tag
+* `addressBook.removePerson(person)` -- removes target patient
+* `addressBook.addPerson(toRefer)` -- adds the newly update patient entry back into the addressbook
+
+Given below is an example usage scenario and how the refer feature is incorporated at each step. The _Sequence Diagram for referring a patient_ is being provided at the end to further aid in illustrating this example.
+
+Step 1. The user executes command "refer john"
+
+Step 2.Logic class calls Parser class through command `parserCommand("refer John")`
+
+Step 3. Parser class calls method `prepareRefer("John")` to checks if input is valid and splits it at the specific prefix d/ when necessary.
+
+Step 4. Parser class calls ReferCommand to start evoke the refer.
+
+Step 5. ReferComand class calls method `getPatientToRefer("John")` to looks through the Addressbook for all entries containing the keyword "john"
+
+Step 6. If there is only one entry, ReferCommand modifies the entry's Doctor and adds a new tag 'refer' to the current collection of tags, deletes the old and adds the newly modified patient entry into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).
+
+Step7. The successful execution returns a MESSAGE_SUCCESS along with the patient's updated particulars.
+
+.Sequence Diagram for referring a patient
+image::ReferCommandSequenceDiagram.png[width="800"]
+
+//@@author shawn-t
+=== Length feature
+==== Current Implementation
+
+The refer feature is facilitated by the LengthCommand class, Logic class, Parser class and AddressBook class, and it implements the following operation:
+
+* `addressBook.size()` -- queries and returns the size of the addressbook
+
+Given below is an example usage scenario and how the length feature is incorporated at each step. The _Sequence Diagram for getting addressbook length_ is being provided at the end to further aid in illustrating this example.
+
+Step 1. The user executes command "length"
+
+Step 2.Logic class calls Parser class through command `parserCommand("length")`
+
+Step 3. Parser class calls LengthCommand to query the size of addressbook.
+
+Step 4. The successful execution returns the length of the address book.
+
+
+.Sequence Diagram for getting address book length
+image::LengthCommandSequenceDiagram.png[width="800"]
+
+//@@author shawn-t
+|===========================================================================================================================================
+
+[appendix]
+
+
+== Use Cases
+
+(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+
+=== Use case: UC01 - Login
 
 *Main success scenario:*
 
-. The user requests to refer patient to another doctor.
-. AddressBook finds patient in the list and copies patient together with particulars to a separate list archive with an addition tag specifying which doctor he/ she is being referred to.
-. AddressBook deletes patient entry from the main list.
+. The user opens the addressbook
+. Addressbook prompts’ user for username and password
+. The user inputs the username/password and hits enter
+. Addresbook authenticates the user and displays welcome address
+
+Use case ends.
+
+=== Use case: UC02 - Sort entries
+
+*Main success scenario:*
+
+. User requests to sort the list in address book based on specified attribute.
+. AddressBook sorts and prints out all entries sorted by attribute specified by user.
 +
 Use case ends.
 
@@ -75,9 +283,66 @@ Use case ends.
 +
 Use case resumes at step 2.
 
-* 1b. Patient name has duplicates.
-** 1a1. AddressBook prints out patients' indexes and prompts users to select the correct index.
-** 1a2. User enters correct patient's index.
+=== Use case: UC03 - Refer patient
+
+*Main success scenario:*
+
+. The user requests to refer patient to another doctor.
+. AddressBook finds patient from the list of entries, and extracts all the relevant particulars of the target patient.
+. Addressbook updates the extracted particulars with the new doctor's name and patient tag.
+. AddressBook deletes the old patient entry from the main list and adds the newly updated one into the main list.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The format entered by the user is incorrect.
+** 1a1. AddressBook shows an error message and prints the format for user to follow.
+** 1a2. User re-enters new patient's particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.
+
+* 1b. There are multiple entries in the addressbook with the same patient name(s) entered by the user.
+** 1b1. AddressBook prints out all similar patient entries and prompts users to to identify the correct patient.
+** 1b2. User enters correct patient's full name.
++
+Use case resumes at step 2.
+
+* 1c. The format of the doctor's name entered by the user is incorrect (non-alphanumeric).
+** 1c1. AddressBook shows an error message and reminds users that doctor names can only contain alphanumeric characters.
+** 1c2. User enters a valid doctor's name that follows the condition above.
++
+Use case resumes at step 2.
+
+=== Use case: UC04 - Manage appointments
+
+*Main success scenario:*
+
+. The user types a command appointments in the command line
+. The system finds all scheduled appointments and prints them to the screen in chronological order
+. If possible, can print a literal timetable on the screen
+. The expired appointments should be excluded from the timetable if possible
+
+Use case ends.
+
+=== Use case: UC05 - Add patient
+
+*Main success scenario:*
+
+. User adds a patient in the address book.
+. AddressBook adds patient to address book and prints the newly added patient's details.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The format entered by the user is incorrect.
+** 1a1. AddressBook shows an error message and prints the format for user to follow.
+** 1a2. User re-enters new patient's particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.
 
 === Use case: UC06 - Length of address book
 
@@ -88,31 +353,173 @@ Use case resumes at step 2.
 +
 Use case ends.
 
+=== Use case: UC07 - List all entries
+
+*Main success scenario:*
+
+. User requests for list of address book.
+. AddressBook prints out all entries in the address book with their respective particulars that are not private.
++
+Use case ends.
+
+=== Use case: UC08 - Find patients
+
+*Main success scenario:*
+
+. User requests to find all patients containing any keyword in their name from the list.
+. AddressBook looks through the list and prints out all entries with the keyword specified by user.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The format entered by the user is incorrect.
+** 1a1. AddressBook shows an error message and prints the format for user to follow.
+** 1a2. User re-enters new patient's particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.
+
+=== Use case: UC09 - Delete patient
+
+*Main success scenario:*
+
+. User requests to list patients
+. AddressBook shows a list of patients
+. User requests to delete a specific patient in the list
+. AddressBook deletes the patient.
++
+Use case ends.
+
+*Extensions*
+
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+
+=== Use case: UC10 - View patient by index
+
+*Main success scenario:*
+
+. User requests to view patient particulars at a certain index in the list.
+. AddressBook prints out patient with his/ her respective particulars that are not private at the specified index.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The format entered by the user is incorrect.
+** 1a1. AddressBook shows an error message and prints the format for user to follow.
+** 1a2. User re-enters new patient's particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.
+
+=== Use case: UC11 - View all particulars of a patient by index
+
+*Main success scenario:*
+
+. User requests to view patient with ALL particulars at a certain index in the list.
+. AddressBook prints out patient with his/ her respective particulars - including particulars that are private - at the specified index.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The format entered by the user is incorrect.
+** 1a1. AddressBook shows an error message and prints the format for user to follow.
+** 1a2. User re-enters new patient's particulars.
+* Steps 1a1 - 1a2 are repeated until the correct format is entered by the user.
++
+Use case resumes at step 2.
+
+=== Use case: UC12 - Clear all entries
+
+*Main success scenario:*
+
+. User requests for list of address book.
+. AddressBook deletes all entries in the address book.
++
+Use case ends.
+
+=== Use case: UC13 - Exit
+
+*Main success scenario:*
+
+. User requests to exit AddressBook.
+. AddressBook cloese and quits the application.
++
+Use case ends.
 //@@author shawn-t
 === Refer feature
-==== Current Implementation
 
-The refer feature is facilitated by the ReferCommand class and AddressBook class, and it implements the following operations:
+[NOTE]
+Please ensure the following entries have been added into the addressbook before trying the test cases below. If there are not entries in the addressbook, the 'no such person' execption will be shown.
 
-* `toRefer = new Person(
-             person.getName(),
-             person.getPhone(),
-             person.getEmail(),
-             person.getAddress(),
-             person.getAppointment(),
-             new Doctor("Dr Seuss"),
-             new Status("Referred"),
-             person.getTags()
-             );` -- Copies and modifies taget person's parameters
-* `addressBook.removePerson(person)` -- removes target person
-* `addressBook.addPerson(toRefer)` -- adds the edited person back into the addressbook
+. refer NAME [MORE_NAMES]
 
-Given below is an example usage scenario and how the refer feature is incorporated at each step.
+.. Prerequisites: please add the following patient entries being proceeding: +
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation +
+add John Doe p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation +
+add John Teo p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DoctorTan s/Observation +
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation +
+add Shawn Doe p/98765432 e/shawnd@gmail.com a/ShawnD street, block 123, #01-01 m/2019 12 11 10 30 d/DoctorTan s/Observation +
+add Shawn Teo p/98765432 e/shawnteo@gmail.com a/ShawnT street, block 123, #01-01 m/2019 12 11 10 00 d/DoctorTan s/Observation +
+add Abigail p/98765432 e/shawnteo@gmail.com a/ShawnT street, block 123, #01-01 m/2019 12 11 09 30 d/DoctorTan s/Observation +
+add Abigail Doe p/98765432 e/shawnteo@gmail.com a/Abigail street, block 123, #01-01 m/2019 12 11 09 00 d/DoctorTan s/Observation +
+add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Crowe Newgate m/2019 11 14 08 30 d/DoctorTan s/Observation +
+add Betsy Doe pp/1234567 e/betsycrowe@gmail.com pa/Doe Newgate m/2019 11 14 08 00 d/DoctorTan s/Observation +
 
-Step 1. The user executes command "refer john"
+.. Test case 1: `refer` + 
+Expected: An error message: `Invalid command format!` is displayed on the screen, with the displays the correct format below. +
 
-Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"
+.. Test case 2: `refer Shawn` +
+Expected: Prints out full particulars of all 3 patients with the name of `Shawn`, followed by a message: `3 similar entries have been found. Please re-enter patient's FULL NAME to refer` to prompt for a re-entry of the ful name of the target patient. +
 
-Step 3. If there is only one entry, ReferCommand modifies the entry's Doctor and Status parameters, deletes the old and adds the newly modified patient into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).
+.. Test case 3: `refer Shawn Doe` +
+Expected: Prints out success message: `Patient Shawn Doe has been successfully referred to Dr Seuss!! :D`, followed by the patient's updated entry below. +
 
-Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient's particulars that are updated.
+.. Test case 4: `refer John` +
+Expected: Prints out success message: `Patient John has been successfully referred to Dr Seuss!! :D`, followed by the patient's updated entry below.  +
+[NOTE]
+This is an edge case test. It is a successful refer (unlike test case 2) because there is an entry `John` without any last names in this case - this leads to the patient name being an exact and unique match of the keyword inputted unlike test case 2 where every `Shawn` has a last name (therefore no patient name == keyword inputted).
+
+.. Test case 5: `refer d/Dr Elizabeth p/John` +
+Expected: Prints out success message: `Patient John has been successfully referred to Dr Elizabeth!! :D`, followed by the patient's updated entry below.  +
+
+.. Test case 6: `refer Abigail` +
+Expected: Prints out success message: `Patient Abigail has been successfully referred to Dr Elizabeth!! :D`, followed by the patient's updated entry below.  +
+[NOTE]
+The default doctor is Dr Seuss. However, once a new doctor of preferrence is introduced (Dr Elizabeth in this case), the new doctor will be the new default foctor for subsequent refer commands that do not specify a change in referral doctor. Please note that it is part of the feature's design and not a bug :).
+
+.. Test case 7: `refer d/Dr. Tan p/Abigail` +
+Expected: Prints out `Invalid command format!` message followed by a reminder +
+`Doctor's names should only contain spaces and/or alphanumeric characters +
+Special characters like . ! @ # , etc are not allowed! +
+Please re-enter with an appropriate doctor name.`
+ 
+//@@author shawn-t
+=== Length feature
+
+. length
+
+.. Prerequisites: NIL
+
+.. Test case 1: `length`
+Expected:  `Length of the address book is: 10`
+[NOTE]
+The length will be 10 if the 10 test case inputs from the previous section (refer feature) is not cleared.
+
+.. Test case 2: `delete 1` +
+`length`
+Expected:  `Length of the address book is: 9`
+
+.. Test case 3: `clear` +
+`length`
+Expected:  `Length of the address book is: 0`
+
