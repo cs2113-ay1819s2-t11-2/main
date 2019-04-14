@@ -20,7 +20,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Major enhancement</strong>: added a <code>DoctorsAppointment</code> command that generates a timetable for the doctor, displaying in chronological order the appointments he has.</p>
+<p><strong>First Major enhancement</strong>: added an <code>appointment</code> feature that generates a timetable for the doctor, displaying in chronological order the appointments he has.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -32,6 +32,22 @@
 <li>
 <p>Highlights: This enhancement required the implementation of new attributes to a person. Two new columns were added to store the information about the doctor and the appointment date. It required changes to the existing add command and in-depth analysis of the parser, logic, person and mainwindow classes. The implementation of this command utilized several methods and packages such as the LocalDateTime package. The methods used to implement the new classes here were studied and used by other team members, especially for the <code>SortAppointment</code> command.</p>
 </li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Second Major enhancement</strong>: added a <code>apptDate</code> feature that prints out the timetable for a doctor on a specific day.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>What it does: First, it searches for all patients who are patients of this doctor. Then, it sorts them by their appointment date. Lastly, it traverses this list of persons to select only those who have appointments on the specified date.</p>
+</li>
+<li>
+<p>Justification: This feature allows doctor to see a beautiful timeline of his appointments for that day.</p>
+</li>
+<li>
+<p>Highlights: Its a beautiful timeline that was tedious to implement</p>
+</li>
 <li>
 <p>Credits: <em>{utilized the Java package LocalDateTime, and adapted much code from the name class corresponding to a person}</em></p>
 </li>
@@ -42,7 +58,7 @@
 <p><strong>Minor enhancement</strong>: added two new columns that allows a doctor to add appointment date and doctors corresponding to a patient.</p>
 </li>
 <li>
-<p><strong>Code contributed</strong>: [<a href="https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=matthiaslum&amp;sort=displayName&amp;since=2019-02-10&amp;until=2019-04-14&amp;timeframe=day&amp;reverse=false&amp;repoSort=true">Reposense</a>]</p>
+<p><strong>Code contributed</strong>: [<a href="https://nuscs2113-ay1819s2.github.io/dashboard-beta/#=undefined&amp;search=matthiaslum">Reposense</a>]</p>
 </li>
 <li>
 <p><strong>Other contributions</strong>:</p>
@@ -135,10 +151,15 @@ items with <code>&#8230;&#8203;</code> after them can have multiple instances. O
 </div>
 <div class="paragraph">
 <p>Note that the appointment date must be in the format of YYYY MM DD HH MM, in other for the DoctorAppointment Command to work.
-The hour and minute follows the 24hour clock format. Incorrect time formats will throw an error in parsing.</p>
+The hour and minute follows the 24hour clock format. Appointment timings must be in blocks of 15minutes. The accepted minutes are 00, 15, 30, 45.
+No appointments are allowed before 8am or before system current time. Incorrect time formats will throw an error in parsing.
+Appointments with the same doctor at the same timing is not allowed.</p>
 </div>
 <div class="paragraph">
-<p>The status must be any of following status: Critical / Waiting for Surgery / Life-support / Waiting for doctor appointment / Therapy / Observation.</p>
+<p>The doctor&#8217;s name is case sensitive.</p>
+</div>
+<div class="paragraph">
+<p>The status must be any of following status: Critical / Waiting for Surgery / Life Support / Waiting for doctor appointment / Therapy / Observation.</p>
 </div>
 <div class="paragraph">
 <p>Put a <code>p</code> before the phone / email / address prefixes to mark it as <code>private</code>. <code>private</code> details can only
@@ -155,22 +176,25 @@ be seen using the <code>viewall</code> command.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2009 12 11 14 30 d/DoctorTan s/Observation</code></p>
+<p><code>add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01 m/2020 12 11 14 30 d/DoctorTan s/Observation</code></p>
 </li>
 <li>
-<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2011 11 04 08 00 d/DoctorTan s/Observation t/criminal t/friend</code></p>
+<p><code>add Betsy Crowe pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison m/2020 11 04 08 00 d/DoctorTan s/Observation t/criminal t/friend</code></p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="listing-all-appointments-of-a-doctor-code-doctorappointments-code"><a class="link" href="#listing-all-appointments-of-a-doctor-code-doctorappointments-code">Listing all appointments of a Doctor : <code>DoctorAppointments</code></a></h2>
+<h2 id="listing-all-appointments-of-a-doctor-code-appointment-code"><a class="link" href="#listing-all-appointments-of-a-doctor-code-appointment-code">Listing all appointments of a Doctor : <code>appointment</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Displays a list of all persons who have appointments with a specific doctor.
+<p>Displays a list of all patients who have appointments with a specific doctor.
 The list of persons are sorted by on chronological order of their appointment dates.
 For easy-readability, only the name and appointment date of each person is displayed.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>appointment DOCTOR_NAME</code></p>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -178,8 +202,32 @@ For easy-readability, only the name and appointment date of each person is displ
 <div class="ulist">
 <ul>
 <li>
-<p><code>DoctorAppointments DoctorTan</code><br>
+<p><code>appointment DoctorTan</code><br>
 Shows a list of all patients who have appointments with DoctorTan.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="printing-out-the-timetable-day-of-a-doctor-code-apptdate-code"><a class="link" href="#printing-out-the-timetable-day-of-a-doctor-code-apptdate-code">Printing out the timetable (day) of a Doctor : <code>apptDate</code></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Displays the doctor&#8217;s appointment timetable for a specific day.
+A nice timeline will be shown. Can be used for dates older than the current date. (appointment history)
+Each time slot is 15 minutes. The timeline shows all the slots in the day, and indicates which slots are available or occupied.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>apptDate DOCTOR_NAME m/YYYY MM DD</code></p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>apptDate DoctorTan m/2020 11 04</code><br>
+Shows a list of all patients who have appointments with DoctorTan on 4th of November.</p>
 </li>
 </ul>
 </div>
@@ -243,11 +291,11 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="add-appointment-feature"><a class="link" href="#add-appointment-feature">Add appointment feature</a></h3>
+<h3 id="add-appointment-feature"><a class="link" href="#add-appointment-feature">Add Appointment feature</a></h3>
 <div class="sect3">
 <h4 id="current-implementation-2"><a class="link" href="#current-implementation-2">Current Implementation</a></h4>
 <div class="paragraph">
-<p>the add appointment feature facilitated by the <code>Appointment</code> class, it implements the following operations:</p>
+<p>the add appointment feature is facilitated by the <code>Appointment</code> class, it implements the following operations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -291,22 +339,22 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 <p>Step 1. The user executes command <code>Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]&#8230;&#8203;\n\t"</code></p>
 </div>
 <div class="paragraph">
-<p>Step 2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
+<p>Step 2. The parser parses the user command, verifying that the APPOINTMENT is of the 24 hour format YYYY MM DD HH MM. Then, it creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
 </div>
 <div class="paragraph">
-<p>Step 3. The <code>Addressbook</code> trys to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
+<p>Step 3. The <code>Addressbook</code> tries to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved. Note that two patients cannot have the same appointment timing with the same doctor.</p>
 </div>
 <div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
+<p>Step 4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="doctorappointments-command"><a class="link" href="#doctorappointments-command">DoctorAppointments command</a></h3>
+<h3 id="doctorappointments-feature"><a class="link" href="#doctorappointments-feature">DoctorAppointments feature</a></h3>
 <div class="sect3">
 <h4 id="current-implementation-3"><a class="link" href="#current-implementation-3">Current Implementation</a></h4>
 <div class="paragraph">
-<p>This is a new command, that is executed as <code>DoctorAppointments DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
+<p>This is a new feature, that is executed as <code>appointment DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
 </div>
 <div class="paragraph">
 <p>For the first part, finding and sorting the list of corresponding persons is facilitated by the <code>DoctorAppointmentsCommand</code> class and the <code>Person</code> class. The following operations are implemented in the <code>DoctorAppointmentsCommand</code> class.</p>
@@ -314,23 +362,23 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>execute()</code>&#8201;&#8212;&#8201;Upon execution, a new <code>Indicator</code> class stores information indicating that <code>DoctorAppointmentsCommand</code> is the most recently invoked command. Then, the following method <code>getPersonsWithNameContainingAnyKeyword(keywords)</code> is called.</p>
+<p><code>execute()</code>&#8201;&#8212;&#8201;Upon execution, a new <code>Indicator</code> class stores information indicating that <code>DoctorAppointmentsCommand</code> is the most recently invoked command. Then, the following method <code>getPersonsWithName(doctor)</code> is called.</p>
 </li>
 <li>
-<p><code>getPersonsWithNameContainingAnyKeyword(keywords)</code>&#8201;&#8212;&#8201;This method is adapted from the <code>FindCommand</code> class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a <code>LocalDate</code> field in a <code>Person</code> object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare <code>LocalDate</code> dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor&#8217;s name corresponding to the user input&#8217;s doctor. The ArrayList is sorted based on their appointment dates.</p>
+<p><code>getPersonsWithName(doctor)</code>&#8201;&#8212;&#8201;This method is adapted from the <code>FindCommand</code> class method. In addition to the original command, this method utilizes the package on LocalDate and Collections.Sort. This method updates a <code>LocalDateTime</code> field in a <code>Person</code> object (to be explained in the next paragraph). This method also calls SortDate() which is a separate sorting class that helps to compare <code>LocalDate</code> dates and sort them based on chronological order. This method returns an ArrayList of Persons that have the doctor&#8217;s name corresponding to the user input&#8217;s doctor. The ArrayList is sorted based on their appointment dates.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>We update the <code>Person</code> class to contain an additional field <code>LocalDate date</code> which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the <code>Person</code> class and their method signatures are updated in the <code>ReadOnlyPerson</code> interface.</p>
+<p>We update the <code>Person</code> class to contain an additional field <code>LocalDateTime date</code> which is originally set to null for every person in the addressbook. Then the following getters and setters are implemented in the <code>Person</code> class and their method signatures are updated in the <code>ReadOnlyPerson</code> interface.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>getLocalDate()</code></p>
+<p><code>getLocalDateTime()</code></p>
 </li>
 <li>
-<p><code>setLocalDate()</code></p>
+<p><code>setLocalDateTime()</code></p>
 </li>
 </ul>
 </div>
@@ -338,19 +386,19 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 <p>Given below is an example usage scenario and how the Persons corresponding to a certain doctor are sorted and listed in Chronological order.</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user executes command <code>DoctorAppointments DOCTORNAME"</code></p>
+<p>Step 1. The user executes command <code>appointment DOCTORNAME"</code></p>
 </div>
 <div class="paragraph">
 <p>Step 2. The parser parses the command and prepares the keyword arguments for the <code>DoctorAppointmentsCommand</code> class.</p>
 </div>
 <div class="paragraph">
-<p>Step 3. <code>DoctorAppointmentsCommand</code> is executed and the <code>Indicator</code> class records that this is the most recently invoked command. The execute command calls <code>getPersonsWithNameContainingAnyKeyword(keywords)</code>. For every Person in the existing addressbook, the Doctor&#8217;s name is checked against the keyword (containing DOCTORNAME). If the doctor&#8217;s name of the Person corresponds to DOCTORNAME, the <code>LocalDate</code> class parses the person&#8217;s appointment date, and the Person&#8217;s <code>LocalDate</code> date field is set to be the parsed appointment date.</p>
+<p>Step 3. <code>DoctorAppointmentsCommand</code> is executed and the <code>Indicator</code> class records that this is the most recently invoked command. The execute command calls <code>getPersonsWithName(doctor)</code>. For each Person in the existing addressbook, if the Person&#8217;s doctor corresponds to DOCTORNAME, the <code>LocalDateTime</code> class parses the person&#8217;s appointment date, and the Person&#8217;s <code>LocalDateTime</code> date field is set to be the parsed appointment date.</p>
 </div>
 <div class="paragraph">
 <p>Step 4. The person is added into the matchedPersons list.</p>
 </div>
 <div class="paragraph">
-<p>Step 5. The list of matchedPersons are sorted based on the <code>Localdate</code> date field in each person.</p>
+<p>Step 5. The list of matchedPersons are sorted based on the <code>LocaldateTime</code> date field in each person.</p>
 </div>
 <div class="paragraph">
 <p>Step 6. The sorted list of matchedPersons are returned and displayed in a table format (explained in second part)</p>
@@ -375,14 +423,20 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The UI <code>Formatter</code> is updated in the following way.
-* <code>format(Persons)</code> --Checks if the last invoked user Command is the <code>DoctorAppointmentsCommand</code>. If it is, calls the new String builder method <code>getAsTextNameDateDoctor()</code> for each Person to be formatted.</p>
+<p>The UI <code>Formatter</code> is updated in the following way.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>format(Persons)</code> --Checks if the last invoked user Command is the <code>DoctorAppointmentsCommand</code>. If it is, calls the new String builder method <code>getAsTextNameDateDoctor()</code> for each Person to be formatted.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Given below is an example usage scenario and the formatter formats the Person to be printed in a tabular format. It continues from Step 6 above.</p>
 </div>
 <div class="paragraph">
-<p>Step 7. When the dispay method is called in step 6, the format method in <code>Formatter</code> is called.</p>
+<p>Step 7. When the display method is called in step 6, the format method in <code>Formatter</code> is called.</p>
 </div>
 <div class="paragraph">
 <p>Step 8. A separate String builder method getAsTextNameDateDoctor() is called, and the String is padded on the right by whitespace.</p>
@@ -390,7 +444,295 @@ Shows a list of all patients who have appointments with DoctorTan.</p>
 <div class="paragraph">
 <p>Step 9. The <code>MainWindow</code> displays the newly formatted Persons in neat rows, displaying only the relevant information on Name and Appointment Date.</p>
 </div>
+<div class="paragraph">
+<p>The sequence diagram below shows the interactions between the various classes when the <code>appointment DOCTOR</code> command is executed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/matthiaslum.png/DoctorAppointmentsFeature.png" alt="DoctorAppointmentsFeature" width="800">
+</div>
+<div class="title">Figure 1. Appointment Diagram</div>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:29:52 UTC</div></div></div></body></html>
+<div class="sect2">
+<h3 id="apptdate-feature"><a class="link" href="#apptdate-feature">ApptDate feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-4"><a class="link" href="#current-implementation-4">Current Implementation</a></h4>
+<div class="paragraph">
+<p>This feature displays a doctor&#8217;s appointment timetable for a specific day.
+This is a new feature, that is executed as <code>apptDate DOCTORNAME m/YYYY MM DD</code>.</p>
+</div>
+<div class="paragraph">
+<p>When the parser parses the user command that starts with the <code>apptDate</code> commandword, it instantiates an object of the class ApptDate.
+The user specfied date and doctor&#8217;s name are stored as static fields in the class.</p>
+</div>
+<div class="paragraph">
+<p>Next, the logic class calls this object to be executed.</p>
+</div>
+<div class="paragraph">
+<p>The method <code>execute()</code> is similar in implementation to the <code>execute()</code> method of the previous appointment feature.</p>
+</div>
+<div class="paragraph">
+<p>In summary, the <code>execute()</code> method calls the method <code>getPersonsWithSameDoctorSameDate()</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>getPersonsWithSameDoctorSameDate()</code> finds all Persons in the addressbook that have the same doctor as the user&#8217;s specified doctor.
+Then, it traverses the lists of matchedPersons to select only the Persons that have the same appointment date as the user specified date that is of the format YYYY MM DD.</p>
+</div>
+<div class="paragraph">
+<p>Then, it returns a matchedPersonsList that is used for the Command Result and for the last shown list.</p>
+</div>
+<div class="paragraph">
+<p>At the same time, we build a long string called <code>timetable</code>. This formatting of this string is tedious.
+Some methods involve padding of whitespaces and printing out time-slots of 15min starting from 6am.
+If anyone is confused by the 'for' loop, the iterator 'i' signifies the number of minutes that have elapsed since 00:00 hours of that day.
+We convert the appointment time of each matchedPerson into the number of minutes from 00:00.</p>
+</div>
+<div class="paragraph">
+<p>If the iterator 'i' matches the appointment timing of a Person, we print out the Person beside that time-slot.</p>
+</div>
+<div class="paragraph">
+<p>The UI <code>Formatter</code> facilitates the printing of timetable.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>format(Persons)</code> --Checks if the last invoked user Command is the <code>ApptDateCommand</code>. If it is, it retrieves the timetable from the <code>ApptDate</code> class,
+and prints out the neatly formatted timetable.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="add-appointment-feature-2"><a class="link" href="#add-appointment-feature-2">Add Appointment feature</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Invalid appointment value</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/1800 12 11 12 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments earlier than the current time are not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Appointment timings must not be earlier than current time,<br>
+must be in the 24hr format of yyyy MM dd hh mm.<br>
+Additionally appointment slots are in blocks of 15min.<br>
+Thus, the time in minutes must be 00, 15, 30 or 45. No appointments earlier than 6am.</code><br></p>
+</li>
+<li>
+<p>Test case 2: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because it does not follow the 24hr format required.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 3: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 100 11 12 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because 100 is not a valid month value.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 4: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 01 30 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments before 6am are not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+<li>
+<p>Test case 5: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 22 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because appointments must be in blocks of 15min slots. 22minutes is not allowed.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+that is similar to that of test case 1.<br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Invalid Doctor&#8217;s name</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 12 11 12 30 d/Docto!Tan s/Observation</code><br>
+Expected: The test case fails because the doctor&#8217;s name must be alphanumeric.<br>
+Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
+Special characters like . ! @ # , etc are not allowed!<br>
+Please re-enter with an appropriate doctor name.</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Same appointment timing with the same doctor</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br>
+Expected: Even though Xiao Ming is a different person, the test case fails because two persons cannot have an appointment with the same doctor at the same time<br>
+Prints out <code>This person already exists in the address book, or another person has the same appointment time</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Same appointment timing with another Person, but different doctor</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation</code><br>
+Expected: The test case succeeds and the <code>New Person added&#8230;&#8203;</code> message is printed.<br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Duplicate person details but different appointment</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br>
+Then, add the following person before proceeding.<br>
+<code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/DoctorTan s/Observation</code><br></p>
+</li>
+<li>
+<p>Test case 1: <code>add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 20 08 00 d/DoctorTan s/Observation</code><br>
+Expected: The test case fails because the person John has the same name, phone and email as an existing person.
+Prints out <code>This person already exists in the address book, or another person has the same appointment time</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Successful adding of person</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please ensure that the addressbook is cleared. You can do this by the <code>clear</code> command.<br></p>
+</li>
+<li>
+<p>Test case 1: <code>add Xiao Ming p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2020 01 11 08 00 d/Dr Seuss s/Observation</code><br>
+Expected: The test case succeeds and the <code>New Person added&#8230;&#8203;</code> message is printed.<br></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="doctorappointments-feature-2"><a class="link" href="#doctorappointments-feature-2">DoctorAppointments feature</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>appointment command</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please clear the addressbook and add the following patient entries being proceeding:<br>
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation<br>
+add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/doctor tan s/Observation<br>
+add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2019 12 11 11 30 d/DOCTOR TAN s/Observation<br>
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation<br></p>
+</li>
+<li>
+<p>Test case 1: <code>appointment</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Parameters: DOCTOR_NAME<br>
+Example: appointment DoctorTan.</code><br></p>
+</li>
+<li>
+<p>Test case 2: <code>appointment DoctorTan</code><br>
+Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor.</code><br>
+Shawn Tan and John should be inside the table.<br></p>
+</li>
+<li>
+<p>Test case 3: <code>appointment doctor tan</code><br>
+Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor.</code><br>
+Xiao ming should be inside the table.<br></p>
+</li>
+<li>
+<p>Test case 4: <code>appointment DOCTOR TAN</code><br>
+Expected: A table with header columns <code>Name</code>,   <code>Date</code>  and <code>Doctor</code>.<br>
+Kumar should be inside the table.<br></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="apptdate-feature-2"><a class="link" href="#apptdate-feature-2">ApptDate feature</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>apptDate command</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: please clear the addressbook and add the following patient entries being proceeding:<br>
+add John p/98765432 e/john@gmail.com a/John street, block 123, #01-01 m/2019 12 11 12 30 d/DoctorTan s/Observation<br>
+add Xiao ming p/98765432 e/johnd@gmail.com a/JohnD street, block 123, #01-01 m/2019 12 11 12 00 d/DoctorTan s/Observation<br>
+add Shawn Tan p/98765432 e/shawnt@gmail.com a/Shawn street, block 123, #01-01 m/2019 12 11 11 00 d/DoctorTan s/Observation<br>
+add kumar  p/98765432 e/johnt@gmail.com a/JohnT street, block 123, #01-01 m/2020 12 11 11 30 d/DoctorTan s/Observation<br></p>
+</li>
+<li>
+<p>Test case 1: <code>apptDate</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Parameters: NAME m/APPOINTMENT<br>
+Example: appointment DoctorTan.</code><br></p>
+</li>
+<li>
+<p>Test case 2: <code>apptDate DoctorTan</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Parameters: NAME m/APPOINTMENT<br>
+Example: appointment DoctorTan.</code><br></p>
+</li>
+<li>
+<p>Test case 3: <code>apptDate DoctorTan m/30November</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Dates must be in the 24hr format of yyyy MM dd.</code><br></p>
+</li>
+<li>
+<p>Test case 4: <code>apptDate DoctorTan m/2020 12 11</code><br>
+Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
+<code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
+Special characters like . ! @ # , etc are not allowed!<br>
+Please re-enter with an appropriate doctor name.</code><br></p>
+</li>
+<li>
+<p>Test case 5: <code>apptDate DoctorTan m/2019 12 11</code><br>
+Expected: <code>This is your Appointment timetable for the date: 2019-12-11</code> message followed by timeline<br>
+Shawn, Xiao ming and John should appear in the timeline, following that that order.</p>
+</li>
+<li>
+<p>Test case 6: <code>apptDate DoctorTan m/2020 12 11</code><br>
+Expected: <code>This is your Appointment timetable for the date: 2019-12-11</code> message followed by timeline<br>
+Only Kumar should appear in the timeline at the 11:30 time-slot.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:34:15 UTC</div></div></div></body></html>
