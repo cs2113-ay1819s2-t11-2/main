@@ -31,6 +31,7 @@
 <li><a href="#sort-feature">Sort feature</a></li>
 <li><a href="#add-status-feature">Add Status feature</a></li>
 <li><a href="#refer-feature">Refer feature</a></li>
+<li><a href="#length-feature">Length feature</a></li>
 <li><a href="#login-register-logout-feature">Login/Register/Logout Feature</a></li>
 <li><a href="#add-doctor-feature">Add Doctor feature</a></li>
 <li><a href="#add-appointment-feature">Add Appointment feature</a></li>
@@ -66,7 +67,7 @@
 <li><a href="#add-status-feature-2">Add Status feature</a></li>
 <li><a href="#login-register-logout-feature-2">Login/Register/Logout Feature</a></li>
 <li><a href="#refer-feature-2">Refer feature</a></li>
-<li><a href="#length-feature">Length feature</a></li>
+<li><a href="#length-feature-2">Length feature</a></li>
 <li><a href="#add-appointment-feature-2">Add Appointment feature</a></li>
 <li><a href="#doctorappointments-feature-2">DoctorAppointments feature</a></li>
 <li><a href="#apptdate-feature-2">ApptDate feature</a></li>
@@ -528,10 +529,16 @@ e.g. <code>seedu.addressbook.logic.LogicTest</code></p>
 <div class="sect3">
 <h4 id="current-implementation-3"><a class="link" href="#current-implementation-3">Current Implementation</a></h4>
 <div class="paragraph">
-<p>The refer feature is facilitated by the ReferCommand class and AddressBook class, and it implements the following operations:</p>
+<p>The refer feature is facilitated by the ReferCommand class, Logic class, Parser class and AddressBook class, and it implements the following operations:</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p><code>prepareRefer()</code>&#8201;&#8212;&#8201;checks if input is valid and splits it at the specific prefix d/ when necessary</p>
+</li>
+<li>
+<p><code>getPatientToRefer()</code>&#8201;&#8212;&#8201;looks up addressbook and returns target patient to refer</p>
+</li>
 <li>
 <p><code>toRefer = new Person(
 person.getName(),
@@ -539,40 +546,95 @@ person.getPhone(),
 person.getEmail(),
 person.getAddress(),
 person.getAppointment(),
-new Doctor("Dr Seuss"),
-new Status("Referred"),
+new Doctor(referraldoctor),
+person.getStatus(),
 person.getTags()
-);</code>&#8201;&#8212;&#8201;Copies and modifies taget person&#8217;s parameters</p>
+);</code>&#8201;&#8212;&#8201;Copies and modifies taget patient&#8217;s doctor name</p>
 </li>
 <li>
-<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target person</p>
+<p><code>tagSet.add(new Tag("referred"))</code>&#8201;&#8212;&#8201;adds a refer tag</p>
 </li>
 <li>
-<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the edited person back into the addressbook</p>
+<p><code>addressBook.removePerson(person)</code>&#8201;&#8212;&#8201;removes target patient</p>
+</li>
+<li>
+<p><code>addressBook.addPerson(toRefer)</code>&#8201;&#8212;&#8201;adds the newly update patient entry back into the addressbook</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the refer feature is incorporated at each step.</p>
+<p>Given below is an example usage scenario and how the refer feature is incorporated at each step. The <em>Sequence Diagram for referring a patient</em> is being provided at the end to further aid in illustrating this example.</p>
 </div>
 <div class="paragraph">
 <p>Step 1. The user executes command "refer john"</p>
 </div>
 <div class="paragraph">
-<p>Step 2. ReferCommand class looks through the Addressbook for all entries containing the keyword "john"</p>
+<p>Step 2.Logic class calls Parser class through command <code>parserCommand("refer John")</code></p>
 </div>
 <div class="paragraph">
-<p>Step 3. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and adds a new tag 'refer' to the current collection of tags, deletes the old and adds the newly modified patient entry into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+<p>Step 3. Parser class calls method <code>prepareRefer("John")</code> to checks if input is valid and splits it at the specific prefix d/ when necessary.</p>
 </div>
 <div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s particulars that are updated.</p>
+<p>Step 4. Parser class calls ReferCommand to start evoke the refer.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. ReferComand class calls method <code>getPatientToRefer("John")</code> to looks through the Addressbook for all entries containing the keyword "john"</p>
+</div>
+<div class="paragraph">
+<p>Step 6. If there is only one entry, ReferCommand modifies the entry&#8217;s Doctor and adds a new tag 'refer' to the current collection of tags, deletes the old and adds the newly modified patient entry into the addressbook. If there are multiple entires, ReferCommand class prints all entries in the address book with the keyword and prompts user to key unique keyword (Repeats to Step 1).</p>
+</div>
+<div class="paragraph">
+<p>Step7. The successful execution returns a MESSAGE_SUCCESS along with the patient&#8217;s updated particulars.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ReferCommandSequenceDiagram.png" alt="ReferCommandSequenceDiagram" width="800">
+</div>
+<div class="title">Figure 4. Sequence Diagram for referring a patient</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="length-feature"><a class="link" href="#length-feature">Length feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-4"><a class="link" href="#current-implementation-4">Current Implementation</a></h4>
+<div class="paragraph">
+<p>The refer feature is facilitated by the LengthCommand class, Logic class, Parser class and AddressBook class, and it implements the following operation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>addressBook.size()</code>&#8201;&#8212;&#8201;queries and returns the size of the addressbook</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the length feature is incorporated at each step. The <em>Sequence Diagram for getting addressbook length</em> is being provided at the end to further aid in illustrating this example.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes command "length"</p>
+</div>
+<div class="paragraph">
+<p>Step 2.Logic class calls Parser class through command <code>parserCommand("length")</code></p>
+</div>
+<div class="paragraph">
+<p>Step 3. Parser class calls LengthCommand to query the size of addressbook.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. The successful execution returns the length of the address book.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/LengthCommandSequenceDiagram.png" alt="LengthCommandSequenceDiagram" width="800">
+</div>
+<div class="title">Figure 5. Sequence Diagram for getting address book length</div>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="login-register-logout-feature"><a class="link" href="#login-register-logout-feature">Login/Register/Logout Feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation-4"><a class="link" href="#current-implementation-4">Current Implementation</a></h4>
+<h4 id="current-implementation-5"><a class="link" href="#current-implementation-5">Current Implementation</a></h4>
 <div class="paragraph">
 <p>The login/register/logout mechanism is facilitated by <code>AccountManager</code>, it implements the following operations:</p>
 </div>
@@ -749,7 +811,7 @@ person.getTags()
 <div class="sect2">
 <h3 id="add-doctor-feature"><a class="link" href="#add-doctor-feature">Add Doctor feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation-5"><a class="link" href="#current-implementation-5">Current Implementation</a></h4>
+<h4 id="current-implementation-6"><a class="link" href="#current-implementation-6">Current Implementation</a></h4>
 <div class="paragraph">
 <p>the add doctor feature facilitated by the <code>Doctor</code> class, it implements the following operations:</p>
 </div>
@@ -793,7 +855,7 @@ person.getTags()
 <div class="sect2">
 <h3 id="add-appointment-feature"><a class="link" href="#add-appointment-feature">Add Appointment feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation-6"><a class="link" href="#current-implementation-6">Current Implementation</a></h4>
+<h4 id="current-implementation-7"><a class="link" href="#current-implementation-7">Current Implementation</a></h4>
 <div class="paragraph">
 <p>the add appointment feature is facilitated by the <code>Appointment</code> class, it implements the following operations:</p>
 </div>
@@ -852,7 +914,7 @@ person.getTags()
 <div class="sect2">
 <h3 id="doctorappointments-feature"><a class="link" href="#doctorappointments-feature">DoctorAppointments feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation-7"><a class="link" href="#current-implementation-7">Current Implementation</a></h4>
+<h4 id="current-implementation-8"><a class="link" href="#current-implementation-8">Current Implementation</a></h4>
 <div class="paragraph">
 <p>This is a new feature, that is executed as <code>appointment DOCTORNAME</code>. It finds all Persons in the addressbook that are assigned to a doctor with the same name as DOCTORNAME. Then, it prints out a list of them sorted according to Appointment dates. The first person from the top has the earliest appointment date. Let us split the implementation documentation into two parts. (1) Returning a list of persons corresponding to the user input&#8217;s name of the doctor in chronological order. (2)Printing only the relevant information of these persons in a neat manner similar to a time-table.</p>
 </div>
@@ -951,14 +1013,14 @@ person.getTags()
 <div class="content">
 <img src="images/DoctorAppointmentsFeature.png" alt="DoctorAppointmentsFeature" width="800">
 </div>
-<div class="title">Figure 4. Appointment Diagram</div>
+<div class="title">Figure 6. Appointment Diagram</div>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="apptdate-feature"><a class="link" href="#apptdate-feature">ApptDate feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation-8"><a class="link" href="#current-implementation-8">Current Implementation</a></h4>
+<h4 id="current-implementation-9"><a class="link" href="#current-implementation-9">Current Implementation</a></h4>
 <div class="paragraph">
 <p>This feature displays a doctor&#8217;s appointment timetable for a specific day.
 This is a new feature, that is executed as <code>apptDate DOCTORNAME m/YYYY MM DD</code>.</p>
@@ -1122,6 +1184,12 @@ and prints out the neatly formatted timetable.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">doctor</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">indicate my patients' appointment date when I add him/her into addressbook</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">keep track of their appointment date</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">doctor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be able to do a quick track on the number of patients I have</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have an idea of how to start planning my appointment schedules</p></td>
 </tr>
 </tbody>
 </table>
@@ -1939,7 +2007,7 @@ Please re-enter with an appropriate doctor name.</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="length-feature"><a class="link" href="#length-feature">Length feature</a></h3>
+<h3 id="length-feature-2"><a class="link" href="#length-feature-2">Length feature</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1994,4 +2062,4 @@ Expected:  <code>Length of the address book is: 0</code></p>
 
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:26:12 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 14:27:38 UTC</div></div></div></body></html>
