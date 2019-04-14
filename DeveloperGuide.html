@@ -1781,20 +1781,15 @@ add Betsy Doe pp/1234567 e/betsycrowe@gmail.com pa/Doe Newgate m/2019 11 14 08 0
 Expected: An error message: <code>Invalid command format!</code> is displayed on the screen, with the displays the correct format below.<br></p>
 </li>
 <li>
-<p>Test case 2: <code>refer `<br>
-Expected: An error message:<br>
-`Invalid command format!</code> is displayed on the screen, with the displays the correct format below.<br></p>
-</li>
-<li>
-<p>Test case 3: <code>refer Shawn</code><br>
+<p>Test case 2: <code>refer Shawn</code><br>
 Expected: Prints out full particulars of all 3 patients with the name of <code>Shawn</code>, followed by a message: <code>3 similar entries have been found. Please re-enter patient&#8217;s FULL NAME to refer</code> to prompt for a re-entry of the ful name of the target patient.<br></p>
 </li>
 <li>
-<p>Test case 4: <code>refer Shawn Doe</code><br>
+<p>Test case 3: <code>refer Shawn Doe</code><br>
 Expected: Prints out success message: <code>Patient Shawn Doe has been successfully referred to Dr Seuss!! :D</code>, followed by the patient&#8217;s updated entry below.<br></p>
 </li>
 <li>
-<p>Test case 5: <code>refer John</code><br>
+<p>Test case 4: <code>refer John</code><br>
 Expected: Prints out success message: <code>Patient John has been successfully referred to Dr Seuss!! :D</code>, followed by the patient&#8217;s updated entry below. <br></p>
 <div class="admonitionblock note">
 <table>
@@ -1803,18 +1798,18 @@ Expected: Prints out success message: <code>Patient John has been successfully r
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This is an edge case test. It is a successful refer (unlike test case 3) because there is an entry <code>John</code> without any last names in this case - this leads to the patient name being an exact and unique match of the keyword inputted unlike test case 3 where every <code>Shawn</code> has a last name (therefore no patient name == keyword inputted).
+This is an edge case test. It is a successful refer (unlike test case 2) because there is an entry <code>John</code> without any last names in this case - this leads to the patient name being an exact and unique match of the keyword inputted unlike test case 2 where every <code>Shawn</code> has a last name (therefore no patient name == keyword inputted).
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Test case 6: <code>refer d/Dr Elizabeth p/John</code><br>
+<p>Test case 5: <code>refer d/Dr Elizabeth p/John</code><br>
 Expected: Prints out success message: <code>Patient John has been successfully referred to Dr Elizabeth!! :D</code>, followed by the patient&#8217;s updated entry below. <br></p>
 </li>
 <li>
-<p>Test case 7: <code>refer Abigail</code><br>
+<p>Test case 6: <code>refer Abigail</code><br>
 Expected: Prints out success message: <code>Patient Abigail has been successfully referred to Dr Elizabeth!! :D</code>, followed by the patient&#8217;s updated entry below. <br></p>
 <div class="admonitionblock note">
 <table>
@@ -1830,7 +1825,7 @@ The default doctor is Dr Seuss. However, once a new doctor of preferrence is int
 </div>
 </li>
 <li>
-<p>Test case 8: <code>refer d/Dr. Tan p/Abigail</code><br>
+<p>Test case 7: <code>refer d/Dr. Tan p/Abigail</code><br>
 Expected: Prints out <code>Invalid command format!</code> message followed by a reminder<br>
 <code>Doctor&#8217;s names should only contain spaces and/or alphanumeric characters<br>
 Special characters like . ! @ # , etc are not allowed!<br>
@@ -1898,4 +1893,4 @@ Expected:  <code>Length of the address book is: 0</code></p>
 
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 12:45:06 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 12:47:25 UTC</div></div></div></body></html>
