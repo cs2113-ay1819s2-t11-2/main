@@ -82,12 +82,14 @@ Format: `add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENTDATE d/
 Words in `UPPER_CASE` are the parameters, items in `SQUARE_BRACKETS` are optional,
 items with `...` after them can have multiple instances. Order of parameters are fixed.
 
+//@@author matthiaslum
 Note that the appointment date must be in the format of YYYY MM DD HH MM, in other for the DoctorAppointment Command to work.
 The hour and minute follows the 24hour clock format. Appointment timings must be in blocks of 15minutes. The accepted minutes are 00, 15, 30, 45.
 No appointments are allowed before 8am or before system current time. Incorrect time formats will throw an error in parsing.
 Appointments with the same doctor at the same timing is not allowed.
 
 The doctor's name is case sensitive.
+//@@author 
 
 The status must be any of following status: Critical / Waiting for Surgery / Life Support / Waiting for doctor appointment / Therapy / Observation.
 
@@ -159,6 +161,7 @@ Shows a list of all persons sorted by appointment date in chronological order in
 
 //@@author
 
+//@@author matthiaslum
 == Listing all appointments of a Doctor : `appointment`
 
 Displays a list of all patients who have appointments with a specific doctor.
@@ -189,6 +192,7 @@ Examples:
 
 * `apptDate DoctorTan m/2020 11 04` +
 Shows a list of all patients who have appointments with DoctorTan on 4th of November.
+//@@author 
 
 == Deleting a person : `delete`
 
