@@ -33,7 +33,7 @@ https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=shawn-t&sort=display
 
 * *Other contributions*:
 ** Project management: Managed releases v1.1 - v1.4, as well as raise and resolve issues on issues tracker.
-** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as design overview.
+** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as the DeveloperGuide's design section. For my contributions to the Design Section, please refer to https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design
 
 == Contributions to the User Guide
 |===
@@ -77,110 +77,8 @@ Examples: +
 |===
 
 //@@author shawn-t
-.Simplified Architecture Diagram
-image::Architecture.png[width="800"]
+For my contributions to the Design Section, please refer to https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design
 
-The *_Simplified Architecture Diagram_* above is an abstraction of the first diagram provided. It categorises classes into the respective components by colour. Given below is a quick overview of each component.
-
-`Main` has only one class called link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/Main.java[`Main`]. It is responsible for,
-
-* At app launch: Initializing the components, and creating the GUI.
-* At shut down: Shutting down the components, closing the GUI and exiting the program.
-
-The rest of the App consists of the following eight components:
-
-* <<Design-AccountManager,*`AccountManager`*>>: Manages the logging in / out of user accounts.
-* <<Design-Command,*`Command`*>>: represents a collection of classes that defines the behaviour of the respective commands.
-* <<Design-Commons,*`Commons`*>> represents a collection of classes used by multiple other components.
-* <<Design-Data,*`Data`*>>: Holds the data of the App in-memory.
-* <<Design-Logic,*`Logic`*>>: The command executor.
-* <<Design-Parser,*`Parser`*>>: Parses user input.
-* <<Design-Storage,*`Storage`*>>: Reads data from, and writes data to, the hard disk.
-* <<Design-Ui,*`Ui`*>>: The UI of the App.
-
-[discrete]
-==== How the architecture components interact with each other
-
-The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
-
-.Component interactions for `delete 1` command
-image::SDforDeletePerson.png[width="800"]
-
-The sections below give more details of each component.
-
-[[Design-AccountManager]]
-=== AccountManager Component
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/accountmanager/AccountManager.java[`AccountManager`] +
-For detailed implementation for AccountManager Component, please refer to <<Implementation,*`Implementation`*>>
-
-[[Design-Data]]
-=== Data Component
-
-image::DataComponent.png[width="800"]
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/data/AddressBook.java[`AddressBook.java`]
-
-The `AddressBook.java`,
-
-* stores the Address Book data.
-* exposes an unmodifiable `ReadOnlyPerson<Person>` that can be 'read' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-
-[[Design-Logic]]
-=== Logic Component
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/logic/Logic.java[`Logic.java`]
-
-.  `Logic` uses the `Parser` class to parse the user command.
-.  This results in a `Command` object which is executed by the matching Command class (e.g. DeleteCommand class exceutes delete).
-.  The command execution can affect the `UniquePersonList` (e.g. deleting a person).
-.  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
-.  In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
-
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
-
-image::LogicComponent.png[width="800"]
-
-.Interactions Inside the Logic Component for the `delete 1` Command
-
-[[Design-Parser]]
-=== Parser Component
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/parser/Parser.java[`Parser.java`]
-
-[[Design-Storage]]
-=== Storage Component
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/storage/jaxb/StorageFile.java[`StorageFile.java`]
-
-The `Storage` component,
-
-* can save the Address Book data in a default .txt file named addressbook.txt and read it back.
-
-[[Design-Ui]]
-=== Ui Component
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/ui/Gui.java[`Gui.java`]
-
-The `Gui.java` component,
-
-* Executes user commands using the `Logic` component.
-* Listens for changes to `Data` component so that the UI can be updated with the modified data.
-
-image::UiComponent.png[width="800"]
-
-=== Command classes
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/commands[`Commands`]
-
-Classes in this component defines the behaviour of the respective commands. Examples include the SortCommand, ReferCommand, IncorrectCommand class etc, as well as the CommandResult class.
-
-[[Design-Commons]]
-=== Common classes
-
-*API* : link:https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/common[`Common`]
-
-Classes used by multiple components are in the `seedu.addressbook.commons` package. In our project, Messages class and Utils class are the only two classes in this package.
 //@@author shawn-t
 === Refer feature
 ==== Current Implementation
