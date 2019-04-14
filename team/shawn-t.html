@@ -75,7 +75,7 @@ This application was developed by team T11-2 of CS2113T in National University o
 <p>Project management: Managed releases v1.1 - v1.4, as well as raise and resolve issues on issues tracker.</p>
 </li>
 <li>
-<p>Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as design overview.</p>
+<p>Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as the DeveloperGuide&#8217;s design section. For my contributions to the Design Section, please refer to <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design" class="bare">https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design</a></p>
 </li>
 </ul>
 </div>
@@ -156,202 +156,13 @@ Refers target patient to a doctor specified by the user. Format 2 works exactly 
 </tr>
 </tbody>
 </table>
-<div class="imageblock">
-<div class="content">
-<img src="../images/Architecture.png" alt="Architecture" width="800">
-</div>
-<div class="title">Figure 1. Simplified Architecture Diagram</div>
-</div>
 <div class="paragraph">
-<p>The <strong><em>Simplified Architecture Diagram</em></strong> above is an abstraction of the first diagram provided. It categorises classes into the respective components by colour. Given below is a quick overview of each component.</p>
-</div>
-<div class="paragraph">
-<p><code>Main</code> has only one class called <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/Main.java"><code>Main</code></a>. It is responsible for,</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>At app launch: Initializing the components, and creating the GUI.</p>
-</li>
-<li>
-<p>At shut down: Shutting down the components, closing the GUI and exiting the program.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The rest of the App consists of the following eight components:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#Design-AccountManager"><strong><code>AccountManager</code></strong></a>: Manages the logging in / out of user accounts.</p>
-</li>
-<li>
-<p><a href="#Design-Command"><strong><code>Command</code></strong></a>: represents a collection of classes that defines the behaviour of the respective commands.</p>
-</li>
-<li>
-<p><a href="#Design-Commons"><strong><code>Commons</code></strong></a> represents a collection of classes used by multiple other components.</p>
-</li>
-<li>
-<p><a href="#Design-Data"><strong><code>Data</code></strong></a>: Holds the data of the App in-memory.</p>
-</li>
-<li>
-<p><a href="#Design-Logic"><strong><code>Logic</code></strong></a>: The command executor.</p>
-</li>
-<li>
-<p><a href="#Design-Parser"><strong><code>Parser</code></strong></a>: Parses user input.</p>
-</li>
-<li>
-<p><a href="#Design-Storage"><strong><code>Storage</code></strong></a>: Reads data from, and writes data to, the hard disk.</p>
-</li>
-<li>
-<p><a href="#Design-Ui"><strong><code>Ui</code></strong></a>: The UI of the App.</p>
-</li>
-</ul>
-</div>
-<h4 id="how-the-architecture-components-interact-with-each-other" class="discrete">How the architecture components interact with each other</h4>
-<div class="paragraph">
-<p>The <em>Sequence Diagram</em> below shows how the components interact with each other for the scenario where the user issues the command <code>delete 1</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/SDforDeletePerson.png" alt="SDforDeletePerson" width="800">
-</div>
-<div class="title">Figure 2. Component interactions for <code>delete 1</code> command</div>
-</div>
-<div class="paragraph">
-<p>The sections below give more details of each component.</p>
+<p>For my contributions to the Design Section, please refer to <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design" class="bare">https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/docs/DeveloperGuide.adoc#design</a></p>
 </div>
 <div class="sect2">
-<h3 id="Design-AccountManager"><a class="link" href="#Design-AccountManager">AccountManager Component</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/accountmanager/AccountManager.java"><code>AccountManager</code></a><br>
-For detailed implementation for AccountManager Component, please refer to <a href="#Implementation"><strong><code>Implementation</code></strong></a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Data"><a class="link" href="#Design-Data">Data Component</a></h3>
-<div class="imageblock">
-<div class="content">
-<img src="../images/DataComponent.png" alt="DataComponent" width="800">
-</div>
-</div>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/data/AddressBook.java"><code>AddressBook.java</code></a></p>
-</div>
-<div class="paragraph">
-<p>The <code>AddressBook.java</code>,</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>stores the Address Book data.</p>
-</li>
-<li>
-<p>exposes an unmodifiable <code>ReadOnlyPerson&lt;Person&gt;</code> that can be 'read' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Logic"><a class="link" href="#Design-Logic">Logic Component</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/logic/Logic.java"><code>Logic.java</code></a></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><code>Logic</code> uses the <code>Parser</code> class to parse the user command.</p>
-</li>
-<li>
-<p>This results in a <code>Command</code> object which is executed by the matching Command class (e.g. DeleteCommand class exceutes delete).</p>
-</li>
-<li>
-<p>The command execution can affect the <code>UniquePersonList</code> (e.g. deleting a person).</p>
-</li>
-<li>
-<p>The result of the command execution is encapsulated as a <code>CommandResult</code> object which is passed back to the <code>Ui</code>.</p>
-</li>
-<li>
-<p>In addition, the <code>CommandResult</code> object can also instruct the <code>Ui</code> to perform certain actions, such as displaying help to the user.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Given below is the Sequence Diagram for interactions within the <code>Logic</code> component for the <code>execute("delete 1")</code> API call.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/LogicComponent.png" alt="LogicComponent" width="800">
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Parser"><a class="link" href="#Design-Parser">Parser Component</a></h3>
-<div class="paragraph">
-<div class="title">Interactions Inside the Logic Component for the <code>delete 1</code> Command</div>
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/parser/Parser.java"><code>Parser.java</code></a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Storage"><a class="link" href="#Design-Storage">Storage Component</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/storage/jaxb/StorageFile.java"><code>StorageFile.java</code></a></p>
-</div>
-<div class="paragraph">
-<p>The <code>Storage</code> component,</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>can save the Address Book data in a default .txt file named addressbook.txt and read it back.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Ui"><a class="link" href="#Design-Ui">Ui Component</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/ui/Gui.java"><code>Gui.java</code></a></p>
-</div>
-<div class="paragraph">
-<p>The <code>Gui.java</code> component,</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Executes user commands using the <code>Logic</code> component.</p>
-</li>
-<li>
-<p>Listens for changes to <code>Data</code> component so that the UI can be updated with the modified data.</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UiComponent.png" alt="UiComponent" width="800">
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="command-classes"><a class="link" href="#command-classes">Command classes</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/commands"><code>Commands</code></a></p>
-</div>
-<div class="paragraph">
-<p>Classes in this component defines the behaviour of the respective commands. Examples include the SortCommand, ReferCommand, IncorrectCommand class etc, as well as the CommandResult class.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Design-Commons"><a class="link" href="#Design-Commons">Common classes</a></h3>
-<div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/cs2113-ay1819s2-t11-2/main/blob/master/src/seedu/addressbook/common"><code>Common</code></a></p>
-</div>
-<div class="paragraph">
-<p>Classes used by multiple components are in the <code>seedu.addressbook.commons</code> package. In our project, Messages class and Utils class are the only two classes in this package.
-=== Refer feature
-==== Current Implementation</p>
-</div>
+<h3 id="refer-feature"><a class="link" href="#refer-feature">Refer feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
 <div class="paragraph">
 <p>The refer feature is facilitated by the ReferCommand class, Logic class, Parser class and AddressBook class, and it implements the following operations:</p>
 </div>
@@ -414,13 +225,14 @@ person.getTags()
 <div class="content">
 <img src="../images/ReferCommandSequenceDiagram.png" alt="ReferCommandSequenceDiagram" width="800">
 </div>
-<div class="title">Figure 3. Sequence Diagram for referring a patient</div>
+<div class="title">Figure 1. Sequence Diagram for referring a patient</div>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="length-feature"><a class="link" href="#length-feature">Length feature</a></h3>
 <div class="sect3">
-<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
+<h4 id="current-implementation-2"><a class="link" href="#current-implementation-2">Current Implementation</a></h4>
 <div class="paragraph">
 <p>The refer feature is facilitated by the LengthCommand class, Logic class, Parser class and AddressBook class, and it implements the following operation:</p>
 </div>
@@ -450,7 +262,7 @@ person.getTags()
 <div class="content">
 <img src="../images/LengthCommandSequenceDiagram.png" alt="LengthCommandSequenceDiagram" width="800">
 </div>
-<div class="title">Figure 4. Sequence Diagram for getting address book length</div>
+<div class="title">Figure 2. Sequence Diagram for getting address book length</div>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -545,4 +357,4 @@ Expected:  <code>Length of the address book is: 0</code></p></td>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:23:35 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 15:25:45 UTC</div></div></div></body></html>
