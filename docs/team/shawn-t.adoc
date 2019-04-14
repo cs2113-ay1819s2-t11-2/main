@@ -32,8 +32,8 @@ https://nuscs2113-ay1819s2.github.io/dashboard-beta/#search=&sort=displayName&si
 
 
 * *Other contributions*:
-** Project management: Managed releases v1.1 - v1.3, as well as updated issue tracker.
-** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide
+** Project management: Managed releases v1.1 - v1.4, as well as raise and resolve issues on issues tracker.
+** Documentation: Did cosmetic tweaks to original template by formatting Use Cases for the existing commands of the Developer Guide as well as design overview.
 
 == Contributions to the User Guide
 |===
