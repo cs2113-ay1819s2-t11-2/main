@@ -254,6 +254,14 @@ and prints out the neatly formatted timetable.
 //@@author
 
 //@@author matthiaslum
+[appendix]
+== Instructions for Manual Testing
+
+Given below are instructions to test the app manually.
+
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
+
 === Add Appointment feature
 
 . Invalid appointment value
