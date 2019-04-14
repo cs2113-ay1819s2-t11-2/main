@@ -213,8 +213,7 @@ Step 9. The `MainWindow` displays the newly formatted Persons in neat rows, disp
 
 The sequence diagram below shows the interactions between the various classes when the `appointment DOCTOR` command is executed.
 
-.Appointment Diagram
-image::DoctorAppointmentsFeature.png[width="800"]
+image:https://raw.githubusercontent.com/cs2113-ay1819s2-t11-2/main/master/docs/images/DoctorAppointmentsFeature.png[width=800,height=]
 
 //@@author
 
