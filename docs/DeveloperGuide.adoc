@@ -870,6 +870,9 @@ Expected:  `Length of the address book is: 9`
 Expected:  `Length of the address book is: 0`
 
 //@@author
+
+//@@author matthiaslum
+
 === Add Appointment feature
 
 . Invalid appointment value
@@ -1016,3 +1019,5 @@ Shawn, Xiao ming and John should appear in the timeline, following that that ord
 .. Test case 6: `apptDate DoctorTan m/2020 12 11` +
 Expected: `This is your Appointment timetable for the date: 2019-12-11` message followed by timeline +
 Only Kumar should appear in the timeline at the 11:30 time-slot.
+
+//@@author
