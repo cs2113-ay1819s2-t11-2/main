@@ -35,7 +35,7 @@
 <li><a href="#add-doctor-feature">Add Doctor feature</a></li>
 <li><a href="#add-appointment-feature">Add Appointment feature</a></li>
 <li><a href="#doctorappointments-feature">DoctorAppointments feature</a></li>
-<li><a href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></li>
+<li><a href="#apptdate-feature">ApptDate feature</a></li>
 </ul>
 </li>
 <li><a href="#product-scope">Appendix A: Product Scope</a></li>
@@ -69,7 +69,7 @@
 <li><a href="#length-feature">Length feature</a></li>
 <li><a href="#add-appointment-feature-2">Add Appointment feature</a></li>
 <li><a href="#doctorappointments-feature-2">DoctorAppointments feature</a></li>
-<li><a href="#apptdate-feature">ApptDate feature</a></li>
+<li><a href="#apptdate-feature-2">ApptDate feature</a></li>
 </ul>
 </li>
 </ul></div></div><div id="content"><div class="sect1">
@@ -839,13 +839,13 @@ person.getTags()
 <p>Step 1. The user executes command <code>Add NAME [p]p/PHONE [p]e/EMAIL [p]a/ADDRESS m/APPOINTMENT [t/TAG]&#8230;&#8203;\n\t"</code></p>
 </div>
 <div class="paragraph">
-<p>Step 2. The parser parses the user command, and creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
+<p>Step 2. The parser parses the user command, verifying that the APPOINTMENT is of the 24 hour format YYYY MM DD HH MM. Then, it creates the relevant object for <code>Appointment</code>, <code>Address</code> etc, and a new <code>Person</code> object is constructed. The <code>Logic</code> class executes the <code>AddCommand</code> with the prepared arguments.</p>
 </div>
 <div class="paragraph">
-<p>Step 3. The <code>Addressbook</code> trie to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved.</p>
+<p>Step 3. The <code>Addressbook</code> tries to add the new person into the <code>uniquePersonList</code>. But first, the <code>uniquePersonList</code> checks if the new Person object is a duplicate of an existing Person object in the Addressbook. If the Person is not a duplicate, it is added into the Addresbook and the Addressbook is saved. Note that two patients cannot have the same appointment timing with the same doctor.</p>
 </div>
 <div class="paragraph">
-<p>Step4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
+<p>Step 4. The successful execution returns a MESSAGE_SUCCESS along with the added person. The MainWindow displays the result and prints the added person into the GUI.</p>
 </div>
 </div>
 </div>
@@ -950,8 +950,48 @@ person.getTags()
 </div>
 </div>
 <div class="sect2">
-<h3 id="apptdate-feature-coming-in-v1-4"><a class="link" href="#apptdate-feature-coming-in-v1-4">ApptDate feature (coming in v1.4)</a></h3>
-
+<h3 id="apptdate-feature"><a class="link" href="#apptdate-feature">ApptDate feature</a></h3>
+<div class="sect3">
+<h4 id="current-implementation-8"><a class="link" href="#current-implementation-8">Current Implementation</a></h4>
+<div class="paragraph">
+<p>This feature displays a doctor&#8217;s appointment timetable for a specific day.
+This is a new feature, that is executed as <code>apptDate DOCTORNAME m/YYYY MM DD</code>.</p>
+</div>
+<div class="paragraph">
+<p>When the parser parses the user command that starts with the <code>apptDate</code> commandword, it instantiates an object of the class ApptDate.
+The user specfied date and doctor&#8217;s name are stored as static fields in the class.</p>
+</div>
+<div class="paragraph">
+<p>Next, the logic class calls this object to be executed.</p>
+</div>
+<div class="paragraph">
+<p>The method <code>execute()</code> is similar in implementation to the <code>execute()</code> method of the previous appointment feature.</p>
+</div>
+<div class="paragraph">
+<p>In summary, the <code>execute()</code> method calls the method <code>getPersonsWithSameDoctorSameDate()</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>getPersonsWithSameDoctorSameDate()</code> finds all Persons in the addressbook that have the same doctor as the user&#8217;s specified doctor.
+Then, it traverses the lists of matchedPersons to select only the Persons that have the same appointment date as the user specified date that is of the format YYYY MM DD.</p>
+</div>
+<div class="paragraph">
+<p>Then, it returns a matchedPersonsList that is used for the Command Result and for the last shown list.</p>
+</div>
+<div class="paragraph">
+<p>At the same time, we build a long string called <code>timetable</code>. This formatting of this string is tedious.
+Some methods involve padding of whitespaces and printing out time-slots of 15min starting from 6am.
+If anyone is confused by the 'for' loop, the iterator 'i' signifies the number of minutes that have elapsed since 00:00 hours of that day.
+We convert the appointment time of each matchedPerson into the number of minutes from 00:00.</p>
+</div>
+<div class="paragraph">
+<p>If the iterator 'i' matches the appointment timing of a Person, we print out the Person beside that time-slot.</p>
+</div>
+<div class="paragraph">
+<p>The UI <code>Formatter</code> facilitates the printing of timetable
+* <code>format(Persons)</code> --Checks if the last invoked user Command is the <code>ApptDateCommand</code>. If it is, it retrieves the timetable from the <code>ApptDate</code> class,
+and prints out the neatly formatted timetable.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1898,8 +1938,8 @@ Expected:  <code>Length of the address book is: 0</code></p>
 
 </div>
 <div class="sect2">
-<h3 id="apptdate-feature"><a class="link" href="#apptdate-feature">ApptDate feature</a></h3>
+<h3 id="apptdate-feature-2"><a class="link" href="#apptdate-feature-2">ApptDate feature</a></h3>
 
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 13:21:24 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-04-14 13:47:15 UTC</div></div></div></body></html>
